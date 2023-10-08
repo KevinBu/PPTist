@@ -5,10 +5,12 @@
   word-break: break-word;
   white-space: normal;
 
+  // 不包含指定的类名
   &:not(.ProseMirror-static) {
     user-select: text;
   }
 
+  // ::selection是一个伪元素选择器，它选中的是用户选中的文本部分
   ::selection {
     background-color: rgba(#d14424, 0.25);
     color: inherit;

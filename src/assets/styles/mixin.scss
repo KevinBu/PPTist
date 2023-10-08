@@ -1,16 +1,17 @@
+// 这个@mixin定义了一个名为ellipsis-oneline的混合物。混合物在Sass中是一种可以包含多行CSS声明的方法，然后可以在样式表中的任何位置重复使用。
 @mixin ellipsis-oneline() {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow: hidden; // 当内容超出其块级容器时隐藏超出的部分。
+  white-space: nowrap; // 不换行，所有文本都在一行中显示。
+  text-overflow: ellipsis; // 当文本溢出其容器时，显示为省略号。
 }
 
 @mixin ellipsis-multiline($line: 2) {
-  word-wrap: break-word;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: $line;
-  -webkit-box-orient: vertical;
+  word-wrap: break-word; // 它定义了在单词内换行的情况。'break-word' 意味着允许在单词内换行。
+  overflow: hidden; // 定义了当内容溢出其块级容器时该怎么做。'hidden' 意味着溢出的内容会被隐藏。
+  text-overflow: ellipsis; // 定义了当文本溢出其容器时该怎么显示。'ellipsis' 意味着显示为省略号。
+  display: -webkit-box; // 定义了元素应该如何显示。'-webkit-box' 是一个旧的WebKit前缀的显示模式，这在这里主要是为了兼容性，它让浏览器以旧的渲染方式处理文本。
+  -webkit-line-clamp: $line; // 定义了一个块元素显示的文本的最大行数。这里的'$line' 是一个变量，它的默认值是2
+  -webkit-box-orient: vertical; // 定义了一个弹性盒子元素的子元素的排列方式。'vertical' 意味着子元素垂直排列。
 }
 
 @mixin flex-grid-layout() {
