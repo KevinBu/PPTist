@@ -29,33 +29,33 @@
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
-import type { PPTTextElement } from '@/types/slides'
-import type { OperateResizeHandlers } from '@/types/edit'
-import useCommonOperate from '../hooks/useCommonOperate'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore } from '@/store';
+import type { PPTTextElement } from '@/types/slides';
+import type { OperateResizeHandlers } from '@/types/edit';
+import useCommonOperate from '../hooks/useCommonOperate';
 
-import RotateHandler from './RotateHandler.vue'
-import ResizeHandler from './ResizeHandler.vue'
-import BorderLine from './BorderLine.vue'
+import RotateHandler from './RotateHandler.vue';
+import ResizeHandler from './ResizeHandler.vue';
+import BorderLine from './BorderLine.vue';
 
 const props = defineProps<{
   elementInfo: PPTTextElement
   handlerVisible: boolean
   rotateElement: (e: MouseEvent, element: PPTTextElement) => void
   scaleElement: (e: MouseEvent, element: PPTTextElement, command: OperateResizeHandlers) => void
-}>()
+}>();
 
-const { canvasScale } = storeToRefs(useMainStore())
+const { canvasScale } = storeToRefs(useMainStore());
 
-const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
-const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
+const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value);
+const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value);
 
-const { textElementResizeHandlers, verticalTextElementResizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
-const resizeHandlers = computed(() => props.elementInfo.vertical ? verticalTextElementResizeHandlers.value : textElementResizeHandlers.value)
+const { textElementResizeHandlers, verticalTextElementResizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight);
+const resizeHandlers = computed(() => props.elementInfo.vertical ? verticalTextElementResizeHandlers.value : textElementResizeHandlers.value);
 </script>

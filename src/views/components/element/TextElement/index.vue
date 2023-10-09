@@ -60,121 +60,121 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { debounce } from 'lodash'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTTextElement } from '@/types/slides'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import useElementShadow from '@/views/components/element/hooks/useElementShadow'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { debounce } from 'lodash';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTTextElement } from '@/types/slides';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
+import useElementShadow from '@/views/components/element/hooks/useElementShadow';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
-import ElementOutline from '@/views/components/element/ElementOutline.vue'
-import ProsemirrorEditor from '@/views/components/element/ProsemirrorEditor.vue'
+import ElementOutline from '@/views/components/element/ElementOutline.vue';
+import ProsemirrorEditor from '@/views/components/element/ProsemirrorEditor.vue';
 
 const props = defineProps<{
   elementInfo: PPTTextElement
   selectElement: (e: MouseEvent | TouchEvent, element: PPTTextElement, canMove?: boolean) => void
   contextmenus: () => ContextmenuItem[] | null
-}>()
+}>();
 
-const mainStore = useMainStore()
-const slidesStore = useSlidesStore()
-const { handleElementId, isScaling } = storeToRefs(mainStore)
+const mainStore = useMainStore();
+const slidesStore = useSlidesStore();
+const { handleElementId, isScaling } = storeToRefs(mainStore);
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 
-const elementRef = ref<HTMLElement>()
+const elementRef = ref<HTMLElement>();
 
-const shadow = computed(() => props.elementInfo.shadow)
-const { shadowStyle } = useElementShadow(shadow)
+const shadow = computed(() => props.elementInfo.shadow);
+const { shadowStyle } = useElementShadow(shadow);
 
 const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
-  if (props.elementInfo.lock) return
-  e.stopPropagation()
+  if (props.elementInfo.lock) return;
+  e.stopPropagation();
 
-  props.selectElement(e, props.elementInfo, canMove)
-}
+  props.selectElement(e, props.elementInfo, canMove);
+};
 
 // 监听文本元素的尺寸变化，当高度变化时，更新高度到vuex
 // 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
-const realHeightCache = ref(-1)
-const realWidthCache = ref(-1)
+const realHeightCache = ref(-1);
+const realWidthCache = ref(-1);
 
 watch(isScaling, () => {
-  if (handleElementId.value !== props.elementInfo.id) return
+  if (handleElementId.value !== props.elementInfo.id) return;
 
   if (!isScaling.value) {
     if (!props.elementInfo.vertical && realHeightCache.value !== -1) {
       slidesStore.updateElement({
         id: props.elementInfo.id,
         props: { height: realHeightCache.value },
-      })
-      realHeightCache.value = -1
+      });
+      realHeightCache.value = -1;
     }
     if (props.elementInfo.vertical && realWidthCache.value !== -1) {
       slidesStore.updateElement({
         id: props.elementInfo.id,
         props: { width: realWidthCache.value },
-      })
-      realWidthCache.value = -1
+      });
+      realWidthCache.value = -1;
     }
   }
-})
+});
 
 const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
-  const contentRect = entries[0].contentRect
-  if (!elementRef.value) return
+  const contentRect = entries[0].contentRect;
+  if (!elementRef.value) return;
 
-  const realHeight = contentRect.height + 20
-  const realWidth = contentRect.width + 20
+  const realHeight = contentRect.height + 20;
+  const realWidth = contentRect.width + 20;
 
   if (!props.elementInfo.vertical && props.elementInfo.height !== realHeight) {
     if (!isScaling.value) {
       slidesStore.updateElement({
         id: props.elementInfo.id,
         props: { height: realHeight },
-      })
+      });
     }
-    else realHeightCache.value = realHeight
+    else realHeightCache.value = realHeight;
   }
   if (props.elementInfo.vertical && props.elementInfo.width !== realWidth) {
     if (!isScaling.value) {
       slidesStore.updateElement({
         id: props.elementInfo.id,
         props: { width: realWidth },
-      })
+      });
     }
-    else realWidthCache.value = realWidth
+    else realWidthCache.value = realWidth;
   }
-}
-const resizeObserver = new ResizeObserver(updateTextElementHeight)
+};
+const resizeObserver = new ResizeObserver(updateTextElementHeight);
 
 onMounted(() => {
-  if (elementRef.value) resizeObserver.observe(elementRef.value)
-})
+  if (elementRef.value) resizeObserver.observe(elementRef.value);
+});
 onUnmounted(() => {
-  if (elementRef.value) resizeObserver.unobserve(elementRef.value)
-})
+  if (elementRef.value) resizeObserver.unobserve(elementRef.value);
+});
 
 const updateContent = (content: string) => {
   slidesStore.updateElement({
     id: props.elementInfo.id,
     props: { content },
-  })
+  });
   
-  addHistorySnapshot()
-}
+  addHistorySnapshot();
+};
 
 const checkEmptyText = debounce(function() {
-  const pureText = props.elementInfo.content.replaceAll(/<[^>]+>/g, '')
-  if (!pureText) slidesStore.deleteElement(props.elementInfo.id)
-}, 300, { trailing: true })
+  const pureText = props.elementInfo.content.replaceAll(/<[^>]+>/g, '');
+  if (!pureText) slidesStore.deleteElement(props.elementInfo.id);
+}, 300, { trailing: true });
 
-const isHandleElement = computed(() => handleElementId.value === props.elementInfo.id)
+const isHandleElement = computed(() => handleElementId.value === props.elementInfo.id);
 watch(isHandleElement, () => {
-  if (!isHandleElement.value) checkEmptyText()
-})
+  if (!isHandleElement.value) checkEmptyText();
+});
 </script>
 
 <style lang="scss" scoped>

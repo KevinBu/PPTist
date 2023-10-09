@@ -43,36 +43,36 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, ref, type Ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTLatexElement } from '@/types/slides'
-import emitter, { EmitterEvents } from '@/utils/emitter'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { onUnmounted, ref, type Ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTLatexElement } from '@/types/slides';
+import emitter, { EmitterEvents } from '@/utils/emitter';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
-import ColorButton from '../common/ColorButton.vue'
-import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
-import ColorPicker from '@/components/ColorPicker/index.vue'
-import Modal from '@/components/Modal.vue'
-import Divider from '@/components/Divider.vue'
-import Button from '@/components/Button.vue'
-import NumberInput from '@/components/NumberInput.vue'
-import Popover from '@/components/Popover.vue'
+import ColorButton from '../common/ColorButton.vue';
+import LaTeXEditor from '@/components/LaTeXEditor/index.vue';
+import ColorPicker from '@/components/ColorPicker/index.vue';
+import Modal from '@/components/Modal.vue';
+import Divider from '@/components/Divider.vue';
+import Button from '@/components/Button.vue';
+import NumberInput from '@/components/NumberInput.vue';
+import Popover from '@/components/Popover.vue';
 
-const slidesStore = useSlidesStore()
-const { handleElement } = storeToRefs(useMainStore())
+const slidesStore = useSlidesStore();
+const { handleElement } = storeToRefs(useMainStore());
 
-const handleLatexElement = handleElement as Ref<PPTLatexElement>
+const handleLatexElement = handleElement as Ref<PPTLatexElement>;
 
-const latexEditorVisible = ref(false)
+const latexEditorVisible = ref(false);
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 
 const updateLatex = (props: Partial<PPTLatexElement>) => {
-  if (!handleElement.value) return
-  slidesStore.updateElement({ id: handleElement.value.id, props })
-  addHistorySnapshot()
-}
+  if (!handleElement.value) return;
+  slidesStore.updateElement({ id: handleElement.value.id, props });
+  addHistorySnapshot();
+};
 
 const updateLatexData = (data: { path: string; latex: string; w: number; h: number; }) => {
   updateLatex({
@@ -81,15 +81,15 @@ const updateLatexData = (data: { path: string; latex: string; w: number; h: numb
     width: data.w,
     height: data.h,
     viewBox: [data.w, data.h],
-  })
-}
+  });
+};
 
-const openLatexEditor = () => latexEditorVisible.value = true
+const openLatexEditor = () => latexEditorVisible.value = true;
 
-emitter.on(EmitterEvents.OPEN_LATEX_EDITOR, openLatexEditor)
+emitter.on(EmitterEvents.OPEN_LATEX_EDITOR, openLatexEditor);
 onUnmounted(() => {
-  emitter.off(EmitterEvents.OPEN_LATEX_EDITOR, openLatexEditor)
-})
+  emitter.off(EmitterEvents.OPEN_LATEX_EDITOR, openLatexEditor);
+});
 </script>
 
 <style lang="scss" scoped>

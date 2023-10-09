@@ -1,4 +1,4 @@
-import mitt, { type Emitter } from 'mitt'
+import mitt, { type Emitter } from 'mitt';
 
 export const enum EmitterEvents {
   RICH_TEXT_COMMAND = 'RICH_TEXT_COMMAND',
@@ -22,6 +22,6 @@ type Events = {
   [EmitterEvents.OPEN_LATEX_EDITOR]: void
 } 
 
-const emitter: Emitter<Events> = mitt<Events>()
+const emitter: Emitter<Events> = mitt<Events>();
 
-export default emitter
+export default emitter;

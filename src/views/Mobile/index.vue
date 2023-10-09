@@ -8,25 +8,25 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import type { Mode } from '@/types/mobile'
+import { computed, ref } from 'vue';
+import type { Mode } from '@/types/mobile';
 
-import MobileEditor from './MobileEditor/index.vue'
-import MobilePlayer from './MobilePlayer.vue'
-import MobilePreview from './MobilePreview.vue'
+import MobileEditor from './MobileEditor/index.vue';
+import MobilePlayer from './MobilePlayer.vue';
+import MobilePreview from './MobilePreview.vue';
 
-const mode = ref<Mode>('preview')
+const mode = ref<Mode>('preview');
     
-const changeMode = (_mode: Mode) => mode.value = _mode
+const changeMode = (_mode: Mode) => mode.value = _mode;
 
 const currentComponent = computed(() => {
   const componentMap = {
     'editor': MobileEditor,
     'player': MobilePlayer,
     'preview': MobilePreview,
-  }
-  return componentMap[mode.value] || null
-})
+  };
+  return componentMap[mode.value] || null;
+});
 </script>
 
 <style lang="scss" scoped>

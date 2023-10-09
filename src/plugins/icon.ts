@@ -1,6 +1,6 @@
 // https://iconpark.bytedance.com/official
 
-import type { App } from 'vue'
+import type { App } from 'vue';
 import {
   PlayOne,
   FullScreenPlay,
@@ -120,7 +120,7 @@ import {
   CheckOne,
   CloseOne,
   Info,
-} from '@icon-park/vue-next'
+} from '@icon-park/vue-next';
 
 export interface Icons {
   [key: string]: typeof PlayOne
@@ -245,12 +245,12 @@ export const icons: Icons = {
   IconCheckOne: CheckOne,
   IconCloseOne: CloseOne,
   IconInfo: Info,
-}
+};
 
 export default {
   install(app: App) {
     for (const key of Object.keys(icons)) {
-      app.component(key, icons[key])
+      app.component(key, icons[key]);
     }
   }
-}
+};

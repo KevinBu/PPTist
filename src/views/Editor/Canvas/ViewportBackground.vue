@@ -8,18 +8,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { SlideBackground } from '@/types/slides'
-import GridLines from './GridLines.vue'
-import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { SlideBackground } from '@/types/slides';
+import GridLines from './GridLines.vue';
+import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle';
 
-const { gridLineSize } = storeToRefs(useMainStore())
-const { currentSlide } = storeToRefs(useSlidesStore())
-const background = computed<SlideBackground | undefined>(() => currentSlide.value?.background)
+const { gridLineSize } = storeToRefs(useMainStore());
+const { currentSlide } = storeToRefs(useSlidesStore());
+const background = computed<SlideBackground | undefined>(() => currentSlide.value?.background);
 
-const { backgroundStyle } = useSlideBackgroundStyle(background)
+const { backgroundStyle } = useSlideBackgroundStyle(background);
 </script>
 
 <style lang="scss" scoped>

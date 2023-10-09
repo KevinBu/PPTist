@@ -9,28 +9,28 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import tinycolor, { type ColorFormats } from 'tinycolor2'
+import { computed } from 'vue';
+import tinycolor, { type ColorFormats } from 'tinycolor2';
 
 const props = defineProps<{
   value: ColorFormats.RGBA
-}>()
+}>();
 
 const emit = defineEmits<{
   (event: 'colorChange', payload: ColorFormats.RGBA): void
-}>()
+}>();
 
 const val = computed(() => {
-  let _hex = ''
-  if (props.value.a < 1) _hex = tinycolor(props.value).toHex8String().toUpperCase()
-  else _hex = tinycolor(props.value).toHexString().toUpperCase()
-  return _hex.replace('#', '')
-})
+  let _hex = '';
+  if (props.value.a < 1) _hex = tinycolor(props.value).toHex8String().toUpperCase();
+  else _hex = tinycolor(props.value).toHexString().toUpperCase();
+  return _hex.replace('#', '');
+});
 
 const handleInput = (e: Event) => {
-  const value = (e.target as HTMLInputElement).value
-  if (value.length >= 6) emit('colorChange', tinycolor(value).toRgb())
-}
+  const value = (e.target as HTMLInputElement).value;
+  if (value.length >= 6) emit('colorChange', tinycolor(value).toRgb());
+};
 </script>
 
 <style lang="scss" scoped>

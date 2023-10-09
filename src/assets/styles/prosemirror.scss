@@ -17,6 +17,7 @@
   }
 
   p {
+    // 'var' 是CSS的一个关键字，用于引用变量。这段代码中的'var(--paragraphSpace)' 是引用名为'paragraphSpace' 的CSS变量
     margin-top: var(--paragraphSpace);
   }
   p:first-child {
@@ -70,6 +71,7 @@
     border-left: 4px solid #ddd;
   }
 
+  // 对HTML文档中所有具有属性 'data-indent' 值为 '1' 的元素，增加20像素的左内边距（padding-left）。这可以用于调整元素的内边距，使其内容与边界的距离增加，以便于阅读或布局。
   [data-indent='1'] {
     padding-left: 20px;
   }

@@ -78,55 +78,55 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTShapeElement, ShapeText } from '@/types/slides'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import useElementOutline from '@/views/components/element/hooks/useElementOutline'
-import useElementShadow from '@/views/components/element/hooks/useElementShadow'
-import useElementFlip from '@/views/components/element/hooks/useElementFlip'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { computed, nextTick, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTShapeElement, ShapeText } from '@/types/slides';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
+import useElementOutline from '@/views/components/element/hooks/useElementOutline';
+import useElementShadow from '@/views/components/element/hooks/useElementShadow';
+import useElementFlip from '@/views/components/element/hooks/useElementFlip';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
-import GradientDefs from './GradientDefs.vue'
-import ProsemirrorEditor from '@/views/components/element/ProsemirrorEditor.vue'
+import GradientDefs from './GradientDefs.vue';
+import ProsemirrorEditor from '@/views/components/element/ProsemirrorEditor.vue';
 
 const props = defineProps<{
   elementInfo: PPTShapeElement
   selectElement: (e: MouseEvent | TouchEvent, element: PPTShapeElement, canMove?: boolean) => void
   contextmenus: () => ContextmenuItem[] | null
-}>()
+}>();
 
-const mainStore = useMainStore()
-const slidesStore = useSlidesStore()
-const { handleElementId } = storeToRefs(mainStore)
+const mainStore = useMainStore();
+const slidesStore = useSlidesStore();
+const { handleElementId } = storeToRefs(mainStore);
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 
 const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
-  if (props.elementInfo.lock) return
-  e.stopPropagation()
+  if (props.elementInfo.lock) return;
+  e.stopPropagation();
 
-  props.selectElement(e, props.elementInfo, canMove)
-}
+  props.selectElement(e, props.elementInfo, canMove);
+};
 
-const outline = computed(() => props.elementInfo.outline)
-const { outlineWidth, outlineColor, strokeDashArray } = useElementOutline(outline)
+const outline = computed(() => props.elementInfo.outline);
+const { outlineWidth, outlineColor, strokeDashArray } = useElementOutline(outline);
 
-const shadow = computed(() => props.elementInfo.shadow)
-const { shadowStyle } = useElementShadow(shadow)
+const shadow = computed(() => props.elementInfo.shadow);
+const { shadowStyle } = useElementShadow(shadow);
 
-const flipH = computed(() => props.elementInfo.flipH)
-const flipV = computed(() => props.elementInfo.flipV)
-const { flipStyle } = useElementFlip(flipH, flipV)
+const flipH = computed(() => props.elementInfo.flipH);
+const flipV = computed(() => props.elementInfo.flipV);
+const { flipStyle } = useElementFlip(flipH, flipV);
 
-const editable = ref(false)
+const editable = ref(false);
 
 watch(handleElementId, () => {
   if (handleElementId.value !== props.elementInfo.id) {
-    if (editable.value) editable.value = false
+    if (editable.value) editable.value = false;
   }
-})
+});
 
 const text = computed<ShapeText>(() => {
   const defaultText: ShapeText = {
@@ -134,37 +134,37 @@ const text = computed<ShapeText>(() => {
     defaultFontName: '微软雅黑',
     defaultColor: '#000',
     align: 'middle',
-  }
-  if (!props.elementInfo.text) return defaultText
+  };
+  if (!props.elementInfo.text) return defaultText;
 
-  return props.elementInfo.text
-})
+  return props.elementInfo.text;
+});
 
 const updateText = (content: string) => {
-  const _text = { ...text.value, content }
+  const _text = { ...text.value, content };
   slidesStore.updateElement({
     id: props.elementInfo.id, 
     props: { text: _text },
-  })
+  });
   
-  addHistorySnapshot()
-}
+  addHistorySnapshot();
+};
 
 const checkEmptyText = () => {
-  if (!props.elementInfo.text) return
+  if (!props.elementInfo.text) return;
 
-  const pureText = props.elementInfo.text.content.replaceAll(/<[^>]+>/g, '')
+  const pureText = props.elementInfo.text.content.replaceAll(/<[^>]+>/g, '');
   if (!pureText) {
-    slidesStore.removeElementProps({ id: props.elementInfo.id, propName: 'text' })
-    addHistorySnapshot()
+    slidesStore.removeElementProps({ id: props.elementInfo.id, propName: 'text' });
+    addHistorySnapshot();
   }
-}
+};
 
-const prosemirrorEditorRef = ref<typeof ProsemirrorEditor>()
+const prosemirrorEditorRef = ref<typeof ProsemirrorEditor>();
 const startEdit = () => {
-  editable.value = true
-  nextTick(() => prosemirrorEditorRef.value && prosemirrorEditorRef.value.focus())
-}
+  editable.value = true;
+  nextTick(() => prosemirrorEditorRef.value && prosemirrorEditorRef.value.focus());
+};
 </script>
 
 <style lang="scss" scoped>

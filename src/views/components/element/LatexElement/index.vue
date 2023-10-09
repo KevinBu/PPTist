@@ -42,26 +42,26 @@
 </template>
 
 <script lang="ts" setup>
-import type { PPTLatexElement } from '@/types/slides'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import emitter, { EmitterEvents } from '@/utils/emitter'
+import type { PPTLatexElement } from '@/types/slides';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
+import emitter, { EmitterEvents } from '@/utils/emitter';
 
 const props = defineProps<{
   elementInfo: PPTLatexElement
   selectElement: (e: MouseEvent | TouchEvent, element: PPTLatexElement, canMove?: boolean) => void
   contextmenus: () => ContextmenuItem[] | null
-}>()
+}>();
 
 const handleSelectElement = (e: MouseEvent | TouchEvent) => {
-  if (props.elementInfo.lock) return
-  e.stopPropagation()
+  if (props.elementInfo.lock) return;
+  e.stopPropagation();
 
-  props.selectElement(e, props.elementInfo)
-}
+  props.selectElement(e, props.elementInfo);
+};
 
 const openLatexEditor = () => {
-  emitter.emit(EmitterEvents.OPEN_LATEX_EDITOR)
-}
+  emitter.emit(EmitterEvents.OPEN_LATEX_EDITOR);
+};
 </script>
 
 <style lang="scss" scoped>

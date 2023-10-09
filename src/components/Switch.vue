@@ -17,16 +17,16 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
 }>(), {
   disabled: false,
-})
+});
 
 const emit = defineEmits<{
   (event: 'update:value', payload: boolean): void
-}>()
+}>();
 
 const handleChange = () => {
-  if (props.disabled) return
-  emit('update:value', !props.value)
-}
+  if (props.disabled) return;
+  emit('update:value', !props.value);
+};
 </script>
 
 <style lang="scss" scoped>

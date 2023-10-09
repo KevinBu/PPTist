@@ -27,7 +27,7 @@ export const SYS_FONTS = [
   { label: '华文细黑', value: 'STXihei' },
   { label: '幼圆', value: 'YouYuan' },
   { label: '隶书', value: 'LiSu' },
-]
+];
 
 export const WEB_FONTS = [
   { label: '得意黑', value: '得意黑' },
@@ -41,4 +41,4 @@ export const WEB_FONTS = [
   { label: '素材集市酷方体', value: '素材集市酷方体' },
   { label: '途牛类圆体', value: '途牛类圆体' },
   { label: '锐字真言体', value: '锐字真言体' },
-]
+];

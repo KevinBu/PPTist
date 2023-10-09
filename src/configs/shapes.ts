@@ -2,7 +2,7 @@
 
 // 非专业设计人士可以用该应用绘制基本形状：https://github.com/pipipi-pikachu/svgPathCreator
 
-import { ShapePathFormulasKeys } from '@/types/slides'
+import { ShapePathFormulasKeys } from '@/types/slides';
 
 export interface ShapePoolItem {
   viewBox: [number, number]
@@ -27,8 +27,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'left',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const radius = Math.min(width, height) * value
-      return `M ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height - radius} Q ${width} ${height} ${width - radius} ${height} L ${radius} ${height} Q 0 ${height} 0 ${height - radius} L 0 ${radius} Q 0 0 ${radius} 0 Z`
+      const radius = Math.min(width, height) * value;
+      return `M ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height - radius} Q ${width} ${height} ${width - radius} ${height} L ${radius} ${height} Q 0 ${height} 0 ${height - radius} L 0 ${radius} Q 0 0 ${radius} 0 Z`;
     }
   },
   [ShapePathFormulasKeys.CUT_RECT_DIAGONAL]: {
@@ -38,8 +38,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'right',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const radius = Math.min(width, height) * value
-      return `M 0 ${height - radius} L 0 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L ${radius} ${height} Z`
+      const radius = Math.min(width, height) * value;
+      return `M 0 ${height - radius} L 0 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L ${radius} ${height} Z`;
     }
   },
   [ShapePathFormulasKeys.CUT_RECT_SINGLE]: {
@@ -49,8 +49,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'right',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const radius = Math.min(width, height) * value
-      return `M 0 ${height} L 0 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} Z`
+      const radius = Math.min(width, height) * value;
+      return `M 0 ${height} L 0 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} Z`;
     }
   },
   [ShapePathFormulasKeys.CUT_RECT_SAMESIDE]: {
@@ -60,8 +60,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'left',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const radius = Math.min(width, height) * value
-      return `M 0 ${radius} L ${radius} 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L 0 ${height} Z`
+      const radius = Math.min(width, height) * value;
+      return `M 0 ${radius} L ${radius} 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L 0 ${height} Z`;
     }
   },
   [ShapePathFormulasKeys.ROUND_RECT_DIAGONAL]: {
@@ -71,8 +71,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'left',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const radius = Math.min(width, height) * value
-      return `M ${radius} 0 L ${width} 0 L ${width} ${height - radius} Q ${width} ${height} ${width - radius} ${height} L 0 ${height} L 0 ${radius} Q 0 0 ${radius} 0 Z`
+      const radius = Math.min(width, height) * value;
+      return `M ${radius} 0 L ${width} 0 L ${width} ${height - radius} Q ${width} ${height} ${width - radius} ${height} L 0 ${height} L 0 ${radius} Q 0 0 ${radius} 0 Z`;
     }
   },
   [ShapePathFormulasKeys.ROUND_RECT_SINGLE]: {
@@ -82,8 +82,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'right',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const radius = Math.min(width, height) * value
-      return `M 0 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} L 0 0 Z`
+      const radius = Math.min(width, height) * value;
+      return `M 0 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} L 0 0 Z`;
     }
   },
   [ShapePathFormulasKeys.ROUND_RECT_SAMESIDE]: {
@@ -93,8 +93,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'left',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const radius = Math.min(width, height) * value
-      return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} Z`
+      const radius = Math.min(width, height) * value;
+      return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} Z`;
     }
   },
   [ShapePathFormulasKeys.CUT_ROUND_RECT]: {
@@ -104,23 +104,23 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'left',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const radius = Math.min(width, height) * value
-      return `M ${radius} 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L 0 ${height} L 0 ${radius} Q 0 0 ${radius} 0 Z`
+      const radius = Math.min(width, height) * value;
+      return `M ${radius} 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L 0 ${height} L 0 ${radius} Q 0 0 ${radius} 0 Z`;
     }
   },
   [ShapePathFormulasKeys.MESSAGE]: {
     formula: (width: number, height: number) => {
-      const arrowWidth = width * 0.2
-      const arrowheight = height * 0.2
-      return `M 0 0 L ${width} 0 L ${width} ${height - arrowheight} L ${width / 2} ${height - arrowheight} L ${width / 2 - arrowWidth} ${height} L ${width / 2 - arrowWidth} ${height - arrowheight} L 0 ${height - arrowheight} Z`
+      const arrowWidth = width * 0.2;
+      const arrowheight = height * 0.2;
+      return `M 0 0 L ${width} 0 L ${width} ${height - arrowheight} L ${width / 2} ${height - arrowheight} L ${width / 2 - arrowWidth} ${height} L ${width / 2 - arrowWidth} ${height - arrowheight} L 0 ${height - arrowheight} Z`;
     }
   },
   [ShapePathFormulasKeys.ROUND_MESSAGE]: {
     formula: (width: number, height: number) => {
-      const radius = Math.min(width, height) * 0.125
-      const arrowWidth = width * 0.2
-      const arrowheight = height * 0.2
-      return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height - radius - arrowheight} Q ${width} ${height - arrowheight} ${width - radius} ${height - arrowheight} L ${width / 2} ${height - arrowheight} L ${width / 2 - arrowWidth} ${height} L ${width / 2 - arrowWidth} ${height - arrowheight} L ${radius} ${height - arrowheight} Q 0 ${height - arrowheight} 0 ${height - radius - arrowheight} L 0 ${radius} Z`
+      const radius = Math.min(width, height) * 0.125;
+      const arrowWidth = width * 0.2;
+      const arrowheight = height * 0.2;
+      return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height - radius - arrowheight} Q ${width} ${height - arrowheight} ${width - radius} ${height - arrowheight} L ${width / 2} ${height - arrowheight} L ${width / 2 - arrowWidth} ${height} L ${width / 2 - arrowWidth} ${height - arrowheight} L ${radius} ${height - arrowheight} Q 0 ${height - arrowheight} 0 ${height - radius - arrowheight} L 0 ${radius} Z`;
     }
   },
   [ShapePathFormulasKeys.L]: {
@@ -130,8 +130,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'left',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const lineWidth = Math.min(width, height) * value
-      return `M 0 0 L 0 ${height} L ${width} ${height} L ${width} ${height - lineWidth} L ${lineWidth} ${height - lineWidth} L ${lineWidth} 0 Z`
+      const lineWidth = Math.min(width, height) * value;
+      return `M 0 0 L 0 ${height} L ${width} ${height} L ${width} ${height - lineWidth} L ${lineWidth} ${height - lineWidth} L ${lineWidth} 0 Z`;
     }
   },
   [ShapePathFormulasKeys.RING_RECT]: {
@@ -141,8 +141,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'left',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const lineWidth = Math.min(width, height) * value
-      return `M 0 0 ${width} 0 ${width} ${height} L 0 ${height} L 0 0 Z M ${lineWidth} ${lineWidth} L ${lineWidth} ${height - lineWidth} L ${width - lineWidth} ${height - lineWidth} L ${width - lineWidth} ${lineWidth} Z`
+      const lineWidth = Math.min(width, height) * value;
+      return `M 0 0 ${width} 0 ${width} ${height} L 0 ${height} L 0 0 Z M ${lineWidth} ${lineWidth} L ${lineWidth} ${height - lineWidth} L ${width - lineWidth} ${height - lineWidth} L ${width - lineWidth} ${lineWidth} Z`;
     }
   },
   [ShapePathFormulasKeys.PLUS]: {
@@ -152,8 +152,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'center',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
-      const lineWidth = Math.min(width, height) * value
-      return `M ${width / 2 - lineWidth / 2} 0 L ${width / 2 - lineWidth / 2} ${height / 2 - lineWidth / 2} L 0 ${height / 2 - lineWidth / 2} L 0 ${height / 2 + lineWidth / 2} L ${width / 2 - lineWidth / 2} ${height / 2 + lineWidth / 2} L ${width / 2 - lineWidth / 2} ${height} L ${width / 2 + lineWidth / 2} ${height} L ${width / 2 + lineWidth / 2} ${height / 2 + lineWidth / 2} L ${width} ${height / 2 + lineWidth / 2} L ${width} ${height / 2 - lineWidth / 2} L ${width / 2 + lineWidth / 2} ${height / 2 - lineWidth / 2} L ${width / 2 + lineWidth / 2} 0 Z`
+      const lineWidth = Math.min(width, height) * value;
+      return `M ${width / 2 - lineWidth / 2} 0 L ${width / 2 - lineWidth / 2} ${height / 2 - lineWidth / 2} L 0 ${height / 2 - lineWidth / 2} L 0 ${height / 2 + lineWidth / 2} L ${width / 2 - lineWidth / 2} ${height / 2 + lineWidth / 2} L ${width / 2 - lineWidth / 2} ${height} L ${width / 2 + lineWidth / 2} ${height} L ${width / 2 + lineWidth / 2} ${height / 2 + lineWidth / 2} L ${width} ${height / 2 + lineWidth / 2} L ${width} ${height / 2 - lineWidth / 2} L ${width / 2 + lineWidth / 2} ${height / 2 - lineWidth / 2} L ${width / 2 + lineWidth / 2} 0 Z`;
     }
   },
   [ShapePathFormulasKeys.TRIANGLE]: {
@@ -163,8 +163,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'left',
     getBaseSize: (width: number) => width,
     formula: (width: number, height: number, value: number) => {
-      const vertex = width * value
-      return `M ${vertex} 0 L 0 ${height} L ${width} ${height} Z`
+      const vertex = width * value;
+      return `M ${vertex} 0 L 0 ${height} L ${width} ${height} Z`;
     }
   },
   [ShapePathFormulasKeys.PARALLELOGRAM_LEFT]: {
@@ -174,8 +174,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'left',
     getBaseSize: (width: number) => width,
     formula: (width: number, height: number, value: number) => {
-      const point = width * value
-      return `M ${point} 0 L ${width} 0 L ${width - point} ${height} L 0 ${height} Z`
+      const point = width * value;
+      return `M ${point} 0 L ${width} 0 L ${width - point} ${height} L 0 ${height} Z`;
     }
   },
   [ShapePathFormulasKeys.PARALLELOGRAM_RIGHT]: {
@@ -185,8 +185,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'right',
     getBaseSize: (width: number) => width,
     formula: (width: number, height: number, value: number) => {
-      const point = width * value
-      return `M 0 0 L ${width - point} 0 L ${width} ${height} L ${point} ${height} Z`
+      const point = width * value;
+      return `M 0 0 L ${width - point} 0 L ${width} ${height} L ${point} ${height} Z`;
     }
   },
   [ShapePathFormulasKeys.TRAPEZOID]: {
@@ -196,8 +196,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'left',
     getBaseSize: (width: number) => width,
     formula: (width: number, height: number, value: number) => {
-      const point = width * value
-      return `M ${point} 0 L ${width - point} 0 L ${width} ${height} L 0 ${height} Z`
+      const point = width * value;
+      return `M ${point} 0 L ${width - point} 0 L ${width} ${height} L 0 ${height} Z`;
     }
   },
   [ShapePathFormulasKeys.BULLET]: {
@@ -207,8 +207,8 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'top',
     getBaseSize: (width: number, height: number) => height,
     formula: (width: number, height: number, value: number) => {
-      const point = height * value
-      return `M ${width / 2} 0 L 0 ${point} L 0 ${height} L ${width} ${height} L ${width} ${point} Z`
+      const point = height * value;
+      return `M ${width / 2} 0 L 0 ${point} L 0 ${height} L ${width} ${height} L ${width} ${point} Z`;
     }
   },
   [ShapePathFormulasKeys.INDICATOR]: {
@@ -218,11 +218,11 @@ export const SHAPE_PATH_FORMULAS = {
     relative: 'right',
     getBaseSize: (width: number) => width,
     formula: (width: number, height: number, value: number) => {
-      const point = width * value
-      return `M ${width} ${height / 2} L ${width - point} 0 L 0 0 L ${point} ${height / 2} L 0 ${height} L ${width - point} ${height} Z`
+      const point = width * value;
+      return `M ${width} ${height / 2} L ${width - point} 0 L 0 0 L ${point} ${height / 2} L 0 ${height} L ${width - point} ${height} Z`;
     }
   },
-}
+};
 
 export const SHAPE_LIST: ShapeListItem[] = [
   {
@@ -915,4 +915,4 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
     ],
   }
-]
+];

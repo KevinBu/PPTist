@@ -16,35 +16,35 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { ImageOrShapeFlip } from '@/types/slides'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { ImageOrShapeFlip } from '@/types/slides';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
-import CheckboxButton from '@/components/CheckboxButton.vue'
-import ButtonGroup from '@/components/ButtonGroup.vue'
+import CheckboxButton from '@/components/CheckboxButton.vue';
+import ButtonGroup from '@/components/ButtonGroup.vue';
 
-const slidesStore = useSlidesStore()
-const { handleElement } = storeToRefs(useMainStore())
+const slidesStore = useSlidesStore();
+const { handleElement } = storeToRefs(useMainStore());
 
-const flipH = ref(false)
-const flipV = ref(false)
+const flipH = ref(false);
+const flipV = ref(false);
 
 watch(handleElement, () => {
   if (handleElement.value && (handleElement.value.type === 'image' || handleElement.value.type === 'shape')) {
-    flipH.value = !!handleElement.value.flipH
-    flipV.value = !!handleElement.value.flipV
+    flipH.value = !!handleElement.value.flipH;
+    flipV.value = !!handleElement.value.flipV;
   }
-}, { deep: true, immediate: true })
+}, { deep: true, immediate: true });
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 
 const updateFlip = (flipProps: ImageOrShapeFlip) => {
-  if (!handleElement.value) return
-  slidesStore.updateElement({ id: handleElement.value.id, props: flipProps })
-  addHistorySnapshot()
-}
+  if (!handleElement.value) return;
+  slidesStore.updateElement({ id: handleElement.value.id, props: flipProps });
+  addHistorySnapshot();
+};
 </script>
 
 <style lang="scss" scoped>

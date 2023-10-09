@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type CSSProperties } from 'vue'
+import { type CSSProperties } from 'vue';
 
 interface TabItem {
   key: string
@@ -42,11 +42,11 @@ withDefaults(defineProps<{
   card: false,
   spaceAround: false,
   spaceBetween: false,
-})
+});
 
 const emit = defineEmits<{
   (event: 'update:value', payload: string): void
-}>()
+}>();
 </script>
 
 <style lang="scss" scoped>

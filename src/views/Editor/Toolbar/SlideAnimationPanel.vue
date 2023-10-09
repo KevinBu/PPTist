@@ -17,30 +17,30 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import type { TurningMode } from '@/types/slides'
-import { SLIDE_ANIMATIONS } from '@/configs/animation'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-import message from '@/utils/message'
-import Button from '@/components/Button.vue'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import type { TurningMode } from '@/types/slides';
+import { SLIDE_ANIMATIONS } from '@/configs/animation';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
+import message from '@/utils/message';
+import Button from '@/components/Button.vue';
 
-const slidesStore = useSlidesStore()
-const { slides, currentSlide } = storeToRefs(slidesStore)
+const slidesStore = useSlidesStore();
+const { slides, currentSlide } = storeToRefs(slidesStore);
 
-const currentTurningMode = computed(() => currentSlide.value.turningMode || 'slideY')
+const currentTurningMode = computed(() => currentSlide.value.turningMode || 'slideY');
 
-const animations = SLIDE_ANIMATIONS
+const animations = SLIDE_ANIMATIONS;
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 
 // 修改播放时的切换页面方式
 const updateTurningMode = (mode: TurningMode) => {
-  if (mode === currentTurningMode.value) return
-  slidesStore.updateSlide({ turningMode: mode })
-  addHistorySnapshot()
-}
+  if (mode === currentTurningMode.value) return;
+  slidesStore.updateSlide({ turningMode: mode });
+  addHistorySnapshot();
+};
 
 // 将当前页的切换页面方式应用到全部页面
 const applyAllSlide = () => {
@@ -48,12 +48,12 @@ const applyAllSlide = () => {
     return {
       ...slide,
       turningMode: currentSlide.value.turningMode,
-    }
-  })
-  slidesStore.setSlides(newSlides)
-  message.success('已应用到全部')
-  addHistorySnapshot()
-}
+    };
+  });
+  slidesStore.setSlides(newSlides);
+  message.success('已应用到全部');
+  addHistorySnapshot();
+};
 </script>
 
 <style lang="scss" scoped>

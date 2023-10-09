@@ -1,61 +1,61 @@
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { parse, type Shape, type Element } from 'pptxtojson'
-import { nanoid } from 'nanoid'
-import type { Slide, TableCellStyle, TableCell, ChartType, ChartOptions, SlideBackground, PPTShapeElement, PPTLineElement } from '@/types/slides'
-import { useSlidesStore } from '@/store'
-import { decrypt } from '@/utils/crypto'
-import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
-import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
-import message from '@/utils/message'
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { parse, type Shape, type Element } from 'pptxtojson';
+import { nanoid } from 'nanoid';
+import type { Slide, TableCellStyle, TableCell, ChartType, ChartOptions, SlideBackground, PPTShapeElement, PPTLineElement } from '@/types/slides';
+import { useSlidesStore } from '@/store';
+import { decrypt } from '@/utils/crypto';
+import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes';
+import { VIEWPORT_SIZE } from '@/configs/canvas';
+import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements';
+import message from '@/utils/message';
 
 export default () => {
-  const slidesStore = useSlidesStore()
-  const { theme } = storeToRefs(useSlidesStore())
+  const slidesStore = useSlidesStore();
+  const { theme } = storeToRefs(useSlidesStore());
 
-  const { addSlidesFromData, isEmptySlide } = useAddSlidesOrElements()
+  const { addSlidesFromData, isEmptySlide } = useAddSlidesOrElements();
 
-  const exporting = ref(false)
+  const exporting = ref(false);
 
   // 导入pptist文件
   const importSpecificFile = (files: FileList, cover = false) => {
-    const file = files[0]
+    const file = files[0];
 
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.addEventListener('load', () => {
       try {
-        const slides = JSON.parse(decrypt(reader.result as string))
-        if (cover) slidesStore.setSlides(slides)
-        else if (isEmptySlide.value) slidesStore.setSlides(slides)
-        else addSlidesFromData(slides)
+        const slides = JSON.parse(decrypt(reader.result as string));
+        if (cover) slidesStore.setSlides(slides);
+        else if (isEmptySlide.value) slidesStore.setSlides(slides);
+        else addSlidesFromData(slides);
       }
       catch {
-        message.error('无法正确读取 / 解析该文件')
+        message.error('无法正确读取 / 解析该文件');
       }
-    })
-    reader.readAsText(file)
-  }
+    });
+    reader.readAsText(file);
+  };
 
   const parseLineElement = (el: Shape): PPTLineElement => {
-    let start: [number, number] = [0, 0]
-    let end: [number, number] = [0, 0]
+    let start: [number, number] = [0, 0];
+    let end: [number, number] = [0, 0];
 
     if (!el.isFlipV && !el.isFlipH) { // 右下
-      start = [0, 0]
-      end = [el.width, el.height]
+      start = [0, 0];
+      end = [el.width, el.height];
     }
     else if (el.isFlipV && el.isFlipH) { // 左上
-      start = [el.width, el.height]
-      end = [0, 0]
+      start = [el.width, el.height];
+      end = [0, 0];
     }
     else if (el.isFlipV && !el.isFlipH) { // 右上
-      start = [0, el.height]
-      end = [el.width, 0]
+      start = [0, el.height];
+      end = [el.width, 0];
     }
     else { // 左下
-      start = [el.width, 0]
-      end = [0, el.height]
+      start = [el.width, 0];
+      end = [0, el.height];
     }
     return {
       type: 'line',
@@ -68,38 +68,38 @@ export default () => {
       style: el.borderType,
       color: el.borderColor,
       points: ['', el.shapType === 'straightConnector1' ? 'arrow' : '']
-    }
-  }
+    };
+  };
 
   // 导入PPTX文件
   const importPPTXFile = (files: FileList) => {
-    const file = files[0]
-    if (!file) return
+    const file = files[0];
+    if (!file) return;
 
-    exporting.value = true
+    exporting.value = true;
 
-    const shapeList: ShapePoolItem[] = []
+    const shapeList: ShapePoolItem[] = [];
     for (const item of SHAPE_LIST) {
-      shapeList.push(...item.children)
+      shapeList.push(...item.children);
     }
     
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onload = async e => {
-      const json = await parse(e.target!.result as ArrayBuffer)
+      const json = await parse(e.target!.result as ArrayBuffer);
 
-      const width = json.size.width
-      const scale = VIEWPORT_SIZE / width
+      const width = json.size.width;
+      const scale = VIEWPORT_SIZE / width;
 
-      const slides: Slide[] = []
+      const slides: Slide[] = [];
       for (const item of json.slides) {
-        const { type, value } = item.fill
-        let background: SlideBackground
+        const { type, value } = item.fill;
+        let background: SlideBackground;
         if (type === 'image') {
           background = {
             type: 'image',
             image: value.picBase64,
             imageSize: 'cover',
-          }
+          };
         }
         else if (type === 'gradient') {
           background = {
@@ -107,27 +107,27 @@ export default () => {
             gradientType: 'linear',
             gradientColor: [value.colors[0], value.colors[1]],
             gradientRotate: value.rot,
-          }
+          };
         }
         else {
           background = {
             type: 'solid',
             color: value,
-          }
+          };
         }
 
         const slide: Slide = {
           id: nanoid(10),
           elements: [],
           background,
-        }
+        };
 
         const parseElements = (elements: Element[]) => {
           for (const el of elements) {
-            el.width = el.width * scale
-            el.height = el.height * scale
-            el.left = el.left * scale
-            el.top = el.top * scale
+            el.width = el.width * scale;
+            el.height = el.height * scale;
+            el.left = el.left * scale;
+            el.top = el.top * scale;
   
             if (el.type === 'text') {
               slide.elements.push({
@@ -148,7 +148,7 @@ export default () => {
                   style: el.borderType,
                 },
                 fill: el.fillColor,
-              })
+              });
             }
             else if (el.type === 'image') {
               slide.elements.push({
@@ -161,15 +161,15 @@ export default () => {
                 top: el.top,
                 fixedRatio: true,
                 rotate: el.rotate,
-              })
+              });
             }
             else if (el.type === 'shape') {
               if (el.shapType === 'line' || el.shapType === 'straightConnector1') {
-                const lineElement = parseLineElement(el)
-                slide.elements.push(lineElement)
+                const lineElement = parseLineElement(el);
+                slide.elements.push(lineElement);
               }
               else {
-                const shape = shapeList.find(item => item.pptxShapeType === el.shapType)
+                const shape = shapeList.find(item => item.pptxShapeType === el.shapType);
                 
                 const element: PPTShapeElement = {
                   type: 'shape',
@@ -194,53 +194,53 @@ export default () => {
                     defaultColor: theme.value.fontColor,
                     align: 'middle',
                   }
-                }
+                };
     
                 if (shape) {
-                  element.path = shape.path
-                  element.viewBox = shape.viewBox
+                  element.path = shape.path;
+                  element.viewBox = shape.viewBox;
     
                   if (shape.pathFormula) {
-                    element.pathFormula = shape.pathFormula
-                    element.viewBox = [el.width, el.height]
+                    element.pathFormula = shape.pathFormula;
+                    element.viewBox = [el.width, el.height];
     
-                    const pathFormula = SHAPE_PATH_FORMULAS[shape.pathFormula]
+                    const pathFormula = SHAPE_PATH_FORMULAS[shape.pathFormula];
                     if ('editable' in pathFormula) {
-                      element.path = pathFormula.formula(el.width, el.height, pathFormula.defaultValue)
-                      element.keypoint = pathFormula.defaultValue
+                      element.path = pathFormula.formula(el.width, el.height, pathFormula.defaultValue);
+                      element.keypoint = pathFormula.defaultValue;
                     }
-                    else element.path = pathFormula.formula(el.width, el.height)
+                    else element.path = pathFormula.formula(el.width, el.height);
                   }
                 }
     
-                slide.elements.push(element)
+                slide.elements.push(element);
               }
             }
             else if (el.type === 'table') {
-              const row = el.data.length
-              const col = el.data[0].length
+              const row = el.data.length;
+              const col = el.data[0].length;
   
               const style: TableCellStyle = {
                 fontname: theme.value.fontName,
                 color: theme.value.fontColor,
-              }
-              const data: TableCell[][] = []
+              };
+              const data: TableCell[][] = [];
               for (let i = 0; i < row; i++) {
-                const rowCells: TableCell[] = []
+                const rowCells: TableCell[] = [];
                 for (let j = 0; j < col; j++) {
-                  const cellData = el.data[i][j]
+                  const cellData = el.data[i][j];
                   rowCells.push({
                     id: nanoid(10),
                     colspan: 1,
                     rowspan: cellData.rowSpan || 1,
                     text: cellData.text,
                     style,
-                  })
+                  });
                 }
-                data.push(rowCells)
+                data.push(rowCells);
               }
   
-              const colWidths: number[] = new Array(col).fill(1 / col)
+              const colWidths: number[] = new Array(col).fill(1 / col);
   
               slide.elements.push({
                 type: 'table',
@@ -265,47 +265,47 @@ export default () => {
                   colFooter: false,
                 },
                 cellMinHeight: 36,
-              })
+              });
             }
             else if (el.type === 'chart') {
-              let labels: string[]
-              let legends: string[]
-              let series: number[][]
+              let labels: string[];
+              let legends: string[];
+              let series: number[][];
   
               if (el.chartType === 'scatterChart') {
-                labels = el.data[0].map(item => item + '')
-                legends = ['系列1']
-                series = [el.data[1]]
+                labels = el.data[0].map(item => item + '');
+                legends = ['系列1'];
+                series = [el.data[1]];
               }
               else {
-                labels = Object.values(el.data[0].xlabels)
-                legends = el.data.map(item => item.key)
-                series = el.data.map(item => item.values.map(v => v.y))
+                labels = Object.values(el.data[0].xlabels);
+                legends = el.data.map(item => item.key);
+                series = el.data.map(item => item.values.map(v => v.y));
               }
   
-              let options: ChartOptions = {}
+              let options: ChartOptions = {};
   
-              let chartType: ChartType = 'bar'
+              let chartType: ChartType = 'bar';
               if (el.chartType === 'barChart') {
-                chartType = 'bar'
+                chartType = 'bar';
               }
               if (el.chartType === 'stackedBarChart') {
-                chartType = 'bar'
-                options = { stackBars: true }
+                chartType = 'bar';
+                options = { stackBars: true };
               }
               else if (el.chartType === 'lineChart') {
-                chartType = 'line'
+                chartType = 'line';
               }
               else if (el.chartType === 'areaChart') {
-                chartType = 'line'
-                options = { showArea: true }
+                chartType = 'line';
+                options = { showArea: true };
               }
               else if (el.chartType === 'scatterChart') {
-                chartType = 'line'
-                options = { showLine: false }
+                chartType = 'line';
+                options = { showLine: false };
               }
               else if (el.chartType === 'pieChart' || el.chartType === 'pie3DChart') {
-                chartType = 'pie'
+                chartType = 'pie';
               }
   
               slide.elements.push({
@@ -325,31 +325,31 @@ export default () => {
                   series,
                 },
                 options,
-              })
+              });
             }
             else if (el.type === 'group') {
               const elements = el.elements.map(_el => ({
                 ..._el,
                 left: _el.left + el.left,
                 top: _el.top + el.top,
-              }))
-              parseElements(elements)
+              }));
+              parseElements(elements);
             }
           }
-        }
-        parseElements(item.elements)
-        slides.push(slide)
+        };
+        parseElements(item.elements);
+        slides.push(slide);
       }
-      if (isEmptySlide.value) slidesStore.setSlides(slides)
-      else addSlidesFromData(slides)
-      exporting.value = false
-    }
-    reader.readAsArrayBuffer(file)
-  }
+      if (isEmptySlide.value) slidesStore.setSlides(slides);
+      else addSlidesFromData(slides);
+      exporting.value = false;
+    };
+    reader.readAsArrayBuffer(file);
+  };
 
   return {
     importSpecificFile,
     importPPTXFile,
     exporting,
-  }
-}
+  };
+};

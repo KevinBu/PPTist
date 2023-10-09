@@ -42,10 +42,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted, ref } from 'vue'
-import { fillDigit } from '@/utils/common'
+import { computed, onUnmounted, ref } from 'vue';
+import { fillDigit } from '@/utils/common';
 
-import MoveablePanel from '@/components/MoveablePanel.vue'
+import MoveablePanel from '@/components/MoveablePanel.vue';
 
 withDefaults(defineProps<{
   left?: number
@@ -53,83 +53,83 @@ withDefaults(defineProps<{
 }>(), {
   left: 5,
   top: 5,
-})
+});
 
 const emit = defineEmits<{
   (event: 'close'): void
-}>()
+}>();
 
-const timer = ref<number | null>(null)
-const inTiming = ref(false)
-const isCountdown = ref(false)
-const time = ref(0)
-const minute = computed(() => Math.floor(time.value / 60))
-const second = computed(() => time.value % 60)
+const timer = ref<number | null>(null);
+const inTiming = ref(false);
+const isCountdown = ref(false);
+const time = ref(0);
+const minute = computed(() => Math.floor(time.value / 60));
+const second = computed(() => time.value % 60);
 
 const inputEditable = computed(() => {
-  return !isCountdown.value || inTiming.value
-})
+  return !isCountdown.value || inTiming.value;
+});
 
 const clearTimer = () => {
-  if (timer.value) clearInterval(timer.value)
-}
+  if (timer.value) clearInterval(timer.value);
+};
 
-onUnmounted(clearTimer)
+onUnmounted(clearTimer);
 
 const pause = () => {
-  clearTimer()
-  inTiming.value = false
-}
+  clearTimer();
+  inTiming.value = false;
+};
 
 const reset = () => {
-  clearTimer()
-  inTiming.value = false
+  clearTimer();
+  inTiming.value = false;
   
-  if (isCountdown.value) time.value = 600
-  else time.value = 0
-}
+  if (isCountdown.value) time.value = 600;
+  else time.value = 0;
+};
 
 const start = () => {
-  clearTimer()
+  clearTimer();
 
   if (isCountdown.value) {
     timer.value = setInterval(() => {
-      time.value = time.value - 1
+      time.value = time.value - 1;
 
-      if (time.value <= 0) reset()
-    }, 1000)
+      if (time.value <= 0) reset();
+    }, 1000);
   }
   else {
     timer.value = setInterval(() => {
-      time.value = time.value + 1
+      time.value = time.value + 1;
 
-      if (time.value > 36000) pause()
-    }, 1000)
+      if (time.value > 36000) pause();
+    }, 1000);
   }
 
-  inTiming.value = true
-}
+  inTiming.value = true;
+};
 
 const toggle = () => {
-  if (inTiming.value) pause()
-  else start()
-}
+  if (inTiming.value) pause();
+  else start();
+};
 
 const toggleCountdown = () => {
-  isCountdown.value = !isCountdown.value
-  reset()
-}
+  isCountdown.value = !isCountdown.value;
+  reset();
+};
 
 const changeTime = (e: FocusEvent | KeyboardEvent, type: 'minute' | 'second') => {
-  const inputRef = e.target as HTMLInputElement
-  let value = inputRef.value
-  const isNumber = /^(\d)+$/.test(value)
+  const inputRef = e.target as HTMLInputElement;
+  let value = inputRef.value;
+  const isNumber = /^(\d)+$/.test(value);
   if (isNumber) {
-    if (type === 'second' && +value >= 60) value = '59'
-    time.value = type === 'minute' ? (+value * 60 + second.value) : (+value + minute.value * 60)
+    if (type === 'second' && +value >= 60) value = '59';
+    time.value = type === 'minute' ? (+value * 60 + second.value) : (+value + minute.value * 60);
   }
-  else inputRef.value = type === 'minute' ? fillDigit(minute.value, 2) : fillDigit(second.value, 2)
-}
+  else inputRef.value = type === 'minute' ? fillDigit(minute.value, 2) : fillDigit(second.value, 2);
+};
 </script>
 
 <style lang="scss" scoped>

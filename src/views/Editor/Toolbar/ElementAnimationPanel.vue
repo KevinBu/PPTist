@@ -111,11 +111,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
-import { nanoid } from 'nanoid'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTAnimation } from '@/types/slides'
+import { computed, ref, watch } from 'vue';
+import { nanoid } from 'nanoid';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTAnimation } from '@/types/slides';
 import { 
   ENTER_ANIMATIONS,
   EXIT_ANIMATIONS,
@@ -123,32 +123,32 @@ import {
   ANIMATION_DEFAULT_DURATION,
   ANIMATION_DEFAULT_TRIGGER,
   ANIMATION_CLASS_PREFIX,
-} from '@/configs/animation'
-import { ELEMENT_TYPE_ZH } from '@/configs/element'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+} from '@/configs/animation';
+import { ELEMENT_TYPE_ZH } from '@/configs/element';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
-import Tabs from '@/components/Tabs.vue'
-import Divider from '@/components/Divider.vue'
-import Button from '@/components/Button.vue'
-import Draggable from 'vuedraggable'
-import NumberInput from '@/components/NumberInput.vue'
-import Select from '@/components/Select.vue'
-import Popover from '@/components/Popover.vue'
+import Tabs from '@/components/Tabs.vue';
+import Divider from '@/components/Divider.vue';
+import Button from '@/components/Button.vue';
+import Draggable from 'vuedraggable';
+import NumberInput from '@/components/NumberInput.vue';
+import Select from '@/components/Select.vue';
+import Popover from '@/components/Popover.vue';
 
-const animationEffects: { [key: string]: string } = {}
+const animationEffects: { [key: string]: string } = {};
 for (const effect of ENTER_ANIMATIONS) {
   for (const animation of effect.children) {
-    animationEffects[animation.value] = animation.name
+    animationEffects[animation.value] = animation.name;
   }
 }
 for (const effect of EXIT_ANIMATIONS) {
   for (const animation of effect.children) {
-    animationEffects[animation.value] = animation.name
+    animationEffects[animation.value] = animation.name;
   }
 }
 for (const effect of ATTENTION_ANIMATIONS) {
   for (const animation of effect.children) {
-    animationEffects[animation.value] = animation.name
+    animationEffects[animation.value] = animation.name;
   }
 }
 
@@ -159,142 +159,142 @@ interface TabItem {
   color: string,
 }
 
-const animationTypes: AnimationType[] = ['in', 'out', 'attention']
+const animationTypes: AnimationType[] = ['in', 'out', 'attention'];
 
-const slidesStore = useSlidesStore()
-const { handleElement, handleElementId } = storeToRefs(useMainStore())
-const { currentSlide, formatedAnimations, currentSlideAnimations } = storeToRefs(slidesStore)
+const slidesStore = useSlidesStore();
+const { handleElement, handleElementId } = storeToRefs(useMainStore());
+const { currentSlide, formatedAnimations, currentSlideAnimations } = storeToRefs(slidesStore);
 
 const tabs: TabItem[] = [
   { key: 'in', label: '入场', color: '#68a490' },
   { key: 'out', label: '退场', color: '#d86344' },
   { key: 'attention', label: '强调', color: '#e8b76a' },
-]
-const activeTab = ref('in')
+];
+const activeTab = ref('in');
 
 watch(() => handleElementId.value, () => {
-  animationPoolVisible.value = false
-})
+  animationPoolVisible.value = false;
+});
 
-const hoverPreviewAnimation = ref('')
-const animationPoolVisible = ref(false)
+const hoverPreviewAnimation = ref('');
+const animationPoolVisible = ref(false);
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 
 // 当前页面的动画列表
 const animationSequence = computed(() => {
-  const animationSequence = []
+  const animationSequence = [];
   for (let i = 0; i < formatedAnimations.value.length; i++) {
-    const item = formatedAnimations.value[i]
+    const item = formatedAnimations.value[i];
     for (let j = 0; j < item.animations.length; j++) {
-      const animation = item.animations[j]
-      const el = currentSlide.value.elements.find(el => el.id === animation.elId)
-      if (!el) continue
+      const animation = item.animations[j];
+      const el = currentSlide.value.elements.find(el => el.id === animation.elId);
+      if (!el) continue;
 
-      const elType = ELEMENT_TYPE_ZH[el.type]
-      const animationEffect = animationEffects[animation.effect]
+      const elType = ELEMENT_TYPE_ZH[el.type];
+      const animationEffect = animationEffects[animation.effect];
       animationSequence.push({
         ...animation,
         index: j === 0 ? i + 1 : '',
         elType,
         animationEffect,
-      })
+      });
     }
   }
-  return animationSequence
-})
+  return animationSequence;
+});
 
 // 当前选中元素的入场动画信息
 const handleElementAnimation = computed(() => {
-  const animations = currentSlideAnimations.value
-  const animation = animations.filter(item => item.elId === handleElementId.value)
-  return animation || []
-})
+  const animations = currentSlideAnimations.value;
+  const animation = animations.filter(item => item.elId === handleElementId.value);
+  return animation || [];
+});
 
 // 删除元素动画
 const deleteAnimation = (id: string) => {
-  const animations = currentSlideAnimations.value.filter(item => item.id !== id)
-  slidesStore.updateSlide({ animations })
-  addHistorySnapshot()
-}
+  const animations = currentSlideAnimations.value.filter(item => item.id !== id);
+  slidesStore.updateSlide({ animations });
+  addHistorySnapshot();
+};
 
 // 拖拽修改动画顺序后同步数据
 const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
-  const { newIndex, oldIndex } = eventData
-  if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return
+  const { newIndex, oldIndex } = eventData;
+  if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return;
 
-  const animations: PPTAnimation[] = JSON.parse(JSON.stringify(currentSlideAnimations.value))
-  const animation = animations[oldIndex]
-  animations.splice(oldIndex, 1)
-  animations.splice(newIndex, 0, animation)
+  const animations: PPTAnimation[] = JSON.parse(JSON.stringify(currentSlideAnimations.value));
+  const animation = animations[oldIndex];
+  animations.splice(oldIndex, 1);
+  animations.splice(newIndex, 0, animation);
   
-  slidesStore.updateSlide({ animations })
-  addHistorySnapshot()
-}
+  slidesStore.updateSlide({ animations });
+  addHistorySnapshot();
+};
 
 // 执行动画预览
 const runAnimation = (elId: string, effect: string, duration: number) => {
-  const elRef = document.querySelector(`#editable-element-${elId} [class^=editable-element-]`)
+  const elRef = document.querySelector(`#editable-element-${elId} [class^=editable-element-]`);
   if (elRef) {
-    const animationName = `${ANIMATION_CLASS_PREFIX}${effect}`
-    document.documentElement.style.setProperty('--animate-duration', `${duration}ms`)
-    elRef.classList.add(`${ANIMATION_CLASS_PREFIX}animated`, animationName)
+    const animationName = `${ANIMATION_CLASS_PREFIX}${effect}`;
+    document.documentElement.style.setProperty('--animate-duration', `${duration}ms`);
+    elRef.classList.add(`${ANIMATION_CLASS_PREFIX}animated`, animationName);
 
     const handleAnimationEnd = () => {
-      document.documentElement.style.removeProperty('--animate-duration')
-      elRef.classList.remove(`${ANIMATION_CLASS_PREFIX}animated`, animationName)
-    }
-    elRef.addEventListener('animationend', handleAnimationEnd, { once: true })
+      document.documentElement.style.removeProperty('--animate-duration');
+      elRef.classList.remove(`${ANIMATION_CLASS_PREFIX}animated`, animationName);
+    };
+    elRef.addEventListener('animationend', handleAnimationEnd, { once: true });
   }
-}
+};
 
 // 修改元素动画持续时间
 const updateElementAnimationDuration = (id: string, duration: number) => {
-  if (duration < 100 || duration > 5000) return
+  if (duration < 100 || duration > 5000) return;
 
   const animations = currentSlideAnimations.value.map(item => {
-    if (item.id === id) return { ...item, duration }
-    return item
-  })
-  slidesStore.updateSlide({ animations })
-  addHistorySnapshot()
-}
+    if (item.id === id) return { ...item, duration };
+    return item;
+  });
+  slidesStore.updateSlide({ animations });
+  addHistorySnapshot();
+};
 
 // 修改触发方式
 const updateElementAnimationTrigger = (id: string, trigger: 'click' | 'meantime' | 'auto') => {
   const animations = currentSlideAnimations.value.map(item => {
-    if (item.id === id) return { ...item, trigger }
-    return item
-  })
-  slidesStore.updateSlide({ animations })
-  addHistorySnapshot()
-}
+    if (item.id === id) return { ...item, trigger };
+    return item;
+  });
+  slidesStore.updateSlide({ animations });
+  addHistorySnapshot();
+};
 
 // 修改元素动画，并执行一次预览
 const updateElementAnimation = (type: AnimationType, effect: string) => {
   const animations = currentSlideAnimations.value.map(item => {
-    if (item.id === handleAnimationId.value) return { ...item, type, effect }
-    return item
-  })
-  slidesStore.updateSlide({ animations })
-  animationPoolVisible.value = false
-  addHistorySnapshot()
+    if (item.id === handleAnimationId.value) return { ...item, type, effect };
+    return item;
+  });
+  slidesStore.updateSlide({ animations });
+  animationPoolVisible.value = false;
+  addHistorySnapshot();
 
-  const animationItem = currentSlideAnimations.value.find(item => item.elId === handleElementId.value)
-  const duration = animationItem?.duration || ANIMATION_DEFAULT_DURATION
+  const animationItem = currentSlideAnimations.value.find(item => item.elId === handleElementId.value);
+  const duration = animationItem?.duration || ANIMATION_DEFAULT_DURATION;
 
-  runAnimation(handleElementId.value, effect, duration)
-}
+  runAnimation(handleElementId.value, effect, duration);
+};
 
-const handleAnimationId = ref('')
+const handleAnimationId = ref('');
 // 添加元素动画，并执行一次预览
 const addAnimation = (type: AnimationType, effect: string) => {
   if (handleAnimationId.value) {
-    updateElementAnimation(type, effect)
-    return
+    updateElementAnimation(type, effect);
+    return;
   }
 
-  const animations: PPTAnimation[] = JSON.parse(JSON.stringify(currentSlideAnimations.value))
+  const animations: PPTAnimation[] = JSON.parse(JSON.stringify(currentSlideAnimations.value));
   animations.push({
     id: nanoid(10),
     elId: handleElementId.value,
@@ -302,34 +302,34 @@ const addAnimation = (type: AnimationType, effect: string) => {
     effect,
     duration: ANIMATION_DEFAULT_DURATION,
     trigger: ANIMATION_DEFAULT_TRIGGER,
-  })
-  slidesStore.updateSlide({ animations })
-  animationPoolVisible.value = false
-  addHistorySnapshot()
+  });
+  slidesStore.updateSlide({ animations });
+  animationPoolVisible.value = false;
+  addHistorySnapshot();
 
-  runAnimation(handleElementId.value, effect, ANIMATION_DEFAULT_DURATION)
-}
+  runAnimation(handleElementId.value, effect, ANIMATION_DEFAULT_DURATION);
+};
 
 // 动画选择面板打开600ms后再移除遮罩层，否则打开面板后迅速滑入鼠标预览会导致抖动
-const popoverMaskHide = ref(false)
+const popoverMaskHide = ref(false);
 const handlePopoverVisibleChange = (visible: boolean) => {
   if (visible) {
-    setTimeout(() => popoverMaskHide.value = true, 600)
+    setTimeout(() => popoverMaskHide.value = true, 600);
   }
-  else popoverMaskHide.value = false
-}
+  else popoverMaskHide.value = false;
+};
 
 const openAnimationPool = (elementId: string) => {
-  animationPoolVisible.value = true
-  handleAnimationId.value = elementId
-  handlePopoverVisibleChange(true)
-}
+  animationPoolVisible.value = true;
+  handleAnimationId.value = elementId;
+  handlePopoverVisibleChange(true);
+};
 
 const animations = {
   in: ENTER_ANIMATIONS,
   out: EXIT_ANIMATIONS,
   attention: ATTENTION_ANIMATIONS,
-}
+};
 </script>
 
 <style lang="scss" scoped>

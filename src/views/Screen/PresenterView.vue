@@ -77,35 +77,35 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import { enterFullscreen } from '@/utils/fullscreen'
-import { parseText2Paragraphs } from '@/utils/textParser'
-import useScreening from '@/hooks/useScreening'
-import useLoadSlides from '@/hooks/useLoadSlides'
-import useExecPlay from './hooks/useExecPlay'
-import useSlideSize from './hooks/useSlideSize'
-import useFullscreen from './hooks/useFullscreen'
+import { computed, nextTick, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
+import { enterFullscreen } from '@/utils/fullscreen';
+import { parseText2Paragraphs } from '@/utils/textParser';
+import useScreening from '@/hooks/useScreening';
+import useLoadSlides from '@/hooks/useLoadSlides';
+import useExecPlay from './hooks/useExecPlay';
+import useSlideSize from './hooks/useSlideSize';
+import useFullscreen from './hooks/useFullscreen';
 
-import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
-import ScreenSlideList from './ScreenSlideList.vue'
-import WritingBoardTool from './WritingBoardTool.vue'
-import CountdownTimer from './CountdownTimer.vue'
-import Divider from '@/components/Divider.vue'
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue';
+import ScreenSlideList from './ScreenSlideList.vue';
+import WritingBoardTool from './WritingBoardTool.vue';
+import CountdownTimer from './CountdownTimer.vue';
+import Divider from '@/components/Divider.vue';
 
 const props = defineProps<{
   changeViewMode: (mode: 'base' | 'presenter') => void
-}>()
+}>();
 
-const { slides, slideIndex, viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
+const { slides, slideIndex, viewportRatio, currentSlide } = storeToRefs(useSlidesStore());
 
-const slideListWrapRef = ref<HTMLElement>()
-const thumbnailsRef = ref<HTMLElement>()
-const writingBoardToolVisible = ref(false)
-const timerlVisible = ref(false)
-const laserPen = ref(false)
+const slideListWrapRef = ref<HTMLElement>();
+const thumbnailsRef = ref<HTMLElement>();
+const writingBoardToolVisible = ref(false);
+const timerlVisible = ref(false);
+const laserPen = ref(false);
 
 const {
   mousewheelListener,
@@ -116,40 +116,40 @@ const {
   turnSlideToIndex,
   turnSlideToId,
   animationIndex,
-} = useExecPlay()
+} = useExecPlay();
 
-const { slideWidth, slideHeight } = useSlideSize(slideListWrapRef)
-const { exitScreening } = useScreening()
-const { slidesLoadLimit } = useLoadSlides()
-const { fullscreenState, manualExitFullscreen } = useFullscreen()
+const { slideWidth, slideHeight } = useSlideSize(slideListWrapRef);
+const { exitScreening } = useScreening();
+const { slidesLoadLimit } = useLoadSlides();
+const { fullscreenState, manualExitFullscreen } = useFullscreen();
 
-const remarkFontSize = ref(16)
+const remarkFontSize = ref(16);
 const currentSlideRemark = computed(() => {
-  return parseText2Paragraphs(currentSlide.value.remark || '无备注')
-})
+  return parseText2Paragraphs(currentSlide.value.remark || '无备注');
+});
 
 const handleMousewheelThumbnails = (e: WheelEvent) => {
-  if (!thumbnailsRef.value) return
-  thumbnailsRef.value.scrollBy(e.deltaY, 0)
-}
+  if (!thumbnailsRef.value) return;
+  thumbnailsRef.value.scrollBy(e.deltaY, 0);
+};
 
 const setRemarkFontSize = (fontSize: number) => {
-  if (fontSize < 12 || fontSize > 40) return
-  remarkFontSize.value = fontSize
-}
+  if (fontSize < 12 || fontSize > 40) return;
+  remarkFontSize.value = fontSize;
+};
 
 watch(slideIndex, () => {
   nextTick(() => {
-    if (!thumbnailsRef.value) return
+    if (!thumbnailsRef.value) return;
 
-    const activeThumbnailRef: HTMLElement | null = thumbnailsRef.value.querySelector('.thumbnail.active')
-    if (!activeThumbnailRef) return
+    const activeThumbnailRef: HTMLElement | null = thumbnailsRef.value.querySelector('.thumbnail.active');
+    if (!activeThumbnailRef) return;
 
-    const width = thumbnailsRef.value.offsetWidth
-    const offsetLeft = activeThumbnailRef.offsetLeft
-    thumbnailsRef.value.scrollTo({ left: offsetLeft - width / 2, behavior: 'smooth' })
-  })
-})
+    const width = thumbnailsRef.value.offsetWidth;
+    const offsetLeft = activeThumbnailRef.offsetLeft;
+    thumbnailsRef.value.scrollTo({ left: offsetLeft - width / 2, behavior: 'smooth' });
+  });
+});
 
 const contextmenus = (): ContextmenuItem[] => {
   return [
@@ -190,8 +190,8 @@ const contextmenus = (): ContextmenuItem[] => {
       subText: 'ESC',
       handler: exitScreening,
     },
-  ]
-}
+  ];
+};
 </script>
 
 <style lang="scss" scoped>

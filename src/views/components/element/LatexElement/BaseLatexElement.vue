@@ -35,11 +35,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { PPTLatexElement } from '@/types/slides'
+import type { PPTLatexElement } from '@/types/slides';
 
 defineProps<{
   elementInfo: PPTLatexElement
-}>()
+}>();
 </script>
 
 <style lang="scss" scoped>

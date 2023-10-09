@@ -18,28 +18,28 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import useLoadSlides from '@/hooks/useLoadSlides'
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import useLoadSlides from '@/hooks/useLoadSlides';
 
-import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue';
 
 const props = defineProps<{
   turnSlideToIndex: (index: number) => void
-}>()
+}>();
 
 const emit = defineEmits<{
   (event: 'close'): void
-}>()
+}>();
 
-const { slides, slideIndex } = storeToRefs(useSlidesStore())
+const { slides, slideIndex } = storeToRefs(useSlidesStore());
 
-const { slidesLoadLimit } = useLoadSlides()
+const { slidesLoadLimit } = useLoadSlides();
 
 const turnSlide = (index: number) => {
-  props.turnSlideToIndex(index)
-  emit('close')
-}
+  props.turnSlideToIndex(index);
+  emit('close');
+};
 </script>
 
 <style lang="scss" scoped>

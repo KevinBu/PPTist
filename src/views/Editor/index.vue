@@ -29,31 +29,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
-import useGlobalHotkey from '@/hooks/useGlobalHotkey'
-import usePasteEvent from '@/hooks/usePasteEvent'
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore } from '@/store';
+import useGlobalHotkey from '@/hooks/useGlobalHotkey';
+import usePasteEvent from '@/hooks/usePasteEvent';
 
-import EditorHeader from './EditorHeader/index.vue'
-import Canvas from './Canvas/index.vue'
-import CanvasTool from './CanvasTool/index.vue'
-import Thumbnails from './Thumbnails/index.vue'
-import Toolbar from './Toolbar/index.vue'
-import Remark from './Remark/index.vue'
-import ExportDialog from './ExportDialog/index.vue'
-import SelectPanel from './SelectPanel.vue'
-import SearchPanel from './SearchPanel.vue'
-import Modal from '@/components/Modal.vue'
+import EditorHeader from './EditorHeader/index.vue';
+import Canvas from './Canvas/index.vue';
+import CanvasTool from './CanvasTool/index.vue';
+import Thumbnails from './Thumbnails/index.vue';
+import Toolbar from './Toolbar/index.vue';
+import Remark from './Remark/index.vue';
+import ExportDialog from './ExportDialog/index.vue';
+import SelectPanel from './SelectPanel.vue';
+import SearchPanel from './SearchPanel.vue';
+import Modal from '@/components/Modal.vue';
 
-const mainStore = useMainStore()
-const { dialogForExport, showSelectPanel, showSearchPanel } = storeToRefs(mainStore)
-const closeExportDialog = () => mainStore.setDialogForExport('')
+const mainStore = useMainStore();
+const { dialogForExport, showSelectPanel, showSearchPanel } = storeToRefs(mainStore);
+const closeExportDialog = () => mainStore.setDialogForExport('');
 
-const remarkHeight = ref(40)
+const remarkHeight = ref(40);
 
-useGlobalHotkey()
-usePasteEvent()
+useGlobalHotkey();
+usePasteEvent();
 </script>
 
 <style lang="scss" scoped>

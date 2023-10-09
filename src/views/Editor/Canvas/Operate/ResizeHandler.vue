@@ -3,29 +3,29 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import type { OperateResizeHandlers } from '@/types/edit'
+import { computed } from 'vue';
+import type { OperateResizeHandlers } from '@/types/edit';
 
 const props = withDefaults(defineProps<{
   type?: OperateResizeHandlers
   rotate?: number
 }>(), {
   rotate: 0,
-})
+});
 
 const rotateClassName = computed(() => {
-  const prefix = 'rotate-'
-  const rotate = props.rotate
-  if (rotate > -22.5 && rotate <= 22.5) return prefix + 0
-  else if (rotate > 22.5 && rotate <= 67.5) return prefix + 45
-  else if (rotate > 67.5 && rotate <= 112.5) return prefix + 90
-  else if (rotate > 112.5 && rotate <= 157.5) return prefix + 135
-  else if (rotate > 157.5 || rotate <= -157.5) return prefix + 0
-  else if (rotate > -157.5 && rotate <= -112.5) return prefix + 45
-  else if (rotate > -112.5 && rotate <= -67.5) return prefix + 90
-  else if (rotate > -67.5 && rotate <= -22.5) return prefix + 135
-  return prefix + 0
-})
+  const prefix = 'rotate-';
+  const rotate = props.rotate;
+  if (rotate > -22.5 && rotate <= 22.5) return prefix + 0;
+  else if (rotate > 22.5 && rotate <= 67.5) return prefix + 45;
+  else if (rotate > 67.5 && rotate <= 112.5) return prefix + 90;
+  else if (rotate > 112.5 && rotate <= 157.5) return prefix + 135;
+  else if (rotate > 157.5 || rotate <= -157.5) return prefix + 0;
+  else if (rotate > -157.5 && rotate <= -112.5) return prefix + 45;
+  else if (rotate > -112.5 && rotate <= -67.5) return prefix + 90;
+  else if (rotate > -67.5 && rotate <= -22.5) return prefix + 135;
+  return prefix + 0;
+});
 </script>
 
 <style lang="scss" scoped>

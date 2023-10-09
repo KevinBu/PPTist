@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts" setup>
-import { type CSSProperties, onMounted, ref, watch, computed } from 'vue'
-import tippy, { type Instance, type Placement } from 'tippy.js'
+import { type CSSProperties, onMounted, ref, watch, computed } from 'vue';
+import tippy, { type Instance, type Placement } from 'tippy.js';
 
-import 'tippy.js/animations/scale.css'
+import 'tippy.js/animations/scale.css';
 
 const props = withDefaults(defineProps<{
   value?: boolean
@@ -25,26 +25,26 @@ const props = withDefaults(defineProps<{
   trigger: 'click',
   placement: 'bottom',
   center: false,
-})
+});
 
 const emit = defineEmits<{
   (event: 'update:value', payload: boolean): void
-}>()
+}>();
 
-const instance = ref<Instance>()
-const triggerRef = ref<HTMLElement>()
-const contentRef = ref<HTMLElement>()
-const contentVisible = ref(false)
+const instance = ref<Instance>();
+const triggerRef = ref<HTMLElement>();
+const contentRef = ref<HTMLElement>();
+const contentVisible = ref(false);
 
 const contentStyle = computed(() => {
-  return props.contentStyle || {}
-})
+  return props.contentStyle || {};
+});
 
 watch(() => props.value, () => {
-  if (!instance.value) return
-  if (props.value) instance.value.show()
-  else instance.value.hide()
-})
+  if (!instance.value) return;
+  if (props.value) instance.value.show();
+  else instance.value.hide();
+});
 
 onMounted(() => {
   instance.value = tippy(triggerRef.value!, {
@@ -60,17 +60,17 @@ onMounted(() => {
     animation: 'scale',
     theme: 'popover',
     onShow() {
-      contentVisible.value = true
+      contentVisible.value = true;
     },
     onShown() {
-      if (!props.value) emit('update:value', true)
+      if (!props.value) emit('update:value', true);
     },
     onHidden() {
-      if (props.value) emit('update:value', false)
-      contentVisible.value = false
+      if (props.value) emit('update:value', false);
+      contentVisible.value = false;
     },
-  })
-})
+  });
+});
 </script>
 
 <style lang="scss" scoped>

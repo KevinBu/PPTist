@@ -16,16 +16,16 @@
 </template>
 
 <script lang="ts" setup>
-import { SHAPE_LIST, type ShapePoolItem } from '@/configs/shapes'
-import ShapeItemThumbnail from './ShapeItemThumbnail.vue'
+import { SHAPE_LIST, type ShapePoolItem } from '@/configs/shapes';
+import ShapeItemThumbnail from './ShapeItemThumbnail.vue';
 
 const emit = defineEmits<{
   (event: 'select', payload: ShapePoolItem): void
-}>()
+}>();
 
 const selectShape = (shape: ShapePoolItem) => {
-  emit('select', shape)
-}
+  emit('select', shape);
+};
 </script>
 
 <style lang="scss" scoped>

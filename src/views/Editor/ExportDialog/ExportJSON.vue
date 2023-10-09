@@ -12,17 +12,17 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import useExport from '@/hooks/useExport'
-import Button from '@/components/Button.vue'
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import useExport from '@/hooks/useExport';
+import Button from '@/components/Button.vue';
 
 const emit = defineEmits<{
   (event: 'close'): void
-}>()
+}>();
 
-const { slides } = storeToRefs(useSlidesStore())
-const { exportJSON } = useExport()
+const { slides } = storeToRefs(useSlidesStore());
+const { exportJSON } = useExport();
 </script>
 
 <style lang="scss" scoped>

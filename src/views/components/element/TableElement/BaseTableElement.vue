@@ -26,13 +26,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { PPTTableElement } from '@/types/slides'
+import type { PPTTableElement } from '@/types/slides';
 
-import StaticTable from './StaticTable.vue'
+import StaticTable from './StaticTable.vue';
 
 defineProps<{
   elementInfo: PPTTableElement
-}>()
+}>();
 </script>
 
 <style lang="scss" scoped>

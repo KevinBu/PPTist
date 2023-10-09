@@ -203,45 +203,45 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { SlideBackground, SlideTheme } from '@/types/slides'
-import { PRESET_THEMES } from '@/configs/theme'
-import { WEB_FONTS } from '@/configs/font'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-import useSlideTheme from '@/hooks/useSlideTheme'
-import { getImageDataURL } from '@/utils/image'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { SlideBackground, SlideTheme } from '@/types/slides';
+import { PRESET_THEMES } from '@/configs/theme';
+import { WEB_FONTS } from '@/configs/font';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
+import useSlideTheme from '@/hooks/useSlideTheme';
+import { getImageDataURL } from '@/utils/image';
 
-import ColorButton from './common/ColorButton.vue'
-import FileInput from '@/components/FileInput.vue'
-import ColorPicker from '@/components/ColorPicker/index.vue'
-import Divider from '@/components/Divider.vue'
-import Slider from '@/components/Slider.vue'
-import Button from '@/components/Button.vue'
-import Select from '@/components/Select.vue'
-import Popover from '@/components/Popover.vue'
+import ColorButton from './common/ColorButton.vue';
+import FileInput from '@/components/FileInput.vue';
+import ColorPicker from '@/components/ColorPicker/index.vue';
+import Divider from '@/components/Divider.vue';
+import Slider from '@/components/Slider.vue';
+import Button from '@/components/Button.vue';
+import Select from '@/components/Select.vue';
+import Popover from '@/components/Popover.vue';
 
-const slidesStore = useSlidesStore()
-const { availableFonts } = storeToRefs(useMainStore())
-const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore)
+const slidesStore = useSlidesStore();
+const { availableFonts } = storeToRefs(useMainStore());
+const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore);
 
 const background = computed(() => {
   if (!currentSlide.value.background) {
     return {
       type: 'solid',
       value: '#fff',
-    } as SlideBackground
+    } as SlideBackground;
   }
-  return currentSlide.value.background
-})
+  return currentSlide.value.background;
+});
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 const {
   applyPresetThemeToSingleSlide,
   applyPresetThemeToAllSlides,
   applyThemeToAllSlides,
-} = useSlideTheme()
+} = useSlideTheme();
 
 // 设置背景模式：纯色、图片、渐变色
 const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
@@ -250,8 +250,8 @@ const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
       ...background.value,
       type: 'solid',
       color: background.value.color || '#fff',
-    }
-    slidesStore.updateSlide({ background: newBackground })
+    };
+    slidesStore.updateSlide({ background: newBackground });
   }
   else if (type === 'image') {
     const newBackground: SlideBackground = {
@@ -259,8 +259,8 @@ const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
       type: 'image',
       image: background.value.image || '',
       imageSize: background.value.imageSize || 'cover',
-    }
-    slidesStore.updateSlide({ background: newBackground })
+    };
+    slidesStore.updateSlide({ background: newBackground });
   }
   else {
     const newBackground: SlideBackground = {
@@ -269,24 +269,24 @@ const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
       gradientType: background.value.gradientType || 'linear',
       gradientColor: background.value.gradientColor || ['#fff', '#fff'],
       gradientRotate: background.value.gradientRotate || 0,
-    }
-    slidesStore.updateSlide({ background: newBackground })
+    };
+    slidesStore.updateSlide({ background: newBackground });
   }
-  addHistorySnapshot()
-}
+  addHistorySnapshot();
+};
 
 // 设置背景图片
 const updateBackground = (props: Partial<SlideBackground>) => {
-  slidesStore.updateSlide({ background: { ...background.value, ...props } })
-  addHistorySnapshot()
-}
+  slidesStore.updateSlide({ background: { ...background.value, ...props } });
+  addHistorySnapshot();
+};
 
 // 上传背景图片
 const uploadBackgroundImage = (files: FileList) => {
-  const imageFile = files[0]
-  if (!imageFile) return
-  getImageDataURL(imageFile).then(dataURL => updateBackground({ image: dataURL }))
-}
+  const imageFile = files[0];
+  if (!imageFile) return;
+  getImageDataURL(imageFile).then(dataURL => updateBackground({ image: dataURL }));
+};
 
 // 应用当前页背景到全部页面
 const applyBackgroundAllSlide = () => {
@@ -294,21 +294,21 @@ const applyBackgroundAllSlide = () => {
     return {
       ...slide,
       background: currentSlide.value.background,
-    }
-  })
-  slidesStore.setSlides(newSlides)
-  addHistorySnapshot()
-}
+    };
+  });
+  slidesStore.setSlides(newSlides);
+  addHistorySnapshot();
+};
 
 // 设置主题
 const updateTheme = (themeProps: Partial<SlideTheme>) => {
-  slidesStore.setTheme(themeProps)
-}
+  slidesStore.setTheme(themeProps);
+};
 
 // 设置画布尺寸（宽高比例）
 const updateViewportRatio = (value: number) => {
-  slidesStore.setViewportRatio(value)
-}
+  slidesStore.setViewportRatio(value);
+};
 </script>
 
 <style lang="scss" scoped>

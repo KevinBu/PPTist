@@ -1,4 +1,4 @@
-import type { Slide } from '@/types/slides'
+import type { Slide } from '@/types/slides';
 
 export const slides: Slide[] = [
   {
@@ -183,4 +183,4 @@ export const slides: Slide[] = [
       color: '#fff',
     },
   },
-]
+];

@@ -17,35 +17,35 @@
 </template>
 
 <script lang="ts" setup>
-import type { Ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTVideoElement } from '@/types/slides'
-import { getImageDataURL } from '@/utils/image'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import type { Ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTVideoElement } from '@/types/slides';
+import { getImageDataURL } from '@/utils/image';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
-import FileInput from '@/components/FileInput.vue'
-import Button from '@/components/Button.vue'
+import FileInput from '@/components/FileInput.vue';
+import Button from '@/components/Button.vue';
 
-const slidesStore = useSlidesStore()
-const { handleElement } = storeToRefs(useMainStore())
+const slidesStore = useSlidesStore();
+const { handleElement } = storeToRefs(useMainStore());
 
-const handleVideoElement = handleElement as Ref<PPTVideoElement>
+const handleVideoElement = handleElement as Ref<PPTVideoElement>;
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 
 const updateVideo = (props: Partial<PPTVideoElement>) => {
-  if (!handleElement.value) return
-  slidesStore.updateElement({ id: handleElement.value.id, props })
-  addHistorySnapshot()
-}
+  if (!handleElement.value) return;
+  slidesStore.updateElement({ id: handleElement.value.id, props });
+  addHistorySnapshot();
+};
 
 // 设置视频预览封面
 const setVideoPoster = (files: FileList) => {
-  const imageFile = files[0]
-  if (!imageFile) return
-  getImageDataURL(imageFile).then(dataURL => updateVideo({ poster: dataURL }))
-}
+  const imageFile = files[0];
+  if (!imageFile) return;
+  getImageDataURL(imageFile).then(dataURL => updateVideo({ poster: dataURL }));
+};
 </script>
 
 <style lang="scss" scoped>

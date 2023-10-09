@@ -29,34 +29,34 @@
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
-import type { PPTTableElement } from '@/types/slides'
-import type { OperateResizeHandlers } from '@/types/edit'
-import useCommonOperate from '../hooks/useCommonOperate'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore } from '@/store';
+import type { PPTTableElement } from '@/types/slides';
+import type { OperateResizeHandlers } from '@/types/edit';
+import useCommonOperate from '../hooks/useCommonOperate';
 
-import RotateHandler from './RotateHandler.vue'
-import ResizeHandler from './ResizeHandler.vue'
-import BorderLine from './BorderLine.vue'
+import RotateHandler from './RotateHandler.vue';
+import ResizeHandler from './ResizeHandler.vue';
+import BorderLine from './BorderLine.vue';
 
 const props = defineProps<{
   elementInfo: PPTTableElement
   handlerVisible: boolean
   rotateElement: (e: MouseEvent, element: PPTTableElement) => void
   scaleElement: (e: MouseEvent, element: PPTTableElement, command: OperateResizeHandlers) => void
-}>()
+}>();
 
-const { canvasScale } = storeToRefs(useMainStore())
+const { canvasScale } = storeToRefs(useMainStore());
 
-const outlineWidth = computed(() => props.elementInfo.outline.width || 1)
+const outlineWidth = computed(() => props.elementInfo.outline.width || 1);
 
-const scaleWidth = computed(() => (props.elementInfo.width + outlineWidth.value) * canvasScale.value)
-const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
+const scaleWidth = computed(() => (props.elementInfo.width + outlineWidth.value) * canvasScale.value);
+const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value);
 
-const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight);
 </script>

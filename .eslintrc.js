@@ -1,6 +1,14 @@
+/*
+ * @Author: bukai bukai@163.com.cn
+ * @Date: 2023-10-08 16:56:54
+ * @LastEditors: bukai bukai@163.com.cn
+ * @LastEditTime: 2023-10-09 09:48:47
+ * @FilePath: \PPTist\.eslintrc.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 // https://eslint.org/docs/rules/
 
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
   root: true,
@@ -19,14 +27,14 @@ module.exports = {
   rules: {
     'curly': ['error', 'multi-line'],
     'eqeqeq': ['error', 'always'],
-    'semi': ['error', 'never'],
-    'indent': ['error', 2, { 
+    'semi': ['error', 'always'],
+    'indent': ['error', 2, {
       'SwitchCase': 1,
     }],
-    'quotes': ['error', 'single', {
-      'avoidEscape': true,
-      'allowTemplateLiterals': true,
-    }],
+    // 'quotes': ['error', 'single', {
+    //   'avoidEscape': true,
+    //   'allowTemplateLiterals': true,
+    // }],
     'key-spacing': ['error', {
       'beforeColon': false,
       'afterColon': true,
@@ -90,4 +98,4 @@ module.exports = {
       },
     },
   ],
-}
+};

@@ -33,17 +33,17 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTElementLink } from '@/types/slides'
-import useLink from '@/hooks/useLink'
+import { computed, onMounted, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTElementLink } from '@/types/slides';
+import useLink from '@/hooks/useLink';
 
-import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
-import Tabs from '@/components/Tabs.vue'
-import Input from '@/components/Input.vue'
-import Button from '@/components/Button.vue'
-import Select from '@/components/Select.vue'
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue';
+import Tabs from '@/components/Tabs.vue';
+import Input from '@/components/Input.vue';
+import Button from '@/components/Button.vue';
+import Select from '@/components/Select.vue';
 
 type TypeKey = 'web' | 'slide'
 interface TabItem {
@@ -53,58 +53,58 @@ interface TabItem {
 
 const emit = defineEmits<{
   (event: 'close'): void
-}>()
+}>();
 
-const { handleElement } = storeToRefs(useMainStore())
-const { slides, currentSlide } = storeToRefs(useSlidesStore())
+const { handleElement } = storeToRefs(useMainStore());
+const { slides, currentSlide } = storeToRefs(useSlidesStore());
 
-const type = ref<TypeKey>('web')
-const address = ref('')
-const slideId = ref('')
+const type = ref<TypeKey>('web');
+const address = ref('');
+const slideId = ref('');
 
 const slideOptions = computed(() => {
   return slides.value.map((item, index) => ({
     label: `幻灯片 ${index + 1}`,
     value: item.id,
     disabled: currentSlide.value.id === item.id,
-  }))
-})
+  }));
+});
 
-slideId.value = slides.value.find(item => item.id !== currentSlide.value.id)?.id || ''
+slideId.value = slides.value.find(item => item.id !== currentSlide.value.id)?.id || '';
 
 const selectedSlide = computed(() => {
-  if (!slideId.value) return null
+  if (!slideId.value) return null;
 
-  return slides.value.find(item => item.id === slideId.value) || null
-})
+  return slides.value.find(item => item.id === slideId.value) || null;
+});
 
 const tabs: TabItem[] = [
   { key: 'web', label: '网页链接' },
   { key: 'slide', label: '幻灯片页面' },
-]
+];
 
-const { setLink } = useLink()
+const { setLink } = useLink();
 
 onMounted(() => {
   if (handleElement.value?.link) {
-    if (handleElement.value.link.type === 'web') address.value = handleElement.value.link.target
-    else if (handleElement.value.link.type === 'slide') slideId.value = handleElement.value.link.target
+    if (handleElement.value.link.type === 'web') address.value = handleElement.value.link.target;
+    else if (handleElement.value.link.type === 'slide') slideId.value = handleElement.value.link.target;
 
-    type.value = handleElement.value.link.type
+    type.value = handleElement.value.link.type;
   }
-})
+});
 
 const save = () => {
   const link: PPTElementLink = {
     type: type.value,
     target: type.value === 'web' ? address.value : slideId.value,
-  }
+  };
   if (handleElement.value) {
-    const success = setLink(handleElement.value, link)
-    if (success) emit('close')
-    else address.value = ''
+    const success = setLink(handleElement.value, link);
+    if (success) emit('close');
+    else address.value = '';
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

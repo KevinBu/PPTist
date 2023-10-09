@@ -6,29 +6,29 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue'
-import { KEYS } from '@/configs/hotkey'
-import useScreening from '@/hooks/useScreening'
+import { onMounted, onUnmounted, ref } from 'vue';
+import { KEYS } from '@/configs/hotkey';
+import useScreening from '@/hooks/useScreening';
 
-import BaseView from './BaseView.vue'
-import PresenterView from './PresenterView.vue'
+import BaseView from './BaseView.vue';
+import PresenterView from './PresenterView.vue';
 
-const viewMode = ref<'base' | 'presenter'>('base')
+const viewMode = ref<'base' | 'presenter'>('base');
 
 const changeViewMode = (mode: 'base' | 'presenter') => {
-  viewMode.value = mode
-}
+  viewMode.value = mode;
+};
 
-const { exitScreening } = useScreening()
+const { exitScreening } = useScreening();
 
 // 快捷键退出放映
 const keydownListener = (e: KeyboardEvent) => {
-  const key = e.key.toUpperCase()
-  if (key === KEYS.ESC) exitScreening()
-}
+  const key = e.key.toUpperCase();
+  if (key === KEYS.ESC) exitScreening();
+};
 
-onMounted(() => document.addEventListener('keydown', keydownListener))
-onUnmounted(() => document.removeEventListener('keydown', keydownListener))
+onMounted(() => document.addEventListener('keydown', keydownListener));
+onUnmounted(() => document.removeEventListener('keydown', keydownListener));
 </script>
 
 <style lang="scss" scoped>

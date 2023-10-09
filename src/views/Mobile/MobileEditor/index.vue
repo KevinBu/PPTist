@@ -41,83 +41,83 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watchEffect } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTElement } from '@/types/slides'
-import type { AlignmentLineProps } from '@/types/edit'
-import type { Mode } from '@/types/mobile'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
-import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
-import useDragElement from '@/views/Editor/Canvas/hooks/useDragElement'
-import useScaleElement from '@/views/Editor/Canvas/hooks/useScaleElement'
-import useRotateElement from '@/views/Editor/Canvas/hooks/useRotateElement'
+import { computed, onMounted, ref, watchEffect } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTElement } from '@/types/slides';
+import type { AlignmentLineProps } from '@/types/edit';
+import type { Mode } from '@/types/mobile';
+import { VIEWPORT_SIZE } from '@/configs/canvas';
+import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle';
+import useDragElement from '@/views/Editor/Canvas/hooks/useDragElement';
+import useScaleElement from '@/views/Editor/Canvas/hooks/useScaleElement';
+import useRotateElement from '@/views/Editor/Canvas/hooks/useRotateElement';
 
-import AlignmentLine from '@/views/Editor/Canvas/AlignmentLine.vue'
-import MobileEditableElement from './MobileEditableElement.vue'
-import MobileOperate from './MobileOperate.vue'
-import SlideToolbar from './SlideToolbar.vue'
-import ElementToolbar from './ElementToolbar.vue'
-import Header from './Header.vue'
+import AlignmentLine from '@/views/Editor/Canvas/AlignmentLine.vue';
+import MobileEditableElement from './MobileEditableElement.vue';
+import MobileOperate from './MobileOperate.vue';
+import SlideToolbar from './SlideToolbar.vue';
+import ElementToolbar from './ElementToolbar.vue';
+import Header from './Header.vue';
 
 defineProps<{
   changeMode: (mode: Mode) => void
-}>()
+}>();
 
-const slidesStore = useSlidesStore()
-const mainStore = useMainStore()
-const { slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore)
-const { activeElementIdList, handleElement } = storeToRefs(mainStore)
+const slidesStore = useSlidesStore();
+const mainStore = useMainStore();
+const { slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore);
+const { activeElementIdList, handleElement } = storeToRefs(mainStore);
 
-const contentRef = ref<HTMLElement>()
-const viewportRef = ref<HTMLElement>()
+const contentRef = ref<HTMLElement>();
+const viewportRef = ref<HTMLElement>();
 
-const alignmentLines = ref<AlignmentLineProps[]>([])
+const alignmentLines = ref<AlignmentLineProps[]>([]);
 
-const background = computed(() => currentSlide.value.background)
-const { backgroundStyle } = useSlideBackgroundStyle(background)
+const background = computed(() => currentSlide.value.background);
+const { backgroundStyle } = useSlideBackgroundStyle(background);
 
 const canvasScale = computed(() => {
-  if (!contentRef.value) return 1
-  const contentWidth = contentRef.value.clientWidth
-  const contentheight = contentRef.value.clientHeight
+  if (!contentRef.value) return 1;
+  const contentWidth = contentRef.value.clientWidth;
+  const contentheight = contentRef.value.clientHeight;
 
-  const contentRatio = contentheight / contentWidth
-  if (contentRatio >= viewportRatio.value) return (contentWidth - 20) / VIEWPORT_SIZE
-  return (contentheight - 20) / viewportRatio.value / VIEWPORT_SIZE
-})
+  const contentRatio = contentheight / contentWidth;
+  if (contentRatio >= viewportRatio.value) return (contentWidth - 20) / VIEWPORT_SIZE;
+  return (contentheight - 20) / viewportRatio.value / VIEWPORT_SIZE;
+});
 
 onMounted(() => {
-  if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
-  if (slideIndex.value !== 0) slidesStore.updateSlideIndex(0)
-})
+  if (activeElementIdList.value.length) mainStore.setActiveElementIdList([]);
+  if (slideIndex.value !== 0) slidesStore.updateSlideIndex(0);
+});
 
 const viewportStyles = computed(() => ({
   width: VIEWPORT_SIZE * canvasScale.value + 'px',
   height: VIEWPORT_SIZE * viewportRatio.value * canvasScale.value + 'px',
-}))
+}));
 
-const elementList = ref<PPTElement[]>([])
+const elementList = ref<PPTElement[]>([]);
 const setLocalElementList = () => {
-  elementList.value = currentSlide.value ? JSON.parse(JSON.stringify(currentSlide.value.elements)) : []
-}
-watchEffect(setLocalElementList)
+  elementList.value = currentSlide.value ? JSON.parse(JSON.stringify(currentSlide.value.elements)) : [];
+};
+watchEffect(setLocalElementList);
 
-const { dragElement } = useDragElement(elementList, alignmentLines, canvasScale)
-const { scaleElement } = useScaleElement(elementList, alignmentLines, canvasScale)
-const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale)
+const { dragElement } = useDragElement(elementList, alignmentLines, canvasScale);
+const { scaleElement } = useScaleElement(elementList, alignmentLines, canvasScale);
+const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale);
 
 const selectElement = (e: TouchEvent, element: PPTElement, startMove = true) => {
   if (!activeElementIdList.value.includes(element.id)) {
-    mainStore.setActiveElementIdList([element.id])
-    mainStore.setHandleElementId(element.id)
+    mainStore.setActiveElementIdList([element.id]);
+    mainStore.setHandleElementId(element.id);
   }
-  if (startMove) dragElement(e, element)
-}
+  if (startMove) dragElement(e, element);
+};
 
 const handleClickBlankArea = () => {
-  mainStore.setActiveElementIdList([])
-}
+  mainStore.setActiveElementIdList([]);
+};
 </script>
 
 <style lang="scss" scoped>

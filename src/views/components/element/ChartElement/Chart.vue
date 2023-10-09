@@ -27,13 +27,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, watch } from 'vue'
-import tinycolor from 'tinycolor2'
-import { BarChart, LineChart, PieChart } from 'chartist'
-import type { ChartData, ChartOptions, ChartType } from '@/types/slides'
-import { injectKeySlideScale } from '@/types/injectKey'
+import { computed, inject, onMounted, ref, watch } from 'vue';
+import tinycolor from 'tinycolor2';
+import { BarChart, LineChart, PieChart } from 'chartist';
+import type { ChartData, ChartOptions, ChartType } from '@/types/slides';
+import { injectKeySlideScale } from '@/types/injectKey';
 
-import 'chartist/dist/index.css'
+import 'chartist/dist/index.css';
 
 const props = defineProps<{
   width: number
@@ -45,47 +45,47 @@ const props = defineProps<{
   options?: ChartOptions
   gridColor?: string
   legend?: '' | 'top' | 'bottom'
-}>()
+}>();
 
-const chartRef = ref<HTMLElement>()
-const slideScale = inject(injectKeySlideScale) || ref(1)
+const chartRef = ref<HTMLElement>();
+const slideScale = inject(injectKeySlideScale) || ref(1);
 
-let chart: LineChart | BarChart | PieChart | undefined
+let chart: LineChart | BarChart | PieChart | undefined;
 
 const chartHeight = computed(() => {
-  if (props.legend) return props.height - 20
-  return props.height
-})
+  if (props.legend) return props.height - 20;
+  return props.height;
+});
 
-const getPieChartData = () => ({ ...props.data, series: props.data.series[0] })
+const getPieChartData = () => ({ ...props.data, series: props.data.series[0] });
 
 const getOptions = () => {
-  const propsOptopns = props.options || {}
+  const propsOptopns = props.options || {};
   return {
     ...propsOptopns,
     width: props.width * slideScale.value,
     height: chartHeight.value * slideScale.value,
-  }
-}
+  };
+};
 
 const renderChart = () => {
-  if (!chartRef.value) return
+  if (!chartRef.value) return;
 
-  const options = getOptions()
-  if (props.type === 'bar') chart = new BarChart(chartRef.value, props.data, options)
-  if (props.type === 'line') chart = new LineChart(chartRef.value, props.data, options)
-  if (props.type === 'pie') chart = new PieChart(chartRef.value, getPieChartData(), options)
-}
+  const options = getOptions();
+  if (props.type === 'bar') chart = new BarChart(chartRef.value, props.data, options);
+  if (props.type === 'line') chart = new LineChart(chartRef.value, props.data, options);
+  if (props.type === 'pie') chart = new PieChart(chartRef.value, getPieChartData(), options);
+};
 
 const updateChart = () => {
   if (!chart) {
-    renderChart()
-    return
+    renderChart();
+    return;
   }
-  const options = getOptions()
-  const data = props.type === 'pie' ? getPieChartData() : props.data
-  chart.update(data, options)
-}
+  const options = getOptions();
+  const data = props.type === 'pie' ? getPieChartData() : props.data;
+  chart.update(data, options);
+};
 
 watch([
   () => props.width,
@@ -93,43 +93,43 @@ watch([
   () => props.data,
   () => props.options,
   slideScale,
-], updateChart)
+], updateChart);
 
-onMounted(renderChart)
+onMounted(renderChart);
 
 const themeColors = computed(() => {
-  let colors: string[] = []
-  if (props.themeColor.length >= 10) colors = props.themeColor
-  else if (props.themeColor.length === 1) colors = tinycolor(props.themeColor[0]).analogous(10).map(color => color.toRgbString())
+  let colors: string[] = [];
+  if (props.themeColor.length >= 10) colors = props.themeColor;
+  else if (props.themeColor.length === 1) colors = tinycolor(props.themeColor[0]).analogous(10).map(color => color.toRgbString());
   else {
-    const len = props.themeColor.length
-    const supplement = tinycolor(props.themeColor[len - 1]).analogous(10 + 1 - len).map(color => color.toRgbString())
-    colors = [...props.themeColor.slice(0, len - 1), ...supplement]
+    const len = props.themeColor.length;
+    const supplement = tinycolor(props.themeColor[len - 1]).analogous(10 + 1 - len).map(color => color.toRgbString());
+    colors = [...props.themeColor.slice(0, len - 1), ...supplement];
   }
-  return colors
-})
+  return colors;
+});
 
 // 更新主题配色：
 // 如果当前所设置的主题色数小于10，剩余部分获取最后一个主题色的相近颜色作为配色
 const updateTheme = () => {
-  if (!chartRef.value) return
+  if (!chartRef.value) return;
 
   for (let i = 0; i < 10; i++) {
-    chartRef.value.style.setProperty(`--theme-color-${i + 1}`, themeColors.value[i])
+    chartRef.value.style.setProperty(`--theme-color-${i + 1}`, themeColors.value[i]);
   }
-}
+};
 
-watch(themeColors, updateTheme)
-onMounted(updateTheme)
+watch(themeColors, updateTheme);
+onMounted(updateTheme);
 
 // 更新网格颜色，包括坐标的文字部分
 const updateGridColor = () => {
-  if (!chartRef.value) return
-  if (props.gridColor) chartRef.value.style.setProperty(`--grid-color`, props.gridColor)
-}
+  if (!chartRef.value) return;
+  if (props.gridColor) chartRef.value.style.setProperty(`--grid-color`, props.gridColor);
+};
 
-watch(() => props.gridColor, updateGridColor)
-onMounted(updateGridColor)
+watch(() => props.gridColor, updateGridColor);
+onMounted(updateGridColor);
 </script>
 
 <style lang="scss" scoped>

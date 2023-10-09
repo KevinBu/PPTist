@@ -1,13 +1,13 @@
-import { customAlphabet } from 'nanoid'
-import { defineStore } from 'pinia'
-import { ToolbarStates } from '@/types/toolbar'
-import type { CreatingElement, TextFormatPainter } from '@/types/edit'
-import type { DialogForExportTypes } from '@/types/export'
-import { type TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
-import { SYS_FONTS } from '@/configs/font'
-import { isSupportFont } from '@/utils/font'
+import { customAlphabet } from 'nanoid';
+import { defineStore } from 'pinia';
+import { ToolbarStates } from '@/types/toolbar';
+import type { CreatingElement, TextFormatPainter } from '@/types/edit';
+import type { DialogForExportTypes } from '@/types/export';
+import { type TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils';
+import { SYS_FONTS } from '@/configs/font';
+import { isSupportFont } from '@/utils/font';
 
-import { useSlidesStore } from './slides'
+import { useSlidesStore } from './slides';
 
 export interface MainState {
   activeElementIdList: string[]
@@ -38,8 +38,8 @@ export interface MainState {
   showSearchPanel: boolean
 }
 
-const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
-export const databaseId = nanoid(10)
+const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
+export const databaseId = nanoid(10);
 
 export const useMainStore = defineStore('main', {
   state: (): MainState => ({
@@ -73,122 +73,122 @@ export const useMainStore = defineStore('main', {
 
   getters: {
     activeElementList(state) {
-      const slidesStore = useSlidesStore()
-      const currentSlide = slidesStore.currentSlide
-      if (!currentSlide || !currentSlide.elements) return []
-      return currentSlide.elements.filter(element => state.activeElementIdList.includes(element.id))
+      const slidesStore = useSlidesStore();
+      const currentSlide = slidesStore.currentSlide;
+      if (!currentSlide || !currentSlide.elements) return [];
+      return currentSlide.elements.filter(element => state.activeElementIdList.includes(element.id));
     },
   
     handleElement(state) {
-      const slidesStore = useSlidesStore()
-      const currentSlide = slidesStore.currentSlide
-      if (!currentSlide || !currentSlide.elements) return null
-      return currentSlide.elements.find(element => state.handleElementId === element.id) || null
+      const slidesStore = useSlidesStore();
+      const currentSlide = slidesStore.currentSlide;
+      if (!currentSlide || !currentSlide.elements) return null;
+      return currentSlide.elements.find(element => state.handleElementId === element.id) || null;
     },
   },
 
   actions: {
     setActiveElementIdList(activeElementIdList: string[]) {
-      if (activeElementIdList.length === 1) this.handleElementId = activeElementIdList[0]
-      else this.handleElementId = ''
+      if (activeElementIdList.length === 1) this.handleElementId = activeElementIdList[0];
+      else this.handleElementId = '';
       
-      this.activeElementIdList = activeElementIdList
+      this.activeElementIdList = activeElementIdList;
     },
     
     setHandleElementId(handleElementId: string) {
-      this.handleElementId = handleElementId
+      this.handleElementId = handleElementId;
     },
     
     setActiveGroupElementId(activeGroupElementId: string) {
-      this.activeGroupElementId = activeGroupElementId
+      this.activeGroupElementId = activeGroupElementId;
     },
     
     setHiddenElementIdList(hiddenElementIdList: string[]) {
-      this.hiddenElementIdList = hiddenElementIdList
+      this.hiddenElementIdList = hiddenElementIdList;
     },
   
     setCanvasPercentage(percentage: number) {
-      this.canvasPercentage = percentage
+      this.canvasPercentage = percentage;
     },
   
     setCanvasScale(scale: number) {
-      this.canvasScale = scale
+      this.canvasScale = scale;
     },
   
     setCanvasDragged(isDragged: boolean) {
-      this.canvasDragged = isDragged
+      this.canvasDragged = isDragged;
     },
   
     setThumbnailsFocus(isFocus: boolean) {
-      this.thumbnailsFocus = isFocus
+      this.thumbnailsFocus = isFocus;
     },
   
     setEditorareaFocus(isFocus: boolean) {
-      this.editorAreaFocus = isFocus
+      this.editorAreaFocus = isFocus;
     },
   
     setDisableHotkeysState(disable: boolean) {
-      this.disableHotkeys = disable
+      this.disableHotkeys = disable;
     },
   
     setGridLineSize(size: number) {
-      this.gridLineSize = size
+      this.gridLineSize = size;
     },
   
     setRulerState(show: boolean) {
-      this.showRuler = show
+      this.showRuler = show;
     },
   
     setCreatingElement(element: CreatingElement | null) {
-      this.creatingElement = element
+      this.creatingElement = element;
     },
   
     setCreatingCustomShapeState(state: boolean) {
-      this.creatingCustomShape = state
+      this.creatingCustomShape = state;
     },
   
     setAvailableFonts() {
-      this.availableFonts = SYS_FONTS.filter(font => isSupportFont(font.value))
+      this.availableFonts = SYS_FONTS.filter(font => isSupportFont(font.value));
     },
   
     setToolbarState(toolbarState: ToolbarStates) {
-      this.toolbarState = toolbarState
+      this.toolbarState = toolbarState;
     },
   
     setClipingImageElementId(elId: string) {
-      this.clipingImageElementId = elId
+      this.clipingImageElementId = elId;
     },
   
     setRichtextAttrs(attrs: TextAttrs) {
-      this.richTextAttrs = attrs
+      this.richTextAttrs = attrs;
     },
   
     setSelectedTableCells(cells: string[]) {
-      this.selectedTableCells = cells
+      this.selectedTableCells = cells;
     },
   
     setScalingState(isScaling: boolean) {
-      this.isScaling = isScaling
+      this.isScaling = isScaling;
     },
     
     updateSelectedSlidesIndex(selectedSlidesIndex: number[]) {
-      this.selectedSlidesIndex = selectedSlidesIndex
+      this.selectedSlidesIndex = selectedSlidesIndex;
     },
 
     setDialogForExport(type: DialogForExportTypes) {
-      this.dialogForExport = type
+      this.dialogForExport = type;
     },
 
     setTextFormatPainter(textFormatPainter: TextFormatPainter | null) {
-      this.textFormatPainter = textFormatPainter
+      this.textFormatPainter = textFormatPainter;
     },
 
     setSelectPanelState(show: boolean) {
-      this.showSelectPanel = show
+      this.showSelectPanel = show;
     },
 
     setSearchPanelState(show: boolean) {
-      this.showSearchPanel = show
+      this.showSearchPanel = show;
     },
   },
-})
+});

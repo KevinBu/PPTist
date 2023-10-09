@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-import Button from '@/components/Button.vue'
+import Button from '@/components/Button.vue';
 
 defineProps<{
   color: string
-}>()
+}>();
 </script>
 
 <style lang="scss" scoped>

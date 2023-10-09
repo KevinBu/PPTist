@@ -3,14 +3,14 @@
 </template>
 
 <script lang="ts" setup>
-import type { OperateBorderLines } from '@/types/edit'
+import type { OperateBorderLines } from '@/types/edit';
 
 withDefaults(defineProps<{
   type: OperateBorderLines
   isWide?: boolean
 }>(), {
   isWide: false
-})
+});
 </script>
 
 <style lang="scss" scoped>

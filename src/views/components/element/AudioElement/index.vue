@@ -40,57 +40,57 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTAudioElement } from '@/types/slides'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTAudioElement } from '@/types/slides';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
+import { VIEWPORT_SIZE } from '@/configs/canvas';
 
-import AudioPlayer from './AudioPlayer.vue'
+import AudioPlayer from './AudioPlayer.vue';
 
 const props = defineProps<{
   elementInfo: PPTAudioElement
   selectElement: (e: MouseEvent | TouchEvent, element: PPTAudioElement, canMove?: boolean) => void
   contextmenus: () => ContextmenuItem[] | null
-}>()
+}>();
 
-const { canvasScale, handleElementId } = storeToRefs(useMainStore())
-const { viewportRatio } = storeToRefs(useSlidesStore())
+const { canvasScale, handleElementId } = storeToRefs(useMainStore());
+const { viewportRatio } = storeToRefs(useSlidesStore());
 
 const audioIconSize = computed(() => {
-  return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px'
-})
+  return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px';
+});
 const audioPlayerPosition = computed(() => {
-  const canvasWidth = VIEWPORT_SIZE
-  const canvasHeight = VIEWPORT_SIZE * viewportRatio.value
+  const canvasWidth = VIEWPORT_SIZE;
+  const canvasHeight = VIEWPORT_SIZE * viewportRatio.value;
 
-  const audioWidth = 280 / canvasScale.value
-  const audioHeight = 50 / canvasScale.value
+  const audioWidth = 280 / canvasScale.value;
+  const audioHeight = 50 / canvasScale.value;
 
-  const elWidth = props.elementInfo.width
-  const elHeight = props.elementInfo.height
-  const elLeft = props.elementInfo.left
-  const elTop = props.elementInfo.top
+  const elWidth = props.elementInfo.width;
+  const elHeight = props.elementInfo.height;
+  const elLeft = props.elementInfo.left;
+  const elTop = props.elementInfo.top;
 
-  let left = 0
-  let top = elHeight
+  let left = 0;
+  let top = elHeight;
   
-  if (elLeft + audioWidth >= canvasWidth) left = elWidth - audioWidth
-  if (elTop + elHeight + audioHeight >= canvasHeight) top = -audioHeight
+  if (elLeft + audioWidth >= canvasWidth) left = elWidth - audioWidth;
+  if (elTop + elHeight + audioHeight >= canvasHeight) top = -audioHeight;
 
   return {
     left: left + 'px',
     top: top + 'px',
-  }
-})
+  };
+});
 
 const handleSelectElement = (e: MouseEvent | TouchEvent) => {
-  if (props.elementInfo.lock) return
-  e.stopPropagation()
+  if (props.elementInfo.lock) return;
+  e.stopPropagation();
 
-  props.selectElement(e, props.elementInfo)
-}
+  props.selectElement(e, props.elementInfo);
+};
 </script>
 
 <style lang="scss" scoped>

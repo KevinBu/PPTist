@@ -11,33 +11,33 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTElement, PPTElementLink } from '@/types/slides'
-import useLink from '@/hooks/useLink'
-import Divider from '@/components/Divider.vue'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTElement, PPTElementLink } from '@/types/slides';
+import useLink from '@/hooks/useLink';
+import Divider from '@/components/Divider.vue';
 
 const props = defineProps<{
   elementInfo: PPTElement
   link: PPTElementLink
   openLinkDialog: () => void
-}>()
+}>();
 
-const mainStore = useMainStore()
-const slidesStore = useSlidesStore()
-const { canvasScale } = storeToRefs(mainStore)
-const { slides } = storeToRefs(slidesStore)
-const { removeLink } = useLink()
-const height = computed(() => props.elementInfo.type === 'line' ? 0 : props.elementInfo.height)
+const mainStore = useMainStore();
+const slidesStore = useSlidesStore();
+const { canvasScale } = storeToRefs(mainStore);
+const { slides } = storeToRefs(slidesStore);
+const { removeLink } = useLink();
+const height = computed(() => props.elementInfo.type === 'line' ? 0 : props.elementInfo.height);
 
 const turnTarget = (slideId: string) => {
-  const targetIndex = slides.value.findIndex(item => item.id === slideId)
+  const targetIndex = slides.value.findIndex(item => item.id === slideId);
   if (targetIndex !== -1) {
-    mainStore.setActiveElementIdList([])
-    slidesStore.updateSlideIndex(targetIndex)
+    mainStore.setActiveElementIdList([]);
+    slidesStore.updateSlideIndex(targetIndex);
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

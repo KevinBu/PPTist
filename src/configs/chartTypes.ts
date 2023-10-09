@@ -1,4 +1,4 @@
-import type { ChartType } from '@/types/slides'
+import type { ChartType } from '@/types/slides';
 
 interface ChartTypes {
   [propName: string]: ChartType
@@ -12,4 +12,4 @@ export const CHART_TYPES: ChartTypes = {
   scatter: 'line',
   pie: 'pie',
   ring: 'pie',
-}
+};

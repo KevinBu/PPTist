@@ -18,29 +18,29 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import useLoadSlides from '@/hooks/useLoadSlides'
-import type { Mode } from '@/types/mobile'
+import { onMounted, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import useLoadSlides from '@/hooks/useLoadSlides';
+import type { Mode } from '@/types/mobile';
 
-import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
-import Divider from '@/components/Divider.vue'
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue';
+import Divider from '@/components/Divider.vue';
 
 defineProps<{
   changeMode: (mode: Mode) => void
-}>()
+}>();
 
-const { slides } = storeToRefs(useSlidesStore())
-const { slidesLoadLimit } = useLoadSlides()
+const { slides } = storeToRefs(useSlidesStore());
+const { slidesLoadLimit } = useLoadSlides();
 
-const mobileRef = ref<HTMLElement>()
-const screenWidth = ref(0)
+const mobileRef = ref<HTMLElement>();
+const screenWidth = ref(0);
 
 onMounted(() => {
-  if (!mobileRef.value) return
-  screenWidth.value = mobileRef.value.clientWidth
-})
+  if (!mobileRef.value) return;
+  screenWidth.value = mobileRef.value.clientWidth;
+});
 </script>
 
 <style lang="scss" scoped>

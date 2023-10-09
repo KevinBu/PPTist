@@ -15,17 +15,17 @@
 </template>
 
 <script lang="ts" setup>
-import type { PresetChartType } from '@/types/slides'
+import type { PresetChartType } from '@/types/slides';
 
 const emit = defineEmits<{
   (event: 'select', payload: PresetChartType): void
-}>()
+}>();
 
-const chartList: PresetChartType[] = ['bar', 'horizontalBar', 'line', 'area', 'scatter', 'pie', 'ring']
+const chartList: PresetChartType[] = ['bar', 'horizontalBar', 'line', 'area', 'scatter', 'pie', 'ring'];
 
 const selectChart = (chart: PresetChartType) => {
-  emit('select', chart)
-}
+  emit('select', chart);
+};
 </script>
 
 <style lang="scss" scoped>

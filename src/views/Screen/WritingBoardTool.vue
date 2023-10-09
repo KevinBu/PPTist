@@ -87,17 +87,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import { db } from '@/utils/database'
+import { ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import { db } from '@/utils/database';
 
-import WritingBoard from '@/components/WritingBoard.vue'
-import MoveablePanel from '@/components/MoveablePanel.vue'
-import Slider from '@/components/Slider.vue'
-import Popover from '@/components/Popover.vue'
+import WritingBoard from '@/components/WritingBoard.vue';
+import MoveablePanel from '@/components/MoveablePanel.vue';
+import Slider from '@/components/Slider.vue';
+import Popover from '@/components/Popover.vue';
 
-const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#ffff3a']
+const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#ffff3a'];
 
 type WritingBoardModel = 'pen' | 'mark' | 'eraser'
 
@@ -109,67 +109,67 @@ withDefaults(defineProps<{
 }>(), {
   left: -5,
   top: -5,
-})
+});
 
 const emit = defineEmits<{
   (event: 'close'): void
-}>()
+}>();
 
-const { currentSlide } = storeToRefs(useSlidesStore())
+const { currentSlide } = storeToRefs(useSlidesStore());
 
-const writingBoardRef = ref<typeof WritingBoard>()
-const writingBoardColor = ref('#e2534d')
-const writingBoardModel = ref<WritingBoardModel>('pen')
-const blackboard = ref(false)
-const sizePopoverType = ref<'' | WritingBoardModel>('')
+const writingBoardRef = ref<typeof WritingBoard>();
+const writingBoardColor = ref('#e2534d');
+const writingBoardModel = ref<WritingBoardModel>('pen');
+const blackboard = ref(false);
+const sizePopoverType = ref<'' | WritingBoardModel>('');
 
-const penSize = ref(6)
-const markSize = ref(24)
-const rubberSize = ref(80)
+const penSize = ref(6);
+const markSize = ref(24);
+const rubberSize = ref(80);
 
 const changeModel = (model: WritingBoardModel) => {
   if (writingBoardModel.value === model) {
-    sizePopoverType.value = sizePopoverType.value === model ? '' : model
+    sizePopoverType.value = sizePopoverType.value === model ? '' : model;
   }
   else {
-    if (sizePopoverType.value) sizePopoverType.value = ''
-    writingBoardModel.value = model
+    if (sizePopoverType.value) sizePopoverType.value = '';
+    writingBoardModel.value = model;
   }
-}
+};
 
 // 清除画布上的墨迹
 const clearCanvas = () => {
-  writingBoardRef.value!.clearCanvas()
-}
+  writingBoardRef.value!.clearCanvas();
+};
 
 // 修改画笔颜色，如果当前处于橡皮状态则先切换到画笔状态
 const changeColor = (color: string) => {
-  if (writingBoardModel.value === 'eraser') writingBoardModel.value = 'pen'
-  writingBoardColor.value = color
-}
+  if (writingBoardModel.value === 'eraser') writingBoardModel.value = 'pen';
+  writingBoardColor.value = color;
+};
 
 // 关闭写字板
 const closeWritingBoard = () => {
-  emit('close')
-}
+  emit('close');
+};
 
 // 打开画笔工具或切换页面时，将数据库中存储的墨迹绘制到画布上
 watch(currentSlide, () => {
   db.writingBoardImgs.where('id').equals(currentSlide.value.id).toArray().then(ret => {
-    const currentImg = ret[0]
-    writingBoardRef.value!.setImageDataURL(currentImg?.dataURL || '')
-  })
-}, { immediate: true })
+    const currentImg = ret[0];
+    writingBoardRef.value!.setImageDataURL(currentImg?.dataURL || '');
+  });
+}, { immediate: true });
 
 // 每次绘制完成后将绘制完的图片更新到数据库
 const hanldeWritingEnd = () => {
-  const dataURL = writingBoardRef.value!.getImageDataURL()
+  const dataURL = writingBoardRef.value!.getImageDataURL();
   db.writingBoardImgs.where('id').equals(currentSlide.value.id).toArray().then(ret => {
-    const currentImg = ret[0]
-    if (currentImg) db.writingBoardImgs.update(currentImg, { dataURL })
-    else db.writingBoardImgs.add({ id: currentSlide.value.id, dataURL })
-  })
-}
+    const currentImg = ret[0];
+    if (currentImg) db.writingBoardImgs.update(currentImg, { dataURL });
+    else db.writingBoardImgs.add({ id: currentSlide.value.id, dataURL });
+  });
+};
 </script>
 
 <style lang="scss" scoped>

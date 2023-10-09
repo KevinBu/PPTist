@@ -19,11 +19,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { PPTVideoElement } from '@/types/slides'
+import type { PPTVideoElement } from '@/types/slides';
 
 defineProps<{
   elementInfo: PPTVideoElement
-}>()
+}>();
 </script>
 
 <style lang="scss" scoped>

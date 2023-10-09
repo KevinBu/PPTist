@@ -13,7 +13,7 @@ withDefaults(defineProps<{
 }>(), {
   type: 'horizontal',
   margin: 0,
-})
+});
 </script>
 
 <style lang="scss" scoped>

@@ -46,32 +46,32 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
-import { fillDigit } from '@/utils/common'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import useSlideHandler from '@/hooks/useSlideHandler'
-import useScreening from '@/hooks/useScreening'
-import useLoadSlides from '@/hooks/useLoadSlides'
+import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store';
+import { fillDigit } from '@/utils/common';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
+import useSlideHandler from '@/hooks/useSlideHandler';
+import useScreening from '@/hooks/useScreening';
+import useLoadSlides from '@/hooks/useLoadSlides';
 
-import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
-import LayoutPool from './LayoutPool.vue'
-import Popover from '@/components/Popover.vue'
-import Draggable from 'vuedraggable'
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue';
+import LayoutPool from './LayoutPool.vue';
+import Popover from '@/components/Popover.vue';
+import Draggable from 'vuedraggable';
 
-const mainStore = useMainStore()
-const slidesStore = useSlidesStore()
-const keyboardStore = useKeyboardStore()
-const { selectedSlidesIndex: _selectedSlidesIndex, thumbnailsFocus } = storeToRefs(mainStore)
-const { slides, slideIndex } = storeToRefs(slidesStore)
-const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
+const mainStore = useMainStore();
+const slidesStore = useSlidesStore();
+const keyboardStore = useKeyboardStore();
+const { selectedSlidesIndex: _selectedSlidesIndex, thumbnailsFocus } = storeToRefs(mainStore);
+const { slides, slideIndex } = storeToRefs(slidesStore);
+const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore);
 
-const { slidesLoadLimit } = useLoadSlides()
+const { slidesLoadLimit } = useLoadSlides();
 
-const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
+const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value]);
 
-const presetLayoutPopoverVisible = ref(false)
+const presetLayoutPopoverVisible = ref(false);
 
 const {
   copySlide,
@@ -83,83 +83,83 @@ const {
   cutSlide,
   selectAllSlide,
   sortSlides,
-} = useSlideHandler()
+} = useSlideHandler();
 
 // 切换页面
 const changeSlideIndex = (index: number) => {
-  mainStore.setActiveElementIdList([])
+  mainStore.setActiveElementIdList([]);
 
-  if (slideIndex.value === index) return
-  slidesStore.updateSlideIndex(index)
-}
+  if (slideIndex.value === index) return;
+  slidesStore.updateSlideIndex(index);
+};
 
 // 点击缩略图
 const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
-  const isMultiSelected = selectedSlidesIndex.value.length > 1
+  const isMultiSelected = selectedSlidesIndex.value.length > 1;
 
-  if (isMultiSelected && selectedSlidesIndex.value.includes(index) && e.button !== 0) return
+  if (isMultiSelected && selectedSlidesIndex.value.includes(index) && e.button !== 0) return;
 
   // 按住Ctrl键，点选幻灯片，再次点击已选中的页面则取消选中
   if (ctrlKeyState.value) {
     if (slideIndex.value === index) {
-      if (!isMultiSelected) return
+      if (!isMultiSelected) return;
 
-      const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
-      mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-      changeSlideIndex(selectedSlidesIndex.value[0])
+      const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index);
+      mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex);
+      changeSlideIndex(selectedSlidesIndex.value[0]);
     }
     else {
       if (selectedSlidesIndex.value.includes(index)) {
-        const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
-        mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
+        const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index);
+        mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex);
       }
       else {
-        const newSelectedSlidesIndex = [...selectedSlidesIndex.value, index]
-        mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-        changeSlideIndex(index)
+        const newSelectedSlidesIndex = [...selectedSlidesIndex.value, index];
+        mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex);
+        changeSlideIndex(index);
       }
     }
   }
   // 按住Shift键，选择范围内的全部幻灯片
   else if (shiftKeyState.value) {
-    if (slideIndex.value === index && !isMultiSelected) return
+    if (slideIndex.value === index && !isMultiSelected) return;
 
-    let minIndex = Math.min(...selectedSlidesIndex.value)
-    let maxIndex = index
+    let minIndex = Math.min(...selectedSlidesIndex.value);
+    let maxIndex = index;
 
     if (index < minIndex) {
-      maxIndex = Math.max(...selectedSlidesIndex.value)
-      minIndex = index
+      maxIndex = Math.max(...selectedSlidesIndex.value);
+      minIndex = index;
     }
 
-    const newSelectedSlidesIndex = []
-    for (let i = minIndex; i <= maxIndex; i++) newSelectedSlidesIndex.push(i)
-    mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-    changeSlideIndex(index)
+    const newSelectedSlidesIndex = [];
+    for (let i = minIndex; i <= maxIndex; i++) newSelectedSlidesIndex.push(i);
+    mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex);
+    changeSlideIndex(index);
   }
   // 正常切换页面
   else {
-    mainStore.updateSelectedSlidesIndex([])
-    changeSlideIndex(index)
+    mainStore.updateSelectedSlidesIndex([]);
+    changeSlideIndex(index);
   }
-}
+};
 
 // 设置缩略图工具栏聚焦状态（只有聚焦状态下，该部分的快捷键才能生效）
 const setThumbnailsFocus = (focus: boolean) => {
-  if (thumbnailsFocus.value === focus) return
-  mainStore.setThumbnailsFocus(focus)
+  if (thumbnailsFocus.value === focus) return;
+  mainStore.setThumbnailsFocus(focus);
 
-  if (!focus) mainStore.updateSelectedSlidesIndex([])
-}
+  if (!focus) mainStore.updateSelectedSlidesIndex([]);
+};
 
 // 拖拽调整顺序后进行数据的同步
 const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
-  const { newIndex, oldIndex } = eventData
-  if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return
-  sortSlides(newIndex, oldIndex)
-}
+  const { newIndex, oldIndex } = eventData;
+  if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return;
+  sortSlides(newIndex, oldIndex);
+};
 
-const { enterScreening, enterScreeningFromStart } = useScreening()
+const { enterScreening, enterScreeningFromStart } = useScreening();
 
 const contextmenusThumbnails = (): ContextmenuItem[] => {
   return [
@@ -183,8 +183,8 @@ const contextmenusThumbnails = (): ContextmenuItem[] => {
       subText: 'F5',
       handler: enterScreeningFromStart,
     },
-  ]
-}
+  ];
+};
 
 const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   return [
@@ -230,8 +230,8 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
       subText: 'Shift + F5',
       handler: enterScreening,
     },
-  ]
-}
+  ];
+};
 </script>
 
 <style lang="scss" scoped>

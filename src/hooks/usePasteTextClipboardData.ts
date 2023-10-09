@@ -1,7 +1,7 @@
-import { pasteCustomClipboardString } from '@/utils/clipboard'
-import { parseText2Paragraphs } from '@/utils/textParser'
-import useCreateElement from '@/hooks/useCreateElement'
-import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
+import { pasteCustomClipboardString } from '@/utils/clipboard';
+import { parseText2Paragraphs } from '@/utils/textParser';
+import useCreateElement from '@/hooks/useCreateElement';
+import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements';
 
 interface PasteTextClipboardDataOptions {
   onlySlide?: boolean
@@ -9,8 +9,8 @@ interface PasteTextClipboardDataOptions {
 }
 
 export default () => {
-  const { createTextElement } = useCreateElement()
-  const { addElementsFromData, addSlidesFromData } = useAddSlidesOrElements()
+  const { createTextElement } = useCreateElement();
+  const { addElementsFromData, addSlidesFromData } = useAddSlidesOrElements();
 
   /**
    * 粘贴普通文本：创建为新的文本元素
@@ -22,8 +22,8 @@ export default () => {
       top: 0,
       width: 600,
       height: 50,
-    }, { content: text })
-  }
+    }, { content: text });
+  };
 
   /**
    * 解析剪贴板内容，根据解析结果选择合适的粘贴方式
@@ -31,27 +31,27 @@ export default () => {
    * @param options 配置项：onlySlide -- 仅处理页面粘贴；onlyElements -- 仅处理元素粘贴；
    */
   const pasteTextClipboardData = (text: string, options?: PasteTextClipboardDataOptions) => {
-    const onlySlide = options?.onlySlide || false
-    const onlyElements = options?.onlyElements || false
+    const onlySlide = options?.onlySlide || false;
+    const onlyElements = options?.onlyElements || false;
 
-    const clipboardData = pasteCustomClipboardString(text)
+    const clipboardData = pasteCustomClipboardString(text);
 
     // 元素或页面
     if (typeof clipboardData === 'object') {
-      const { type, data } = clipboardData
+      const { type, data } = clipboardData;
 
-      if (type === 'elements' && !onlySlide) addElementsFromData(data)
-      else if (type === 'slides' && !onlyElements) addSlidesFromData(data)
+      if (type === 'elements' && !onlySlide) addElementsFromData(data);
+      else if (type === 'slides' && !onlyElements) addSlidesFromData(data);
     }
 
     // 普通文本
     else if (!onlyElements && !onlySlide) {
-      const string = parseText2Paragraphs(clipboardData)
-      createTextElementFromClipboard(string)
+      const string = parseText2Paragraphs(clipboardData);
+      createTextElementFromClipboard(string);
     }
-  }
+  };
 
   return {
     pasteTextClipboardData,
-  }
-}
+  };
+};

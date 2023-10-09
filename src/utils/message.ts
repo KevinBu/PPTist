@@ -1,5 +1,5 @@
-import { createVNode, render, type AppContext } from 'vue'
-import MessageComponent from '@/components/Message.vue'
+import { createVNode, render, type AppContext } from 'vue';
+import MessageComponent from '@/components/Message.vue';
 
 export interface MessageOptions {
   type?: 'info' | 'success' | 'warning' | 'error'
@@ -28,24 +28,24 @@ export interface Message {
   _context?: AppContext | null
 }
 
-const instances: MessageIntance[] = []
-let wrap: HTMLDivElement | null = null
-let seed = 0
+const instances: MessageIntance[] = [];
+let wrap: HTMLDivElement | null = null;
+let seed = 0;
 const defaultOptions: MessageOptions = {
   duration: 3000,
-}
+};
 
 const message: Message = (options: MessageOptions) => {
-  const id = 'message-' + seed++
+  const id = 'message-' + seed++;
   const props = {
     ...defaultOptions,
     ...options,
     id,
-  }
+  };
 
   if (!wrap) {
-    wrap = document.createElement('div')
-    wrap.className = 'message-wrap'
+    wrap = document.createElement('div');
+    wrap.className = 'message-wrap';
     wrap.style.cssText = `
       width: 100%;
       position: fixed;
@@ -60,44 +60,44 @@ const message: Message = (options: MessageOptions) => {
       background-color: rgba(255, 255, 255, 0);
       transition: all 1s ease-in-out;
       align-items: center;
-    `
-    document.body.appendChild(wrap)
+    `;
+    document.body.appendChild(wrap);
   }
 
-  const vm = createVNode(MessageComponent, props, null)
-  const div = document.createElement('div')
+  const vm = createVNode(MessageComponent, props, null);
+  const div = document.createElement('div');
 
-  vm.appContext = options.ctx || message._context || null
-  vm.props!.onClose = options.onClose
+  vm.appContext = options.ctx || message._context || null;
+  vm.props!.onClose = options.onClose;
   vm.props!.onDestroy = () => {
     if (wrap && wrap.childNodes.length <= 1) {
-      wrap.remove()
-      wrap = null
+      wrap.remove();
+      wrap = null;
     }
-    render(null, div)
-  }
+    render(null, div);
+  };
 
-  render(vm, div)
-  wrap.appendChild(div.firstElementChild!)
+  render(vm, div);
+  wrap.appendChild(div.firstElementChild!);
 
   const instance = {
     id,
     close: () => vm?.component?.exposed?.close(),
-  }
+  };
 
-  instances.push(instance)
-  return instance
-}
+  instances.push(instance);
+  return instance;
+};
 
-message.success = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'success', message: msg })
-message.info = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'info', message: msg })
-message.warning = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'warning', message: msg })
-message.error = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'error', message: msg })
+message.success = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'success', message: msg });
+message.info = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'info', message: msg });
+message.warning = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'warning', message: msg });
+message.error = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'error', message: msg });
 
 message.closeAll = function() {
   for (let i = instances.length - 1; i >= 0; i--) {
-    instances[i].close()
+    instances[i].close();
   }
-}
+};
 
-export default message
+export default message;

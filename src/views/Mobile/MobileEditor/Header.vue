@@ -9,17 +9,17 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { useSnapshotStore } from '@/store'
-import type { Mode } from '@/types/mobile'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { storeToRefs } from 'pinia';
+import { useSnapshotStore } from '@/store';
+import type { Mode } from '@/types/mobile';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
 defineProps<{
   changeMode: (mode: Mode) => void
-}>()
+}>();
 
-const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
-const { redo, undo } = useHistorySnapshot()
+const { canUndo, canRedo } = storeToRefs(useSnapshotStore());
+const { redo, undo } = useHistorySnapshot();
 </script>
 
 <style lang="scss" scoped>

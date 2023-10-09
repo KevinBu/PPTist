@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import Button from './Button.vue'
+import Button from './Button.vue';
 
 withDefaults(defineProps<{
   checked?: boolean
@@ -17,5 +17,5 @@ withDefaults(defineProps<{
 }>(), {
   checked: false,
   disabled: false,
-})
+});
 </script>

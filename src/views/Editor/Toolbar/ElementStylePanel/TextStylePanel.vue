@@ -316,33 +316,33 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTTextElement } from '@/types/slides'
-import emitter, { EmitterEvents, type RichTextAction } from '@/utils/emitter'
-import { WEB_FONTS } from '@/configs/font'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-import useTextFormatPainter from '@/hooks/useTextFormatPainter'
-import message from '@/utils/message'
+import { ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTTextElement } from '@/types/slides';
+import emitter, { EmitterEvents, type RichTextAction } from '@/utils/emitter';
+import { WEB_FONTS } from '@/configs/font';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
+import useTextFormatPainter from '@/hooks/useTextFormatPainter';
+import message from '@/utils/message';
 
-import ElementOpacity from '../common/ElementOpacity.vue'
-import ElementOutline from '../common/ElementOutline.vue'
-import ElementShadow from '../common/ElementShadow.vue'
-import ColorButton from '../common/ColorButton.vue'
-import TextColorButton from '../common/TextColorButton.vue'
-import CheckboxButton from '@/components/CheckboxButton.vue'
-import ColorPicker from '@/components/ColorPicker/index.vue'
-import Divider from '@/components/Divider.vue'
-import Input from '@/components/Input.vue'
-import Button from '@/components/Button.vue'
-import ButtonGroup from '@/components/ButtonGroup.vue'
-import RadioButton from '@/components/RadioButton.vue'
-import RadioGroup from '@/components/RadioGroup.vue'
-import Select from '@/components/Select.vue'
-import SelectGroup from '@/components/SelectGroup.vue'
-import Popover from '@/components/Popover.vue'
-import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
+import ElementOpacity from '../common/ElementOpacity.vue';
+import ElementOutline from '../common/ElementOutline.vue';
+import ElementShadow from '../common/ElementShadow.vue';
+import ColorButton from '../common/ColorButton.vue';
+import TextColorButton from '../common/TextColorButton.vue';
+import CheckboxButton from '@/components/CheckboxButton.vue';
+import ColorPicker from '@/components/ColorPicker/index.vue';
+import Divider from '@/components/Divider.vue';
+import Input from '@/components/Input.vue';
+import Button from '@/components/Button.vue';
+import ButtonGroup from '@/components/ButtonGroup.vue';
+import RadioButton from '@/components/RadioButton.vue';
+import RadioGroup from '@/components/RadioGroup.vue';
+import Select from '@/components/Select.vue';
+import SelectGroup from '@/components/SelectGroup.vue';
+import Popover from '@/components/Popover.vue';
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue';
 
 // 注意，存在一个未知原因的BUG，如果文本加粗后文本框高度增加，画布的可视区域定位会出现错误
 // 因此在执行预置样式命令时，将加粗命令放在尽可能靠前的位置，避免字号增大后再加粗
@@ -417,97 +417,97 @@ const presetStyles = [
       { command: 'underline' },
     ],
   },
-]
+];
 
-const mainStore = useMainStore()
-const slidesStore = useSlidesStore()
-const { handleElement, handleElementId, richTextAttrs, availableFonts, textFormatPainter } = storeToRefs(mainStore)
+const mainStore = useMainStore();
+const slidesStore = useSlidesStore();
+const { handleElement, handleElementId, richTextAttrs, availableFonts, textFormatPainter } = storeToRefs(mainStore);
 
-const { addHistorySnapshot } = useHistorySnapshot()
-const { toggleFormatPainter } = useTextFormatPainter()
+const { addHistorySnapshot } = useHistorySnapshot();
+const { toggleFormatPainter } = useTextFormatPainter();
 
 const updateElement = (props: Partial<PPTTextElement>) => {
-  slidesStore.updateElement({ id: handleElementId.value, props })
-  addHistorySnapshot()
-}
+  slidesStore.updateElement({ id: handleElementId.value, props });
+  addHistorySnapshot();
+};
 
-const bulletListPanelVisible = ref(false)
-const orderedListPanelVisible = ref(false)
-const indentLeftPanelVisible = ref(false)
-const indentRightPanelVisible = ref(false)
+const bulletListPanelVisible = ref(false);
+const orderedListPanelVisible = ref(false);
+const indentLeftPanelVisible = ref(false);
+const indentRightPanelVisible = ref(false);
 
-const bulletListStyleTypeOption = ref(['disc', 'circle', 'square'])
-const orderedListStyleTypeOption = ref(['decimal', 'lower-roman', 'upper-roman', 'lower-alpha', 'upper-alpha', 'lower-greek'])
+const bulletListStyleTypeOption = ref(['disc', 'circle', 'square']);
+const orderedListStyleTypeOption = ref(['decimal', 'lower-roman', 'upper-roman', 'lower-alpha', 'upper-alpha', 'lower-greek']);
 
-const fill = ref<string>('#000')
-const lineHeight = ref<number>()
-const wordSpace = ref<number>()
-const paragraphSpace = ref<number>()
+const fill = ref<string>('#000');
+const lineHeight = ref<number>();
+const wordSpace = ref<number>();
+const paragraphSpace = ref<number>();
 
 watch(handleElement, () => {
-  if (!handleElement.value || handleElement.value.type !== 'text') return
+  if (!handleElement.value || handleElement.value.type !== 'text') return;
 
-  fill.value = handleElement.value.fill || '#fff'
-  lineHeight.value = handleElement.value.lineHeight || 1.5
-  wordSpace.value = handleElement.value.wordSpace || 0
-  paragraphSpace.value = handleElement.value.paragraphSpace === undefined ? 5 : handleElement.value.paragraphSpace
-}, { deep: true, immediate: true })
+  fill.value = handleElement.value.fill || '#fff';
+  lineHeight.value = handleElement.value.lineHeight || 1.5;
+  wordSpace.value = handleElement.value.wordSpace || 0;
+  paragraphSpace.value = handleElement.value.paragraphSpace === undefined ? 5 : handleElement.value.paragraphSpace;
+}, { deep: true, immediate: true });
 
 const fontSizeOptions = [
   '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
   '36px', '40px', '44px', '48px', '54px', '60px', '66px', '72px', '76px',
   '80px', '88px', '96px', '104px', '112px', '120px',
-]
-const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
-const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
-const paragraphSpaceOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 80]
+];
+const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0];
+const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10];
+const paragraphSpaceOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 80];
 
 // 设置行高
 const updateLineHeight = (value: number) => {
-  updateElement({ lineHeight: value })
-}
+  updateElement({ lineHeight: value });
+};
 
 // 设置段间距
 const updateParagraphSpace = (value: number) => {
-  updateElement({ paragraphSpace: value })
-}
+  updateElement({ paragraphSpace: value });
+};
 
 // 设置字间距
 const updateWordSpace = (value: number) => {
-  updateElement({ wordSpace: value })
-}
+  updateElement({ wordSpace: value });
+};
 
 // 设置文本框填充
 const updateFill = (value: string) => {
-  updateElement({ fill: value })
-}
+  updateElement({ fill: value });
+};
 
 // 发射富文本设置命令
 const emitRichTextCommand = (command: string, value?: string) => {
-  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
-}
+  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } });
+};
 
 // 发射富文本设置命令（批量）
 const emitBatchRichTextCommand = (action: RichTextAction[]) => {
-  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action })
-}
+  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action });
+};
 
 // 设置富文本超链接
-const link = ref('')
-const linkPopoverVisible = ref(false)
+const link = ref('');
+const linkPopoverVisible = ref(false);
 
-watch(richTextAttrs, () => linkPopoverVisible.value = false)
+watch(richTextAttrs, () => linkPopoverVisible.value = false);
 
 const openLinkPopover = () => {
-  link.value = richTextAttrs.value.link
-}
+  link.value = richTextAttrs.value.link;
+};
 const updateLink = (link?: string) => {
-  const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
-  if (!link || !linkRegExp.test(link)) return message.error('不是正确的网页链接地址')
+  const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/;
+  if (!link || !linkRegExp.test(link)) return message.error('不是正确的网页链接地址');
 
-  emitRichTextCommand('link', link)
-  linkPopoverVisible.value = false
-}
+  emitRichTextCommand('link', link);
+  linkPopoverVisible.value = false;
+};
 </script>
 
 <style lang="scss" scoped>

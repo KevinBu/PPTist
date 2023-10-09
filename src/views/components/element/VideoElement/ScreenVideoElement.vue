@@ -26,24 +26,24 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import type { PPTVideoElement } from '@/types/slides'
-import { injectKeySlideId, injectKeySlideScale } from '@/types/injectKey'
+import { computed, inject, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import type { PPTVideoElement } from '@/types/slides';
+import { injectKeySlideId, injectKeySlideScale } from '@/types/injectKey';
 
-import VideoPlayer from './VideoPlayer/index.vue'
+import VideoPlayer from './VideoPlayer/index.vue';
 
 defineProps<{
   elementInfo: PPTVideoElement
-}>()
+}>();
 
-const { currentSlide } = storeToRefs(useSlidesStore())
+const { currentSlide } = storeToRefs(useSlidesStore());
 
-const scale = inject(injectKeySlideScale) || ref(1)
-const slideId = inject(injectKeySlideId) || ref('')
+const scale = inject(injectKeySlideScale) || ref(1);
+const slideId = inject(injectKeySlideId) || ref('');
 
-const inCurrentSlide = computed(() => currentSlide.value.id === slideId.value)
+const inCurrentSlide = computed(() => currentSlide.value.id === slideId.value);
 </script>
 
 <style lang="scss" scoped>

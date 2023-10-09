@@ -1,4 +1,4 @@
-import { padStart } from 'lodash'
+import { padStart } from 'lodash';
 
 /**
  * 补足数字位数
@@ -6,12 +6,12 @@ import { padStart } from 'lodash'
  * @param len 位数
  */
 export const fillDigit = (digit: number, len: number) => {
-  return padStart('' + digit, len, '0')
-}
+  return padStart('' + digit, len, '0');
+};
 
 /**
  * 判断设备
  */
 export const isPC = () => {
-  return !navigator.userAgent.match(/(iPhone|iPod|iPad|Android|Mobile|BlackBerry|Symbian|Windows Phone)/i)
-}
+  return !navigator.userAgent.match(/(iPhone|iPod|iPad|Android|Mobile|BlackBerry|Symbian|Windows Phone)/i);
+};

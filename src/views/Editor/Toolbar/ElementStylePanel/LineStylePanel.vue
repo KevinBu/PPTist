@@ -66,32 +66,32 @@
 </template>
 
 <script lang="ts" setup>
-import type { Ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTLineElement } from '@/types/slides'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import type { Ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { PPTLineElement } from '@/types/slides';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
-import ElementShadow from '../common/ElementShadow.vue'
-import ColorButton from '../common/ColorButton.vue'
-import ColorPicker from '@/components/ColorPicker/index.vue'
-import Divider from '@/components/Divider.vue'
-import NumberInput from '@/components/NumberInput.vue'
-import Select from '@/components/Select.vue'
-import Popover from '@/components/Popover.vue'
+import ElementShadow from '../common/ElementShadow.vue';
+import ColorButton from '../common/ColorButton.vue';
+import ColorPicker from '@/components/ColorPicker/index.vue';
+import Divider from '@/components/Divider.vue';
+import NumberInput from '@/components/NumberInput.vue';
+import Select from '@/components/Select.vue';
+import Popover from '@/components/Popover.vue';
 
-const slidesStore = useSlidesStore()
-const { handleElement } = storeToRefs(useMainStore())
+const slidesStore = useSlidesStore();
+const { handleElement } = storeToRefs(useMainStore());
 
-const handleLineElement = handleElement as Ref<PPTLineElement>
+const handleLineElement = handleElement as Ref<PPTLineElement>;
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 
 const updateLine = (props: Partial<PPTLineElement>) => {
-  if (!handleElement.value) return
-  slidesStore.updateElement({ id: handleElement.value.id, props })
-  addHistorySnapshot()
-}
+  if (!handleElement.value) return;
+  slidesStore.updateElement({ id: handleElement.value.id, props });
+  addHistorySnapshot();
+};
 </script>
 
 <style lang="scss" scoped>

@@ -35,21 +35,21 @@
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
-import type { PPTShapeElement } from '@/types/slides'
-import type { OperateResizeHandlers } from '@/types/edit'
-import { SHAPE_PATH_FORMULAS } from '@/configs/shapes'
-import useCommonOperate from '../hooks/useCommonOperate'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore } from '@/store';
+import type { PPTShapeElement } from '@/types/slides';
+import type { OperateResizeHandlers } from '@/types/edit';
+import { SHAPE_PATH_FORMULAS } from '@/configs/shapes';
+import useCommonOperate from '../hooks/useCommonOperate';
 
-import RotateHandler from './RotateHandler.vue'
-import ResizeHandler from './ResizeHandler.vue'
-import BorderLine from './BorderLine.vue'
+import RotateHandler from './RotateHandler.vue';
+import ResizeHandler from './ResizeHandler.vue';
+import BorderLine from './BorderLine.vue';
 
 const props = defineProps<{
   elementInfo: PPTShapeElement
@@ -57,28 +57,28 @@ const props = defineProps<{
   rotateElement: (e: MouseEvent, element: PPTShapeElement) => void
   scaleElement: (e: MouseEvent, element: PPTShapeElement, command: OperateResizeHandlers) => void
   moveShapeKeypoint: (e: MouseEvent, element: PPTShapeElement) => void
-}>()
+}>();
 
-const { canvasScale } = storeToRefs(useMainStore())
+const { canvasScale } = storeToRefs(useMainStore());
 
-const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
-const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
-const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value);
+const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value);
+const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight);
 
 const keypointStyle = computed(() => {
-  if (!props.elementInfo.pathFormula || !props.elementInfo.keypoint) return {}
+  if (!props.elementInfo.pathFormula || !props.elementInfo.keypoint) return {};
 
-  const pathFormula = SHAPE_PATH_FORMULAS[props.elementInfo.pathFormula]
+  const pathFormula = SHAPE_PATH_FORMULAS[props.elementInfo.pathFormula];
   if ('editable' in pathFormula) {
-    const keypointPos = pathFormula.getBaseSize(props.elementInfo.width, props.elementInfo.height) * props.elementInfo.keypoint
-    if (pathFormula.relative === 'left') return { left: keypointPos * canvasScale.value + 'px' }
-    if (pathFormula.relative === 'right') return { left: (props.elementInfo.width - keypointPos) * canvasScale.value + 'px' }
-    if (pathFormula.relative === 'center') return { left: (props.elementInfo.width - keypointPos) / 2 * canvasScale.value + 'px' }
-    if (pathFormula.relative === 'top') return { top: keypointPos * canvasScale.value + 'px' }
-    if (pathFormula.relative === 'bottom') return { top: (props.elementInfo.height - keypointPos) * canvasScale.value + 'px' }
+    const keypointPos = pathFormula.getBaseSize(props.elementInfo.width, props.elementInfo.height) * props.elementInfo.keypoint;
+    if (pathFormula.relative === 'left') return { left: keypointPos * canvasScale.value + 'px' };
+    if (pathFormula.relative === 'right') return { left: (props.elementInfo.width - keypointPos) * canvasScale.value + 'px' };
+    if (pathFormula.relative === 'center') return { left: (props.elementInfo.width - keypointPos) / 2 * canvasScale.value + 'px' };
+    if (pathFormula.relative === 'top') return { top: keypointPos * canvasScale.value + 'px' };
+    if (pathFormula.relative === 'bottom') return { top: (props.elementInfo.height - keypointPos) * canvasScale.value + 'px' };
   }
-  return {}
-})
+  return {};
+});
 </script>
 
 <style lang="scss" scoped>

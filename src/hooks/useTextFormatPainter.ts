@@ -1,12 +1,12 @@
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
+import { storeToRefs } from 'pinia';
+import { useMainStore } from '@/store';
 
 export default () => {
-  const mainStore = useMainStore()
-  const { richTextAttrs, textFormatPainter } = storeToRefs(mainStore)
+  const mainStore = useMainStore();
+  const { richTextAttrs, textFormatPainter } = storeToRefs(mainStore);
 
   const toggleFormatPainter = () => {
-    if (textFormatPainter.value) mainStore.setTextFormatPainter(null)
+    if (textFormatPainter.value) mainStore.setTextFormatPainter(null);
     else {
       mainStore.setTextFormatPainter({
         bold: richTextAttrs.value.bold,
@@ -18,11 +18,11 @@ export default () => {
         fontname: richTextAttrs.value.fontname,
         fontsize: richTextAttrs.value.fontsize,
         align: richTextAttrs.value.align,
-      })
+      });
     }
-  }
+  };
 
   return {
     toggleFormatPainter,
-  }
-}
+  };
+};

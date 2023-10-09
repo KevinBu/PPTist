@@ -12,21 +12,21 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import type { Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import type { Slide } from '@/types/slides';
 
-import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue';
 
 const emit = defineEmits<{
   (event: 'select', payload: Slide): void
-}>()
+}>();
 
-const { layouts } = storeToRefs(useSlidesStore())
+const { layouts } = storeToRefs(useSlidesStore());
 
 const selectSlideTemplate = (slide: Slide) => {
-  emit('select', slide)
-}
+  emit('select', slide);
+};
 </script>
 
 <style lang="scss" scoped>

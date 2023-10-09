@@ -9,11 +9,11 @@ withDefaults(defineProps<{
   center?: boolean
 }>(), {
   center: false,
-})
+});
 
 const emit = defineEmits<{
   (event: 'click'): void
-}>()
+}>();
 </script>
 
 <style lang="scss" scoped>

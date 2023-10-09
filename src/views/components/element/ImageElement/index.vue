@@ -65,81 +65,81 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { ImageElementClip, PPTImageElement } from '@/types/slides'
-import type { ImageClipedEmitData } from '@/types/edit'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import useElementShadow from '@/views/components/element/hooks/useElementShadow'
-import useElementFlip from '@/views/components/element/hooks/useElementFlip'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-import useClipImage from './useClipImage'
-import useFilter from './useFilter'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import type { ImageElementClip, PPTImageElement } from '@/types/slides';
+import type { ImageClipedEmitData } from '@/types/edit';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
+import useElementShadow from '@/views/components/element/hooks/useElementShadow';
+import useElementFlip from '@/views/components/element/hooks/useElementFlip';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
+import useClipImage from './useClipImage';
+import useFilter from './useFilter';
 
-import ImageOutline from './ImageOutline/index.vue'
-import ImageClipHandler from './ImageClipHandler.vue'
+import ImageOutline from './ImageOutline/index.vue';
+import ImageClipHandler from './ImageClipHandler.vue';
 
 const props = defineProps<{
   elementInfo: PPTImageElement
   selectElement: (e: MouseEvent | TouchEvent, element: PPTImageElement, canMove?: boolean) => void
   contextmenus: () => ContextmenuItem[] | null
-}>()
+}>();
 
-const mainStore = useMainStore()
-const slidesStore = useSlidesStore()
-const { clipingImageElementId } = storeToRefs(mainStore)
+const mainStore = useMainStore();
+const slidesStore = useSlidesStore();
+const { clipingImageElementId } = storeToRefs(mainStore);
 
-const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
+const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id);
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 
-const shadow = computed(() => props.elementInfo.shadow)
-const { shadowStyle } = useElementShadow(shadow)
+const shadow = computed(() => props.elementInfo.shadow);
+const { shadowStyle } = useElementShadow(shadow);
 
-const flipH = computed(() => props.elementInfo.flipH)
-const flipV = computed(() => props.elementInfo.flipV)
-const { flipStyle } = useElementFlip(flipH, flipV)
+const flipH = computed(() => props.elementInfo.flipH);
+const flipV = computed(() => props.elementInfo.flipV);
+const { flipStyle } = useElementFlip(flipH, flipV);
 
-const clip = computed(() => props.elementInfo.clip)
-const { clipShape, imgPosition } = useClipImage(clip)
+const clip = computed(() => props.elementInfo.clip);
+const { clipShape, imgPosition } = useClipImage(clip);
 
-const filters = computed(() => props.elementInfo.filters)
-const { filter } = useFilter(filters)
+const filters = computed(() => props.elementInfo.filters);
+const { filter } = useFilter(filters);
 
 const handleSelectElement = (e: MouseEvent | TouchEvent) => {
-  if (props.elementInfo.lock) return
-  e.stopPropagation()
-  props.selectElement(e, props.elementInfo)
-}
+  if (props.elementInfo.lock) return;
+  e.stopPropagation();
+  props.selectElement(e, props.elementInfo);
+};
 
 const handleClip = (data: ImageClipedEmitData | null) => {
-  mainStore.setClipingImageElementId('')
+  mainStore.setClipingImageElementId('');
   
-  if (!data) return
+  if (!data) return;
 
-  const { range, position } = data
-  const originClip: ImageElementClip = props.elementInfo.clip || { shape: 'rect', range: [[0, 0], [100, 100]] }
+  const { range, position } = data;
+  const originClip: ImageElementClip = props.elementInfo.clip || { shape: 'rect', range: [[0, 0], [100, 100]] };
 
-  const left = props.elementInfo.left + position.left
-  const top = props.elementInfo.top + position.top
-  const width = props.elementInfo.width + position.width
-  const height = props.elementInfo.height + position.height
+  const left = props.elementInfo.left + position.left;
+  const top = props.elementInfo.top + position.top;
+  const width = props.elementInfo.width + position.width;
+  const height = props.elementInfo.height + position.height;
 
-  let centerOffsetX = 0
-  let centerOffsetY = 0
+  let centerOffsetX = 0;
+  let centerOffsetY = 0;
 
   if (props.elementInfo.rotate) {
-    const centerX = (left + width / 2) - (props.elementInfo.left + props.elementInfo.width / 2)
-    const centerY = -((top + height / 2) - (props.elementInfo.top + props.elementInfo.height / 2))
+    const centerX = (left + width / 2) - (props.elementInfo.left + props.elementInfo.width / 2);
+    const centerY = -((top + height / 2) - (props.elementInfo.top + props.elementInfo.height / 2));
 
-    const radian = -props.elementInfo.rotate * Math.PI / 180
+    const radian = -props.elementInfo.rotate * Math.PI / 180;
 
-    const rotatedCenterX = centerX * Math.cos(radian) - centerY * Math.sin(radian)
-    const rotatedCenterY = centerX * Math.sin(radian) + centerY * Math.cos(radian)
+    const rotatedCenterX = centerX * Math.cos(radian) - centerY * Math.sin(radian);
+    const rotatedCenterY = centerX * Math.sin(radian) + centerY * Math.cos(radian);
 
-    centerOffsetX = rotatedCenterX - centerX
-    centerOffsetY = -(rotatedCenterY - centerY)
+    centerOffsetX = rotatedCenterX - centerX;
+    centerOffsetY = -(rotatedCenterY - centerY);
   }
 
   const _props = {
@@ -148,11 +148,11 @@ const handleClip = (data: ImageClipedEmitData | null) => {
     top: top + centerOffsetY,
     width,
     height,
-  }
-  slidesStore.updateElement({ id: props.elementInfo.id, props: _props })
+  };
+  slidesStore.updateElement({ id: props.elementInfo.id, props: _props });
   
-  addHistorySnapshot()
-}
+  addHistorySnapshot();
+};
 </script>
 
 <style lang="scss" scoped>

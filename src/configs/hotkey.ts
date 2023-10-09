@@ -116,4 +116,4 @@ export const HOTKEY_DOC = [
       { label: '选中段落', value: `ESC` },
     ],
   },
-]
+];

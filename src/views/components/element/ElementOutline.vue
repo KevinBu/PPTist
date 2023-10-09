@@ -20,22 +20,22 @@
 </template>
 
 <script lang="ts" setup>
-import { toRef } from 'vue'
-import type { PPTElementOutline } from '@/types/slides'
+import { toRef } from 'vue';
+import type { PPTElementOutline } from '@/types/slides';
 
-import useElementOutline from '@/views/components/element/hooks/useElementOutline'
+import useElementOutline from '@/views/components/element/hooks/useElementOutline';
 
 const props = defineProps<{
   width: number
   height: number
   outline?: PPTElementOutline
-}>()
+}>();
 
 const {
   outlineWidth,
   outlineColor,
   strokeDashArray,
-} = useElementOutline(toRef(props, 'outline'))
+} = useElementOutline(toRef(props, 'outline'));
 </script>
 
 <style lang="scss" scoped>

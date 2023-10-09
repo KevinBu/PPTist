@@ -75,55 +75,55 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import useScreening from '@/hooks/useScreening'
-import useImport from '@/hooks/useImport'
-import useSlideHandler from '@/hooks/useSlideHandler'
-import type { DialogForExportTypes } from '@/types/export'
+import { nextTick, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import useScreening from '@/hooks/useScreening';
+import useImport from '@/hooks/useImport';
+import useSlideHandler from '@/hooks/useSlideHandler';
+import type { DialogForExportTypes } from '@/types/export';
 
-import HotkeyDoc from './HotkeyDoc.vue'
-import FileInput from '@/components/FileInput.vue'
-import FullscreenSpin from '@/components/FullscreenSpin.vue'
-import Drawer from '@/components/Drawer.vue'
-import Input from '@/components/Input.vue'
-import Popover from '@/components/Popover.vue'
-import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
+import HotkeyDoc from './HotkeyDoc.vue';
+import FileInput from '@/components/FileInput.vue';
+import FullscreenSpin from '@/components/FullscreenSpin.vue';
+import Drawer from '@/components/Drawer.vue';
+import Input from '@/components/Input.vue';
+import Popover from '@/components/Popover.vue';
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue';
 
-const mainStore = useMainStore()
-const slidesStore = useSlidesStore()
-const { title } = storeToRefs(slidesStore)
-const { enterScreening, enterScreeningFromStart } = useScreening()
-const { importSpecificFile, importPPTXFile, exporting } = useImport()
-const { resetSlides } = useSlideHandler()
+const mainStore = useMainStore();
+const slidesStore = useSlidesStore();
+const { title } = storeToRefs(slidesStore);
+const { enterScreening, enterScreeningFromStart } = useScreening();
+const { importSpecificFile, importPPTXFile, exporting } = useImport();
+const { resetSlides } = useSlideHandler();
 
-const mainMenuVisible = ref(false)
-const hotkeyDrawerVisible = ref(false)
-const editingTitle = ref(false)
-const titleInputRef = ref<HTMLInputElement>()
-const titleValue = ref('')
+const mainMenuVisible = ref(false);
+const hotkeyDrawerVisible = ref(false);
+const editingTitle = ref(false);
+const titleInputRef = ref<HTMLInputElement>();
+const titleValue = ref('');
 
 const startEditTitle = () => {
-  titleValue.value = title.value
-  editingTitle.value = true
-  nextTick(() => titleInputRef.value?.focus())
-}
+  titleValue.value = title.value;
+  editingTitle.value = true;
+  nextTick(() => titleInputRef.value?.focus());
+};
 
 const handleUpdateTitle = () => {
-  slidesStore.setTitle(titleValue.value)
-  editingTitle.value = false
-}
+  slidesStore.setTitle(titleValue.value);
+  editingTitle.value = false;
+};
 
 const goLink = (url: string) => {
-  window.open(url)
-  mainMenuVisible.value = false
-}
+  window.open(url);
+  mainMenuVisible.value = false;
+};
 
 const setDialogForExport = (type: DialogForExportTypes) => {
-  mainStore.setDialogForExport(type)
-  mainMenuVisible.value = false
-}
+  mainStore.setDialogForExport(type);
+  mainMenuVisible.value = false;
+};
 </script>
 
 <style lang="scss" scoped>

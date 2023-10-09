@@ -13,29 +13,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 withDefaults(defineProps<{
   accept?: string
 }>(), {
   accept: 'image/*',
-})
+});
 
 const emit = defineEmits<{
   (event: 'change', payload: FileList): void
-}>()
+}>();
 
-const inputRef = ref<HTMLInputElement>()
+const inputRef = ref<HTMLInputElement>();
 
 const handleClick = () => {
-  if (!inputRef.value) return
-  inputRef.value.value = ''
-  inputRef.value.click()
-}
+  if (!inputRef.value) return;
+  inputRef.value.value = '';
+  inputRef.value.click();
+};
 const handleChange = (e: Event) => {
-  const files = (e.target as HTMLInputElement).files
-  if (files) emit('change', files)
-}
+  const files = (e.target as HTMLInputElement).files;
+  if (files) emit('change', files);
+};
 </script>
 
 <style lang="scss" scoped>

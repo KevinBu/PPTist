@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch } from 'vue';
 
 const props = withDefaults(defineProps<{
   value: number
@@ -52,7 +52,7 @@ const props = withDefaults(defineProps<{
   min: 0,
   max: Infinity,
   step: 1,
-})
+});
 
 const emit = defineEmits<{
   (event: 'update:value', payload: number): void
@@ -61,37 +61,37 @@ const emit = defineEmits<{
   (event: 'blur', payload: Event): void
   (event: 'focus', payload: Event): void
   (event: 'enter', payload: Event): void
-}>()
+}>();
 
-const number = ref(0)
-const focused = ref(false)
+const number = ref(0);
+const focused = ref(false);
 
 watch(() => props.value, () => {
   if (props.value !== number.value) {
-    number.value = props.value
+    number.value = props.value;
   }
 }, {
   immediate: true,
-})
+});
 
 watch(number, () => {
-  let value = +number.value
-  if (isNaN(value)) value = props.min
-  else if (value > props.max) value = props.max
-  else if (value < props.min) value = props.min
+  let value = +number.value;
+  if (isNaN(value)) value = props.min;
+  else if (value > props.max) value = props.max;
+  else if (value < props.min) value = props.min;
 
-  number.value = value
-  emit('update:value', number.value)
-})
+  number.value = value;
+  emit('update:value', number.value);
+});
 
 const handleBlur = (e: Event) => {
-  focused.value = false
-  emit('blur', e)
-}
+  focused.value = false;
+  emit('blur', e);
+};
 const handleFocus = (e: Event) => {
-  focused.value = true
-  emit('focus', e)
-}
+  focused.value = true;
+  emit('focus', e);
+};
 </script>
 
 <style lang="scss" scoped>

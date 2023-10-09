@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, type CSSProperties } from 'vue'
+import { computed, ref, type CSSProperties } from 'vue';
 
 const props = withDefaults(defineProps<{
   visible: boolean
@@ -28,20 +28,20 @@ const props = withDefaults(defineProps<{
 }>(), {
   width: 320,
   placement: 'right',
-})
+});
 
 const emit = defineEmits<{
   (event: 'update:visible', payload: boolean): void
-}>()
+}>();
 
-const contentVisible = ref(false)
+const contentVisible = ref(false);
 
 const contentStyle = computed(() => {
   return {
     width: props.width + 'px',
     ...(props.contentStyle || {})
-  }
-})
+  };
+});
 </script>
 
 <style lang="scss" scoped>

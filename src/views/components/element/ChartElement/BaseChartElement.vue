@@ -40,21 +40,21 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref } from 'vue'
-import type { PPTChartElement } from '@/types/slides'
-import { injectKeySlideScale } from '@/types/injectKey'
+import { computed, inject, ref } from 'vue';
+import type { PPTChartElement } from '@/types/slides';
+import { injectKeySlideScale } from '@/types/injectKey';
 
-import ElementOutline from '@/views/components/element/ElementOutline.vue'
-import Chart from './Chart.vue'
+import ElementOutline from '@/views/components/element/ElementOutline.vue';
+import Chart from './Chart.vue';
 
 defineProps<{
   elementInfo: PPTChartElement
-}>()
+}>();
 
-const slideScale = inject(injectKeySlideScale) || ref(1)
+const slideScale = inject(injectKeySlideScale) || ref(1);
 
-const needScaleSize = computed(() => slideScale.value < 1)
-const zoom = computed(() => needScaleSize.value ? 1 / slideScale.value : 1)
+const needScaleSize = computed(() => slideScale.value < 1);
+const zoom = computed(() => needScaleSize.value ? 1 / slideScale.value : 1);
 </script>
 
 <style lang="scss" scoped>

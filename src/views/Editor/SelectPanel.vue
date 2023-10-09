@@ -77,23 +77,23 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore, useMainStore } from '@/store'
-import type { PPTElement } from '@/types/slides'
-import { ELEMENT_TYPE_ZH } from '@/configs/element'
-import useOrderElement from '@/hooks/useOrderElement'
-import { ElementOrderCommands } from '@/types/edit'
+import { computed, nextTick, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore, useMainStore } from '@/store';
+import type { PPTElement } from '@/types/slides';
+import { ELEMENT_TYPE_ZH } from '@/configs/element';
+import useOrderElement from '@/hooks/useOrderElement';
+import { ElementOrderCommands } from '@/types/edit';
 
-import MoveablePanel from '@/components/MoveablePanel.vue'
-import Button from '@/components/Button.vue'
+import MoveablePanel from '@/components/MoveablePanel.vue';
+import Button from '@/components/Button.vue';
 
-const slidesStore = useSlidesStore()
-const mainStore = useMainStore()
-const { currentSlide } = storeToRefs(slidesStore)
-const { handleElement, handleElementId, activeElementIdList, activeGroupElementId, hiddenElementIdList } = storeToRefs(mainStore)
+const slidesStore = useSlidesStore();
+const mainStore = useMainStore();
+const { currentSlide } = storeToRefs(slidesStore);
+const { handleElement, handleElementId, activeElementIdList, activeGroupElementId, hiddenElementIdList } = storeToRefs(mainStore);
 
-const { orderElement } = useOrderElement()
+const { orderElement } = useOrderElement();
 
 interface GroupElements {
   type: 'group'
@@ -103,79 +103,79 @@ interface GroupElements {
 type ElementItem = PPTElement | GroupElements
 
 const elements = computed<ElementItem[]>(() => {
-  const _elements: ElementItem[] = []
+  const _elements: ElementItem[] = [];
 
   for (const el of currentSlide.value.elements) {
     if (el.groupId) {
-      const lastItem = _elements[_elements.length - 1]
+      const lastItem = _elements[_elements.length - 1];
 
       if (lastItem && lastItem.type === 'group' && lastItem.id && lastItem.id === el.groupId) {
-        lastItem.elements.push(el)
+        lastItem.elements.push(el);
       }
-      else _elements.push({ type: 'group', id: el.groupId, elements: [el] })
+      else _elements.push({ type: 'group', id: el.groupId, elements: [el] });
     }
-    else _elements.push(el)
+    else _elements.push(el);
   }
 
-  return _elements
-})
+  return _elements;
+});
 
 const selectGroupEl = (item: GroupElements, id: string) => {
-  if (handleElementId.value === id) return
-  if (hiddenElementIdList.value.includes(id)) return
+  if (handleElementId.value === id) return;
+  if (hiddenElementIdList.value.includes(id)) return;
 
-  const idList = item.elements.map(el => el.id)
-  mainStore.setActiveElementIdList(idList)
-  mainStore.setHandleElementId(id)
-  nextTick(() => mainStore.setActiveGroupElementId(id))
-}
+  const idList = item.elements.map(el => el.id);
+  mainStore.setActiveElementIdList(idList);
+  mainStore.setHandleElementId(id);
+  nextTick(() => mainStore.setActiveGroupElementId(id));
+};
 
 const selectEl = (id: string) => {
-  if (handleElementId.value === id) return
-  if (hiddenElementIdList.value.includes(id)) return
+  if (handleElementId.value === id) return;
+  if (hiddenElementIdList.value.includes(id)) return;
 
-  mainStore.setActiveElementIdList([id])
-}
+  mainStore.setActiveElementIdList([id]);
+};
 
 const hideElement = (id: string) => {
   if (hiddenElementIdList.value.includes(id)) {
-    mainStore.setHiddenElementIdList(hiddenElementIdList.value.filter(item => item !== id))
+    mainStore.setHiddenElementIdList(hiddenElementIdList.value.filter(item => item !== id));
   }
-  else mainStore.setHiddenElementIdList([...hiddenElementIdList.value, id])
+  else mainStore.setHiddenElementIdList([...hiddenElementIdList.value, id]);
 
-  if (activeElementIdList.value.includes(id)) mainStore.setActiveElementIdList([])
-}
+  if (activeElementIdList.value.includes(id)) mainStore.setActiveElementIdList([]);
+};
 
 const showAll = () => {
-  const currentSlideElIdList = currentSlide.value.elements.map(item => item.id)
-  const needHiddenElementIdList = hiddenElementIdList.value.filter(item => !currentSlideElIdList.includes(item))
-  mainStore.setHiddenElementIdList(needHiddenElementIdList)
-}
+  const currentSlideElIdList = currentSlide.value.elements.map(item => item.id);
+  const needHiddenElementIdList = hiddenElementIdList.value.filter(item => !currentSlideElIdList.includes(item));
+  mainStore.setHiddenElementIdList(needHiddenElementIdList);
+};
 const hideAll = () => {
-  const currentSlideElIdList = currentSlide.value.elements.map(item => item.id)
-  mainStore.setHiddenElementIdList([...hiddenElementIdList.value, ...currentSlideElIdList])
-  if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
-}
+  const currentSlideElIdList = currentSlide.value.elements.map(item => item.id);
+  mainStore.setHiddenElementIdList([...hiddenElementIdList.value, ...currentSlideElIdList]);
+  if (activeElementIdList.value.length) mainStore.setActiveElementIdList([]);
+};
 
-const editingElId = ref('')
+const editingElId = ref('');
 
 const saveElementName = (e: FocusEvent | KeyboardEvent, id: string) => {
-  const name = (e.target as HTMLInputElement).value
-  slidesStore.updateElement({ id, props: { name } })
-  editingElId.value = ''
-}
+  const name = (e.target as HTMLInputElement).value;
+  slidesStore.updateElement({ id, props: { name } });
+  editingElId.value = '';
+};
 
 const enterEdit = (id: string) => {
-  editingElId.value = id
+  editingElId.value = id;
   nextTick(() => {
-    const inputRef = document.querySelector(`#input-${id}`) as HTMLInputElement
-    inputRef.focus()
-  })
-}
+    const inputRef = document.querySelector(`#input-${id}`) as HTMLInputElement;
+    inputRef.focus();
+  });
+};
 
 const close = () => {
-  mainStore.setSelectPanelState(false)
-}
+  mainStore.setSelectPanelState(false);
+};
 </script>
 
 <style lang="scss" scoped>

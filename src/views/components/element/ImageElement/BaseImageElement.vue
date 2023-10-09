@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     class="base-element-image"
     :style="{
       top: elementInfo.top + 'px',
@@ -12,7 +12,7 @@
       class="rotate-wrapper"
       :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
-      <div 
+      <div
         class="element-content"
         :style="{
           filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
@@ -22,19 +22,20 @@
         <ImageOutline :elementInfo="elementInfo" />
 
         <div class="image-content" :style="{ clipPath: clipShape.style }">
-          <img 
-            :src="elementInfo.src" 
-            :draggable="false" 
+          <img
+            :src="elementInfo.src"
+            :draggable="false"
             :style="{
               top: imgPosition.top,
               left: imgPosition.left,
               width: imgPosition.width,
               height: imgPosition.height,
               filter: filter,
-            }" 
+            }"
             alt=""
           />
-          <div class="color-mask"
+          <div
+            class="color-mask"
             v-if="elementInfo.colorMask"
             :style="{
               backgroundColor: elementInfo.colorMask,
@@ -47,31 +48,31 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import type { PPTImageElement } from '@/types/slides'
-import useElementShadow from '@/views/components/element/hooks/useElementShadow'
-import useElementFlip from '@/views/components/element/hooks/useElementFlip'
-import useClipImage from './useClipImage'
-import useFilter from './useFilter'
+import { computed } from "vue";
+import type { PPTImageElement } from "@/types/slides";
+import useElementShadow from "@/views/components/element/hooks/useElementShadow";
+import useElementFlip from "@/views/components/element/hooks/useElementFlip";
+import useClipImage from "./useClipImage";
+import useFilter from "./useFilter";
 
-import ImageOutline from './ImageOutline/index.vue'
+import ImageOutline from "./ImageOutline/index.vue";
 
 const props = defineProps<{
-  elementInfo: PPTImageElement
-}>()
+  elementInfo: PPTImageElement;
+}>();
 
-const shadow = computed(() => props.elementInfo.shadow)
-const { shadowStyle } = useElementShadow(shadow)
+const shadow = computed(() => props.elementInfo.shadow);
+const { shadowStyle } = useElementShadow(shadow);
 
-const flipH = computed(() => props.elementInfo.flipH)
-const flipV = computed(() => props.elementInfo.flipV)
-const { flipStyle } = useElementFlip(flipH, flipV)
+const flipH = computed(() => props.elementInfo.flipH);
+const flipV = computed(() => props.elementInfo.flipV);
+const { flipStyle } = useElementFlip(flipH, flipV);
 
-const clip = computed(() => props.elementInfo.clip)
-const { clipShape, imgPosition } = useClipImage(clip)
+const clip = computed(() => props.elementInfo.clip);
+const { clipShape, imgPosition } = useClipImage(clip);
 
-const filters = computed(() => props.elementInfo.filters)
-const { filter } = useFilter(filters)
+const filters = computed(() => props.elementInfo.filters);
+const { filter } = useFilter(filters);
 </script>
 
 <style lang="scss" scoped>

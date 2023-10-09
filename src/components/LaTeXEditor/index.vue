@@ -59,16 +59,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
-import { hfmath } from './hfmath'
-import { FORMULA_LIST, SYMBOL_LIST } from '@/configs/latex'
-import message from '@/utils/message'
+import { computed, onMounted, ref } from 'vue';
+import { hfmath } from './hfmath';
+import { FORMULA_LIST, SYMBOL_LIST } from '@/configs/latex';
+import message from '@/utils/message';
 
-import FormulaContent from './FormulaContent.vue'
-import SymbolContent from './SymbolContent.vue'
-import Button from '../Button.vue'
-import TextArea from '../TextArea.vue'
-import Tabs from '../Tabs.vue'
+import FormulaContent from './FormulaContent.vue';
+import SymbolContent from './SymbolContent.vue';
+import Button from '../Button.vue';
+import TextArea from '../TextArea.vue';
+import Tabs from '../Tabs.vue';
 
 interface TabItem {
   key: 'symbol' | 'formula'
@@ -78,7 +78,7 @@ interface TabItem {
 const tabs: TabItem[] = [
   { label: '常用符号', key: 'symbol' },
   { label: '预置公式', key: 'formula' },
-]
+];
 
 interface LatexResult {
   latex: string
@@ -91,54 +91,54 @@ const props = withDefaults(defineProps<{
   value?: string
 }>(), {
   value: '',
-})
+});
 
 const emit = defineEmits<{
   (event: 'update', payload: LatexResult): void
   (event: 'close'): void
-}>()
+}>();
 
-const formulaList = FORMULA_LIST
+const formulaList = FORMULA_LIST;
 
 const symbolTabs = SYMBOL_LIST.map(item => ({
   label: item.label,
   key: item.type,
-}))
+}));
 
-const latex = ref('')
-const toolbarState = ref<'symbol' | 'formula'>('symbol')
-const textAreaRef = ref<HTMLTextAreaElement>()
+const latex = ref('');
+const toolbarState = ref<'symbol' | 'formula'>('symbol');
+const textAreaRef = ref<HTMLTextAreaElement>();
 
-const selectedSymbolKey = ref(SYMBOL_LIST[0].type)
+const selectedSymbolKey = ref(SYMBOL_LIST[0].type);
 const symbolPool = computed(() => {
-  const selectedSymbol = SYMBOL_LIST.find(item => item.type === selectedSymbolKey.value)
-  return selectedSymbol?.children || []
-})
+  const selectedSymbol = SYMBOL_LIST.find(item => item.type === selectedSymbolKey.value);
+  return selectedSymbol?.children || [];
+});
 
 onMounted(() => {
-  if (props.value) latex.value = props.value
-})
+  if (props.value) latex.value = props.value;
+});
 
 const update = () => {
-  if (!latex.value) return message.error('公式不能为空')
+  if (!latex.value) return message.error('公式不能为空');
 
-  const eq = new hfmath(latex.value)
-  const pathd = eq.pathd({})
-  const box = eq.box({})
+  const eq = new hfmath(latex.value);
+  const pathd = eq.pathd({});
+  const box = eq.box({});
   
   emit('update', {
     latex: latex.value,
     path: pathd,
     w: box.w + 32,
     h: box.h + 32,
-  })
-}
+  });
+};
 
 const insertSymbol = (latex: string) => {
-  if (!textAreaRef.value) return
-  textAreaRef.value.focus()
-  document.execCommand('insertText', false, latex)
-}
+  if (!textAreaRef.value) return;
+  textAreaRef.value.focus();
+  document.execCommand('insertText', false, latex);
+};
 </script>
 
 <style lang="scss" scoped>

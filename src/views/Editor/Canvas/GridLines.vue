@@ -14,39 +14,39 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import tinycolor from 'tinycolor2'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
-import type { SlideBackground } from '@/types/slides'
+import { computed } from 'vue';
+import tinycolor from 'tinycolor2';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import { VIEWPORT_SIZE } from '@/configs/canvas';
+import type { SlideBackground } from '@/types/slides';
 
-const { canvasScale, gridLineSize } = storeToRefs(useMainStore())
-const { currentSlide, viewportRatio } = storeToRefs(useSlidesStore())
+const { canvasScale, gridLineSize } = storeToRefs(useMainStore());
+const { currentSlide, viewportRatio } = storeToRefs(useSlidesStore());
 
-const background = computed<SlideBackground | undefined>(() => currentSlide.value?.background)
+const background = computed<SlideBackground | undefined>(() => currentSlide.value?.background);
 
 // 计算网格线的颜色，避免与背景的颜色太接近
 const gridColor = computed(() => {
-  const bgColor = background.value?.color || '#fff'
-  const colorList = ['#000', '#fff']
-  return tinycolor.mostReadable(bgColor, colorList, { includeFallbackColors: true }).setAlpha(.5).toRgbString()
-})
+  const bgColor = background.value?.color || '#fff';
+  const colorList = ['#000', '#fff'];
+  return tinycolor.mostReadable(bgColor, colorList, { includeFallbackColors: true }).setAlpha(.5).toRgbString();
+});
 
 // 网格路径
 const path = computed(() => {
-  const maxX = VIEWPORT_SIZE
-  const maxY = VIEWPORT_SIZE * viewportRatio.value
+  const maxX = VIEWPORT_SIZE;
+  const maxY = VIEWPORT_SIZE * viewportRatio.value;
 
-  let p = ''
+  let p = '';
   for (let i = 0; i <= Math.floor(maxY / gridLineSize.value); i++) {
-    p += `M0 ${i * gridLineSize.value} L${maxX} ${i * gridLineSize.value} `
+    p += `M0 ${i * gridLineSize.value} L${maxX} ${i * gridLineSize.value} `;
   }
   for (let i = 0; i <= Math.floor(maxX / gridLineSize.value); i++) {
-    p += `M${i * gridLineSize.value} 0 L${i * gridLineSize.value} ${maxY} `
+    p += `M${i * gridLineSize.value} 0 L${i * gridLineSize.value} ${maxY} `;
   }
-  return p
-})
+  return p;
+});
 </script>
 
 <style lang="scss" scoped>

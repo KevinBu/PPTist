@@ -27,51 +27,51 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
 
-import ColorButton from './ColorButton.vue'
-import ColorPicker from '@/components/ColorPicker/index.vue'
-import Switch from '@/components/Switch.vue'
-import Popover from '@/components/Popover.vue'
+import ColorButton from './ColorButton.vue';
+import ColorPicker from '@/components/ColorPicker/index.vue';
+import Switch from '@/components/Switch.vue';
+import Popover from '@/components/Popover.vue';
 
-const defaultColorMask = 'rgba(226, 83, 77, 0.5)'
+const defaultColorMask = 'rgba(226, 83, 77, 0.5)';
 
-const slidesStore = useSlidesStore()
-const { handleElement, handleElementId } = storeToRefs(useMainStore())
+const slidesStore = useSlidesStore();
+const { handleElement, handleElementId } = storeToRefs(useMainStore());
 
-const colorMask = ref(defaultColorMask)
-const hasColorMask = ref(false)
+const colorMask = ref(defaultColorMask);
+const hasColorMask = ref(false);
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot();
 
 watch(handleElement, () => {
-  if (!handleElement.value || handleElement.value.type !== 'image') return
+  if (!handleElement.value || handleElement.value.type !== 'image') return;
 
   if (handleElement.value.colorMask) {
-    colorMask.value = handleElement.value.colorMask
-    hasColorMask.value = true
+    colorMask.value = handleElement.value.colorMask;
+    hasColorMask.value = true;
   }
-  else hasColorMask.value = false
-}, { deep: true, immediate: true })
+  else hasColorMask.value = false;
+}, { deep: true, immediate: true });
 
 const toggleColorMask = (checked: boolean) => {
-  if (!handleElement.value) return
+  if (!handleElement.value) return;
   if (checked) {
-    slidesStore.updateElement({ id: handleElement.value.id, props: { colorMask: defaultColorMask } })
+    slidesStore.updateElement({ id: handleElement.value.id, props: { colorMask: defaultColorMask } });
   }
   else {
-    slidesStore.removeElementProps({ id: handleElement.value.id, propName: 'colorMask' })
+    slidesStore.removeElementProps({ id: handleElement.value.id, propName: 'colorMask' });
   }
-  addHistorySnapshot()
-}
+  addHistorySnapshot();
+};
 
 const updateColorMask = (colorMask: string) => {
-  slidesStore.updateElement({ id: handleElementId.value, props: { colorMask } })
-  addHistorySnapshot()
-}
+  slidesStore.updateElement({ id: handleElementId.value, props: { colorMask } });
+  addHistorySnapshot();
+};
 </script>
 
 <style lang="scss" scoped>

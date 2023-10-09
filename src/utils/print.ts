@@ -5,35 +5,35 @@ interface PageSize {
 }
 
 const createIframe = () => {
-  const iframe = document.createElement('iframe')
-  iframe.style.width = '0'
-  iframe.style.height = '0'
-  iframe.style.position = 'absolute'
-  iframe.style.right = '0'
-  iframe.style.top = '0'
-  iframe.style.border = '0'
+  const iframe = document.createElement('iframe');
+  iframe.style.width = '0';
+  iframe.style.height = '0';
+  iframe.style.position = 'absolute';
+  iframe.style.right = '0';
+  iframe.style.top = '0';
+  iframe.style.border = '0';
 
-  document.body.appendChild(iframe)
+  document.body.appendChild(iframe);
 
-  return iframe
-}
+  return iframe;
+};
 
 const writeContent = (doc: Document, printNode: HTMLElement, size: PageSize) => {
-  const docType = '<!DOCTYPE html>'
+  const docType = '<!DOCTYPE html>';
 
-  let style = ''
-  const styleSheets = document.styleSheets
+  let style = '';
+  const styleSheets = document.styleSheets;
   if (styleSheets) {
     for (const styleSheet of styleSheets) {
-      if (!styleSheet.cssRules) continue
+      if (!styleSheet.cssRules) continue;
 
       for (const rule of styleSheet.cssRules) {
-        style += rule.cssText
+        style += rule.cssText;
       }
     }
   }
 
-  const { width, height, margin } = size
+  const { width, height, margin } = size;
   const head = `
     <head>
       <style type="text/css">
@@ -50,38 +50,38 @@ const writeContent = (doc: Document, printNode: HTMLElement, size: PageSize) => 
         }
       </style>
     </head>
-  `
-  const body = '<body>' + printNode.innerHTML + '</body>'
+  `;
+  const body = '<body>' + printNode.innerHTML + '</body>';
 
-  doc.open()
+  doc.open();
   doc.write(`
     ${docType}
     <html>
       ${head}
       ${body}
     </html>
-  `)
-  doc.close()
-}
+  `);
+  doc.close();
+};
 
 export const print = (printNode: HTMLElement, size: PageSize) => {
-  const iframe = createIframe()
-  const iframeContentWindow = iframe.contentWindow
+  const iframe = createIframe();
+  const iframeContentWindow = iframe.contentWindow;
 
-  if (!iframe.contentDocument || !iframeContentWindow) return
-  writeContent(iframe.contentDocument, printNode, size)
+  if (!iframe.contentDocument || !iframeContentWindow) return;
+  writeContent(iframe.contentDocument, printNode, size);
 
   const handleLoadIframe = () => {
-    iframeContentWindow.focus()
-    iframeContentWindow.print()
-  }
+    iframeContentWindow.focus();
+    iframeContentWindow.print();
+  };
 
   const handleAfterprint = () => {
-    iframe.removeEventListener('load', handleLoadIframe)
-    iframeContentWindow.removeEventListener('afterprint', handleAfterprint)
-    document.body.removeChild(iframe)
-  }
+    iframe.removeEventListener('load', handleLoadIframe);
+    iframeContentWindow.removeEventListener('afterprint', handleAfterprint);
+    document.body.removeChild(iframe);
+  };
 
-  iframe.addEventListener('load', handleLoadIframe)
-  iframeContentWindow.addEventListener('afterprint', handleAfterprint)
-}
+  iframe.addEventListener('load', handleLoadIframe);
+  iframeContentWindow.addEventListener('afterprint', handleAfterprint);
+};

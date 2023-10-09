@@ -15,25 +15,25 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { SYMBOL_LIST } from '@/configs/symbol'
-import emitter, { EmitterEvents } from '@/utils/emitter'
-import Tabs from '@/components/Tabs.vue'
+import { computed, ref } from 'vue';
+import { SYMBOL_LIST } from '@/configs/symbol';
+import emitter, { EmitterEvents } from '@/utils/emitter';
+import Tabs from '@/components/Tabs.vue';
 
-const selectedSymbolKey = ref(SYMBOL_LIST[0].key)
+const selectedSymbolKey = ref(SYMBOL_LIST[0].key);
 const symbolPool = computed(() => {
-  const selectedSymbol = SYMBOL_LIST.find(item => item.key === selectedSymbolKey.value)
-  return selectedSymbol?.children || []
-})
+  const selectedSymbol = SYMBOL_LIST.find(item => item.key === selectedSymbolKey.value);
+  return selectedSymbol?.children || [];
+});
 
 const tabs = SYMBOL_LIST.map(item => ({
   key: item.key,
   label: item.label,
-}))
+}));
 
 const selectSymbol = (value: string) => {
-  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command: 'insert', value } })
-}
+  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command: 'insert', value } });
+};
 </script>
 
 <style lang="scss" scoped>

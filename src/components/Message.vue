@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, onBeforeMount } from 'vue'
-import { icons } from '@/plugins/icon'
+import { onMounted, ref, onBeforeMount } from 'vue';
+import { icons } from '@/plugins/icon';
 
 const {
   IconAttention,
@@ -44,7 +44,7 @@ const {
   IconCloseOne,
   IconInfo,
   IconCloseSmall,
-} = icons
+} = icons;
 
 const props = withDefaults(defineProps<{
   id: string
@@ -58,36 +58,36 @@ const props = withDefaults(defineProps<{
   title: '',
   duration: 3000,
   closable: false,
-})
+});
 
 const emit = defineEmits<{
   (event: 'close'): void
   (event: 'destroy'): void
-}>()
+}>();
 
-const visible = ref(true)
-const timer = ref<number | null>(null)
+const visible = ref(true);
+const timer = ref<number | null>(null);
 
 const startTimer = () => {
-  if (props.duration <= 0) return
-  timer.value = setTimeout(close, props.duration)
-}
+  if (props.duration <= 0) return;
+  timer.value = setTimeout(close, props.duration);
+};
 const clearTimer = () => {
-  if (timer.value) clearTimeout(timer.value)
-}
+  if (timer.value) clearTimeout(timer.value);
+};
 
-const close = () => visible.value = false
+const close = () => visible.value = false;
 
 onBeforeMount(() => {
-  clearTimer()
-})
+  clearTimer();
+});
 onMounted(() => {
-  startTimer()
-})
+  startTimer();
+});
 
 defineExpose({
   close,
-})
+});
 </script>
 
 <style lang="scss" scoped>

@@ -25,15 +25,15 @@ withDefaults(defineProps<{
   disabled: false,
   resizable: false,
   placeholder: '',
-})
+});
 
 const emit = defineEmits<{
   (event: 'update:value', payload: string): void
-}>()
+}>();
 
 const handleInput = (e: Event) => {
-  emit('update:value', (e.target as HTMLInputElement).value)
-}
+  emit('update:value', (e.target as HTMLInputElement).value);
+};
 </script>
 
 <style lang="scss" scoped>

@@ -38,9 +38,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSlidesStore } from '@/store';
 import {
   ElementTypes,
   type PPTElement,
@@ -49,16 +49,16 @@ import {
   type PPTAudioElement,
   type PPTShapeElement,
   type PPTChartElement,
-} from '@/types/slides'
-import type { OperateLineHandlers, OperateResizeHandlers } from '@/types/edit'
+} from '@/types/slides';
+import type { OperateLineHandlers, OperateResizeHandlers } from '@/types/edit';
 
-import ImageElementOperate from './ImageElementOperate.vue'
-import TextElementOperate from './TextElementOperate.vue'
-import ShapeElementOperate from './ShapeElementOperate.vue'
-import LineElementOperate from './LineElementOperate.vue'
-import TableElementOperate from './TableElementOperate.vue'
-import CommonElementOperate from './CommonElementOperate.vue'
-import LinkHandler from './LinkHandler.vue'
+import ImageElementOperate from './ImageElementOperate.vue';
+import TextElementOperate from './TextElementOperate.vue';
+import ShapeElementOperate from './ShapeElementOperate.vue';
+import LineElementOperate from './LineElementOperate.vue';
+import TableElementOperate from './TableElementOperate.vue';
+import CommonElementOperate from './CommonElementOperate.vue';
+import LinkHandler from './LinkHandler.vue';
 
 const props = defineProps<{
   elementInfo: PPTElement
@@ -71,10 +71,10 @@ const props = defineProps<{
   dragLineElement: (e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => void
   moveShapeKeypoint: (e: MouseEvent, element: PPTShapeElement) => void
   openLinkDialog: () => void
-}>()
+}>();
 
-const { canvasScale, toolbarState } = storeToRefs(useMainStore())
-const { formatedAnimations } = storeToRefs(useSlidesStore())
+const { canvasScale, toolbarState } = storeToRefs(useMainStore());
+const { formatedAnimations } = storeToRefs(useSlidesStore());
 
 const currentOperateComponent = computed<unknown>(() => {
   const elementTypeMap = {
@@ -87,21 +87,21 @@ const currentOperateComponent = computed<unknown>(() => {
     [ElementTypes.LATEX]: CommonElementOperate,
     [ElementTypes.VIDEO]: CommonElementOperate,
     [ElementTypes.AUDIO]: CommonElementOperate,
-  }
-  return elementTypeMap[props.elementInfo.type] || null
-})
+  };
+  return elementTypeMap[props.elementInfo.type] || null;
+});
 
 const elementIndexListInAnimation = computed(() => {
-  const indexList = []
+  const indexList = [];
   for (let i = 0; i < formatedAnimations.value.length; i++) {
-    const elIds = formatedAnimations.value[i].animations.map(item => item.elId)
-    if (elIds.includes(props.elementInfo.id)) indexList.push(i)
+    const elIds = formatedAnimations.value[i].animations.map(item => item.elId);
+    if (elIds.includes(props.elementInfo.id)) indexList.push(i);
   }
-  return indexList
-})
+  return indexList;
+});
 
-const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0)
-const height = computed(() => 'height' in props.elementInfo ? props.elementInfo.height : 0)
+const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0);
+const height = computed(() => 'height' in props.elementInfo ? props.elementInfo.height : 0);
 </script>
 
 <style lang="scss" scoped>

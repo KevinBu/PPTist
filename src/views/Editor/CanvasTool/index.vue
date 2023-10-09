@@ -93,48 +93,48 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSnapshotStore } from '@/store'
-import { getImageDataURL } from '@/utils/image'
-import type { ShapePoolItem } from '@/configs/shapes'
-import type { LinePoolItem } from '@/configs/lines'
-import useScaleCanvas from '@/hooks/useScaleCanvas'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-import useCreateElement from '@/hooks/useCreateElement'
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore, useSnapshotStore } from '@/store';
+import { getImageDataURL } from '@/utils/image';
+import type { ShapePoolItem } from '@/configs/shapes';
+import type { LinePoolItem } from '@/configs/lines';
+import useScaleCanvas from '@/hooks/useScaleCanvas';
+import useHistorySnapshot from '@/hooks/useHistorySnapshot';
+import useCreateElement from '@/hooks/useCreateElement';
 
-import ShapePool from './ShapePool.vue'
-import LinePool from './LinePool.vue'
-import ChartPool from './ChartPool.vue'
-import TableGenerator from './TableGenerator.vue'
-import MediaInput from './MediaInput.vue'
-import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
-import FileInput from '@/components/FileInput.vue'
-import Modal from '@/components/Modal.vue'
-import Divider from '@/components/Divider.vue'
-import Popover from '@/components/Popover.vue'
-import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
+import ShapePool from './ShapePool.vue';
+import LinePool from './LinePool.vue';
+import ChartPool from './ChartPool.vue';
+import TableGenerator from './TableGenerator.vue';
+import MediaInput from './MediaInput.vue';
+import LaTeXEditor from '@/components/LaTeXEditor/index.vue';
+import FileInput from '@/components/FileInput.vue';
+import Modal from '@/components/Modal.vue';
+import Divider from '@/components/Divider.vue';
+import Popover from '@/components/Popover.vue';
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue';
 
-const mainStore = useMainStore()
-const { creatingElement, creatingCustomShape } = storeToRefs(mainStore)
-const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
+const mainStore = useMainStore();
+const { creatingElement, creatingCustomShape } = storeToRefs(mainStore);
+const { canUndo, canRedo } = storeToRefs(useSnapshotStore());
 
-const { redo, undo } = useHistorySnapshot()
+const { redo, undo } = useHistorySnapshot();
 
 const {
   scaleCanvas,
   setCanvasScalePercentage,
   resetCanvas,
   canvasScalePercentage,
-} = useScaleCanvas()
+} = useScaleCanvas();
 
-const canvasScalePresetList = [200, 150, 100, 80, 50]
-const canvasScaleVisible = ref(false)
+const canvasScalePresetList = [200, 150, 100, 80, 50];
+const canvasScaleVisible = ref(false);
 
 const applyCanvasPresetScale = (value: number) => {
-  setCanvasScalePercentage(value)
-  canvasScaleVisible.value = false
-}
+  setCanvasScalePercentage(value);
+  canvasScaleVisible.value = false;
+};
 
 const {
   createImageElement,
@@ -143,62 +143,62 @@ const {
   createLatexElement,
   createVideoElement,
   createAudioElement,
-} = useCreateElement()
+} = useCreateElement();
 
 const insertImageElement = (files: FileList) => {
-  const imageFile = files[0]
-  if (!imageFile) return
-  getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
-}
+  const imageFile = files[0];
+  if (!imageFile) return;
+  getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL));
+};
 
-const shapePoolVisible = ref(false)
-const linePoolVisible = ref(false)
-const chartPoolVisible = ref(false)
-const tableGeneratorVisible = ref(false)
-const mediaInputVisible = ref(false)
-const latexEditorVisible = ref(false)
-const textTypeSelectVisible = ref(false)
+const shapePoolVisible = ref(false);
+const linePoolVisible = ref(false);
+const chartPoolVisible = ref(false);
+const tableGeneratorVisible = ref(false);
+const mediaInputVisible = ref(false);
+const latexEditorVisible = ref(false);
+const textTypeSelectVisible = ref(false);
 
 // 绘制文字范围
 const drawText = (vertical = false) => {
   mainStore.setCreatingElement({
     type: 'text',
     vertical,
-  })
-}
+  });
+};
 
 // 绘制形状范围（或绘制自定义任意多边形）
 const drawShape = (shape: ShapePoolItem) => {
   if (shape.title === '任意多边形') {
-    mainStore.setCreatingCustomShapeState(true)
+    mainStore.setCreatingCustomShapeState(true);
   }
   else {
     mainStore.setCreatingElement({
       type: 'shape',
       data: shape,
-    })
+    });
   }
-  shapePoolVisible.value = false
-}
+  shapePoolVisible.value = false;
+};
 
 // 绘制线条路径
 const drawLine = (line: LinePoolItem) => {
   mainStore.setCreatingElement({
     type: 'line',
     data: line,
-  })
-  linePoolVisible.value = false
-}
+  });
+  linePoolVisible.value = false;
+};
 
 // 打开选择面板
 const openSelectPanel = () => {
-  mainStore.setSelectPanelState(true)
-}
+  mainStore.setSelectPanelState(true);
+};
 
 // 打开搜索替换面板
 const openSraechPanel = () => {
-  mainStore.setSearchPanelState(true)
-}
+  mainStore.setSearchPanelState(true);
+};
 </script>
 
 <style lang="scss" scoped>

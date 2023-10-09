@@ -27,16 +27,16 @@ const props = withDefaults(defineProps<{
   disabled: false,
   type: 'default',
   size: 'normal',
-})
+});
 
 const emit = defineEmits<{
   (event: 'click'): void
-}>()
+}>();
 
 const handleClick = () => {
-  if (props.disabled) return
-  emit('click')
-}
+  if (props.disabled) return;
+  emit('click');
+};
 </script>
 
 <style lang="scss" scoped>

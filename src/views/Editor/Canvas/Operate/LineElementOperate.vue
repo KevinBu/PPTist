@@ -36,28 +36,28 @@
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
-import type { PPTLineElement } from '@/types/slides'
-import { OperateLineHandlers } from '@/types/edit'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore } from '@/store';
+import type { PPTLineElement } from '@/types/slides';
+import { OperateLineHandlers } from '@/types/edit';
 
-import ResizeHandler from './ResizeHandler.vue'
+import ResizeHandler from './ResizeHandler.vue';
 
 const props = defineProps<{
   elementInfo: PPTLineElement
   handlerVisible: boolean
   dragLineElement: (e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => void
-}>()
+}>();
 
-const { canvasScale } = storeToRefs(useMainStore())
+const { canvasScale } = storeToRefs(useMainStore());
 
-const svgWidth = computed(() => Math.max(props.elementInfo.start[0], props.elementInfo.end[0]))
-const svgHeight = computed(() => Math.max(props.elementInfo.start[1], props.elementInfo.end[1]))
+const svgWidth = computed(() => Math.max(props.elementInfo.start[0], props.elementInfo.end[0]));
+const svgHeight = computed(() => Math.max(props.elementInfo.start[1], props.elementInfo.end[1]));
 
 const resizeHandlers = computed(() => {
   const handlers = [
@@ -75,10 +75,10 @@ const resizeHandlers = computed(() => {
         top: props.elementInfo.end[1] * canvasScale.value + 'px',
       }
     },
-  ]
+  ];
 
   if (props.elementInfo.curve || props.elementInfo.broken) {
-    const ctrlHandler = (props.elementInfo.curve || props.elementInfo.broken) as [number, number]
+    const ctrlHandler = (props.elementInfo.curve || props.elementInfo.broken) as [number, number];
 
     handlers.push({
       handler: OperateLineHandlers.C,
@@ -86,28 +86,28 @@ const resizeHandlers = computed(() => {
         left: ctrlHandler[0] * canvasScale.value + 'px',
         top: ctrlHandler[1] * canvasScale.value + 'px',
       }
-    })
+    });
   }
   else if (props.elementInfo.cubic) {
-    const [ctrlHandler1, ctrlHandler2] = props.elementInfo.cubic
+    const [ctrlHandler1, ctrlHandler2] = props.elementInfo.cubic;
     handlers.push({
       handler: OperateLineHandlers.C1,
       style: {
         left: ctrlHandler1[0] * canvasScale.value + 'px',
         top: ctrlHandler1[1] * canvasScale.value + 'px',
       }
-    })
+    });
     handlers.push({
       handler: OperateLineHandlers.C2,
       style: {
         left: ctrlHandler2[0] * canvasScale.value + 'px',
         top: ctrlHandler2[1] * canvasScale.value + 'px',
       }
-    })
+    });
   }
 
-  return handlers
-})
+  return handlers;
+});
 </script>
 
 <style lang="scss" scoped>

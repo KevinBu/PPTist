@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue';
 
 const props = withDefaults(defineProps<{
   width: number
@@ -41,68 +41,68 @@ const props = withDefaults(defineProps<{
   top: 10,
   title: '',
   moveable: true,
-})
+});
 
 const emit = defineEmits<{
   (event: 'close'): void
-}>()
+}>();
 
-const x = ref(0)
-const y = ref(0)
-const moveablePanelRef = ref<HTMLElement>()
+const x = ref(0);
+const y = ref(0);
+const moveablePanelRef = ref<HTMLElement>();
 const realHeight = computed(() => {
   if (!props.height) {
-    return moveablePanelRef.value?.clientHeight || 0
+    return moveablePanelRef.value?.clientHeight || 0;
   }
-  return props.height
-})
+  return props.height;
+});
 
 onMounted(() => {
-  if (props.left >= 0) x.value = props.left
-  else x.value = document.body.clientWidth + props.left - props.width
+  if (props.left >= 0) x.value = props.left;
+  else x.value = document.body.clientWidth + props.left - props.width;
 
-  if (props.top >= 0) y.value = props.top
-  else y.value = document.body.clientHeight + props.top - realHeight.value
-})
+  if (props.top >= 0) y.value = props.top;
+  else y.value = document.body.clientHeight + props.top - realHeight.value;
+});
 
 const startMove = (e: MouseEvent) => {
-  if (!props.moveable) return
+  if (!props.moveable) return;
 
-  let isMouseDown = true
+  let isMouseDown = true;
 
-  const windowWidth = document.body.clientWidth
-  const clientHeight = document.body.clientHeight
+  const windowWidth = document.body.clientWidth;
+  const clientHeight = document.body.clientHeight;
 
-  const startPageX = e.pageX
-  const startPageY = e.pageY
+  const startPageX = e.pageX;
+  const startPageY = e.pageY;
 
-  const originLeft = x.value
-  const originTop = y.value
+  const originLeft = x.value;
+  const originTop = y.value;
 
   document.onmousemove = e => {
-    if (!isMouseDown) return
+    if (!isMouseDown) return;
 
-    const moveX = e.pageX - startPageX
-    const moveY = e.pageY - startPageY
+    const moveX = e.pageX - startPageX;
+    const moveY = e.pageY - startPageY;
 
-    let left = originLeft + moveX
-    let top = originTop + moveY
+    let left = originLeft + moveX;
+    let top = originTop + moveY;
 
-    if (left < 0) left = 0
-    if (top < 0) top = 0
-    if (left + props.width > windowWidth) left = windowWidth - props.width
-    if (top + realHeight.value > clientHeight) top = clientHeight - realHeight.value
+    if (left < 0) left = 0;
+    if (top < 0) top = 0;
+    if (left + props.width > windowWidth) left = windowWidth - props.width;
+    if (top + realHeight.value > clientHeight) top = clientHeight - realHeight.value;
 
-    x.value = left
-    y.value = top
-  }
+    x.value = left;
+    y.value = top;
+  };
   document.onmouseup = () => {
-    isMouseDown = false
+    isMouseDown = false;
 
-    document.onmousemove = null
-    document.onmouseup = null
-  }
-}
+    document.onmousemove = null;
+    document.onmouseup = null;
+  };
+};
 </script>
 
 <style lang="scss" scoped>

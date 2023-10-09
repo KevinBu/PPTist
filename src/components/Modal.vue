@@ -18,10 +18,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch, type CSSProperties } from 'vue'
-import { icons } from '@/plugins/icon'
+import { computed, nextTick, ref, watch, type CSSProperties } from 'vue';
+import { icons } from '@/plugins/icon';
 
-const { IconClose } = icons
+const { IconClose } = icons;
 
 const props = withDefaults(defineProps<{
   visible: boolean
@@ -35,42 +35,42 @@ const props = withDefaults(defineProps<{
   closeButton: false,
   closeOnClickMask: true,
   closeOnEsc: true,
-})
+});
 
-const modalRef = ref<HTMLDivElement>()
+const modalRef = ref<HTMLDivElement>();
 
 const emit = defineEmits<{
   (event: 'update:visible', payload: boolean): void
   (event: 'closed'): void
-}>()
+}>();
 
-const contentVisible = ref(false)
+const contentVisible = ref(false);
 
 const contentStyle = computed(() => {
   return {
     width: props.width + 'px',
     ...(props.contentStyle || {})
-  }
-})
+  };
+});
 
 watch(() => props.visible, () => {
   if (props.visible) {
-    nextTick(() => modalRef.value!.focus())
+    nextTick(() => modalRef.value!.focus());
   }
-})
+});
 
 const close = () => {
-  emit('update:visible', false)
-  emit('closed')
-}
+  emit('update:visible', false);
+  emit('closed');
+};
 
 const onEsc = () => {
-  if (props.visible && props.closeOnEsc) close()
-}
+  if (props.visible && props.closeOnEsc) close();
+};
 
 const onClickMask = () => {
-  if (props.closeOnClickMask) close()
-}
+  if (props.closeOnClickMask) close();
+};
 </script>
 
 <style lang="scss" scoped>

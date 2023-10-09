@@ -90,4 +90,4 @@ export const PRESET_THEMES: PresetTheme[] = [
     fontname: 'Microsoft Yahei',
     colors: ['#bdc8df', '#003fa9', '#f5ba00', '#ff7567', '#7676d9', '#923ffc'],
   },
-]
+];

@@ -55,26 +55,26 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import { enterFullscreen } from '@/utils/fullscreen'
-import useScreening from '@/hooks/useScreening'
-import useExecPlay from './hooks/useExecPlay'
-import useSlideSize from './hooks/useSlideSize'
-import useFullscreen from './hooks/useFullscreen'
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
+import { enterFullscreen } from '@/utils/fullscreen';
+import useScreening from '@/hooks/useScreening';
+import useExecPlay from './hooks/useExecPlay';
+import useSlideSize from './hooks/useSlideSize';
+import useFullscreen from './hooks/useFullscreen';
 
-import ScreenSlideList from './ScreenSlideList.vue'
-import SlideThumbnails from './SlideThumbnails.vue'
-import WritingBoardTool from './WritingBoardTool.vue'
-import CountdownTimer from './CountdownTimer.vue'
+import ScreenSlideList from './ScreenSlideList.vue';
+import SlideThumbnails from './SlideThumbnails.vue';
+import WritingBoardTool from './WritingBoardTool.vue';
+import CountdownTimer from './CountdownTimer.vue';
 
 const props = defineProps<{
   changeViewMode: (mode: 'base' | 'presenter') => void
-}>()
+}>();
 
-const { slides, slideIndex } = storeToRefs(useSlidesStore())
+const { slides, slideIndex } = storeToRefs(useSlidesStore());
 
 const {
   autoPlayTimer,
@@ -94,17 +94,17 @@ const {
   execPrev,
   execNext,
   animationIndex,
-} = useExecPlay()
+} = useExecPlay();
 
-const { slideWidth, slideHeight } = useSlideSize()
-const { exitScreening } = useScreening()
-const { fullscreenState, manualExitFullscreen } = useFullscreen()
+const { slideWidth, slideHeight } = useSlideSize();
+const { exitScreening } = useScreening();
+const { fullscreenState, manualExitFullscreen } = useFullscreen();
 
-const rightToolsVisible = ref(false)
-const writingBoardToolVisible = ref(false)
-const timerlVisible = ref(false)
-const slideThumbnailModelVisible = ref(false)
-const laserPen = ref(false)
+const rightToolsVisible = ref(false);
+const writingBoardToolVisible = ref(false);
+const timerlVisible = ref(false);
+const slideThumbnailModelVisible = ref(false);
+const laserPen = ref(false);
 
 const contextmenus = (): ContextmenuItem[] => {
   return [
@@ -185,8 +185,8 @@ const contextmenus = (): ContextmenuItem[] => {
       subText: 'ESC',
       handler: exitScreening,
     },
-  ]
-}
+  ];
+};
 </script>
 
 <style lang="scss" scoped>

@@ -31,14 +31,14 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, watch } from 'vue'
-import { useMainStore } from '@/store'
-import useSearch from '@/hooks/useSearch'
-import MoveablePanel from '@/components/MoveablePanel.vue'
-import Tabs from '@/components/Tabs.vue'
-import Divider from '@/components/Divider.vue'
-import Input from '@/components/Input.vue'
-import Button from '@/components/Button.vue'
+import { nextTick, onMounted, ref, watch } from 'vue';
+import { useMainStore } from '@/store';
+import useSearch from '@/hooks/useSearch';
+import MoveablePanel from '@/components/MoveablePanel.vue';
+import Tabs from '@/components/Tabs.vue';
+import Divider from '@/components/Divider.vue';
+import Input from '@/components/Input.vue';
+import Button from '@/components/Button.vue';
 
 type TypeKey = 'search' | 'replace'
 interface TabItem {
@@ -46,7 +46,7 @@ interface TabItem {
   label: string
 }
 
-const mainStore = useMainStore()
+const mainStore = useMainStore();
 
 const {
   searchWord,
@@ -57,28 +57,28 @@ const {
   searchPrev,
   replace,
   replaceAll,
-} = useSearch()
+} = useSearch();
 
-const type = ref<TypeKey>('search')
+const type = ref<TypeKey>('search');
 const tabs: TabItem[] = [
   { key: 'search', label: '查找' },
   { key: 'replace', label: '替换' },
-]
+];
 
 const close = () => {
-  mainStore.setSearchPanelState(false)
-}
+  mainStore.setSearchPanelState(false);
+};
 
-const searchInpRef = ref<HTMLInputElement>()
+const searchInpRef = ref<HTMLInputElement>();
 onMounted(() => {
-  searchInpRef.value!.focus()
-})
+  searchInpRef.value!.focus();
+});
 
 watch(type, () => {
   nextTick(() => {
-    searchInpRef.value!.focus()
-  })
-})
+    searchInpRef.value!.focus();
+  });
+});
 </script>
 
 <style lang="scss" scoped>

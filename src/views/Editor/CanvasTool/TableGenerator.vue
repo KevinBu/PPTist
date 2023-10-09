@@ -52,10 +52,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import message from '@/utils/message'
-import Button from '@/components/Button.vue'
-import NumberInput from '@/components/NumberInput.vue'
+import { ref } from 'vue';
+import message from '@/utils/message';
+import Button from '@/components/Button.vue';
+import NumberInput from '@/components/NumberInput.vue';
 
 interface InsertData {
   row: number
@@ -65,30 +65,30 @@ interface InsertData {
 const emit = defineEmits<{
   (event: 'insert', payload: InsertData): void
   (event: 'close'): void
-}>()
+}>();
 
-const endCell = ref<number[]>([])
-const customRow = ref(3)
-const customCol = ref(3)
-const isCustom = ref(false)
+const endCell = ref<number[]>([]);
+const customRow = ref(3);
+const customCol = ref(3);
+const isCustom = ref(false);
 
 const handleClickTable = () => {
-  if (!endCell.value.length) return
-  const [row, col] = endCell.value
-  emit('insert', { row, col })
-}
+  if (!endCell.value.length) return;
+  const [row, col] = endCell.value;
+  emit('insert', { row, col });
+};
 
 const insertCustomTable = () => {
-  if (customRow.value < 1 || customRow.value > 20) return message.warning('行数/列数必须在0~20之间！')
-  if (customCol.value < 1 || customCol.value > 20) return message.warning('行数/列数必须在0~20之间！')
-  emit('insert', { row: customRow.value, col: customCol.value })
-  isCustom.value = false
-}
+  if (customRow.value < 1 || customRow.value > 20) return message.warning('行数/列数必须在0~20之间！');
+  if (customCol.value < 1 || customCol.value > 20) return message.warning('行数/列数必须在0~20之间！');
+  emit('insert', { row: customRow.value, col: customCol.value });
+  isCustom.value = false;
+};
 
 const close = () => {
-  emit('close')
-  isCustom.value = false
-}
+  emit('close');
+  isCustom.value = false;
+};
 </script>
 
 <style lang="scss" scoped>

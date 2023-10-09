@@ -1,5 +1,5 @@
-import { marks } from 'prosemirror-schema-basic'
-import type { MarkSpec } from 'prosemirror-model'
+import { marks } from 'prosemirror-schema-basic';
+import type { MarkSpec } from 'prosemirror-model';
 
 const subscript: MarkSpec = {
   excludes: 'subscript',
@@ -11,7 +11,7 @@ const subscript: MarkSpec = {
     },
   ],
   toDOM: () => ['sub', 0],
-}
+};
 
 const superscript: MarkSpec = {
   excludes: 'superscript',
@@ -23,7 +23,7 @@ const superscript: MarkSpec = {
     },
   ],
   toDOM: () => ['sup', 0],
-}
+};
 
 const strikethrough: MarkSpec = {
   parseDOM: [
@@ -38,7 +38,7 @@ const strikethrough: MarkSpec = {
     },
   ],
   toDOM: () => ['span', { style: 'text-decoration-line: line-through;' }, 0],
-}
+};
 
 const underline: MarkSpec = {
   parseDOM: [
@@ -53,7 +53,7 @@ const underline: MarkSpec = {
     },
   ],
   toDOM: () => ['span', { style: 'text-decoration: underline;' }, 0],
-}
+};
 
 const forecolor: MarkSpec = {
   attrs: {
@@ -68,12 +68,12 @@ const forecolor: MarkSpec = {
     },
   ],
   toDOM: mark => {
-    const { color } = mark.attrs
-    let style = ''
-    if (color) style += `color: ${color};`
-    return ['span', { style }, 0]
+    const { color } = mark.attrs;
+    let style = '';
+    if (color) style += `color: ${color};`;
+    return ['span', { style }, 0];
   },
-}
+};
 
 const backcolor: MarkSpec = {
   attrs: {
@@ -88,12 +88,12 @@ const backcolor: MarkSpec = {
     },
   ],
   toDOM: mark => {
-    const { backcolor } = mark.attrs
-    let style = ''
-    if (backcolor) style += `background-color: ${backcolor};`
-    return ['span', { style }, 0]
+    const { backcolor } = mark.attrs;
+    let style = '';
+    if (backcolor) style += `background-color: ${backcolor};`;
+    return ['span', { style }, 0];
   },
-}
+};
 
 const fontsize: MarkSpec = {
   attrs: {
@@ -108,12 +108,12 @@ const fontsize: MarkSpec = {
     },
   ],
   toDOM: mark => {
-    const { fontsize } = mark.attrs
-    let style = ''
-    if (fontsize) style += `font-size: ${fontsize};`
-    return ['span', { style }, 0]
+    const { fontsize } = mark.attrs;
+    let style = '';
+    if (fontsize) style += `font-size: ${fontsize};`;
+    return ['span', { style }, 0];
   },
-}
+};
 
 const fontname: MarkSpec = {
   attrs: {
@@ -125,17 +125,17 @@ const fontname: MarkSpec = {
     {
       style: 'font-family',
       getAttrs: fontname => {
-        return { fontname: fontname && typeof fontname === 'string' ? fontname.replace(/[\"\']/g, '') : '' }
+        return { fontname: fontname && typeof fontname === 'string' ? fontname.replace(/[\"\']/g, '') : '' };
       }
     },
   ],
   toDOM: mark => {
-    const { fontname } = mark.attrs
-    let style = ''
-    if (fontname) style += `font-family: ${fontname};`
-    return ['span', { style }, 0]
+    const { fontname } = mark.attrs;
+    let style = '';
+    if (fontname) style += `font-family: ${fontname};`;
+    return ['span', { style }, 0];
   },
-}
+};
 
 const link: MarkSpec = {
   attrs: {
@@ -148,14 +148,14 @@ const link: MarkSpec = {
     {
       tag: 'a[href]',
       getAttrs: dom => {
-        const href = (dom as HTMLElement).getAttribute('href')
-        const title = (dom as HTMLElement).getAttribute('title')
-        return { href, title }
+        const href = (dom as HTMLElement).getAttribute('href');
+        const title = (dom as HTMLElement).getAttribute('title');
+        return { href, title };
       }
     },
   ],
   toDOM: node => ['a', node.attrs, 0],
-}
+};
 
 const mark: MarkSpec = {
   attrs: {
@@ -165,15 +165,15 @@ const mark: MarkSpec = {
     {
       tag: 'mark',
       getAttrs: dom => {
-        const index = (dom as HTMLElement).dataset.index
-        return { index }
+        const index = (dom as HTMLElement).dataset.index;
+        return { index };
       }
     },
   ],
   toDOM: node => ['mark', { 'data-index': node.attrs.index }, 0],
-}
+};
 
-const { em, strong, code } = marks
+const { em, strong, code } = marks;
 
 export default {
   em,
@@ -189,4 +189,4 @@ export default {
   underline,
   link,
   mark,
-}
+};

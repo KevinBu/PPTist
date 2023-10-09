@@ -31,12 +31,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { ContextmenuItem } from './types'
+import type { ContextmenuItem } from './types';
 
 defineProps<{
   menus: ContextmenuItem[]
   handleClickMenuItem: (item: ContextmenuItem) => void
-}>()
+}>();
 </script>
 
 <style lang="scss" scoped>

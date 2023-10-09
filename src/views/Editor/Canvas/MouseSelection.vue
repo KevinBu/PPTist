@@ -16,7 +16,7 @@ defineProps<{
   width: number
   height: number
   quadrant: number
-}>()
+}>();
 </script>
 
 <style lang="scss" scoped>

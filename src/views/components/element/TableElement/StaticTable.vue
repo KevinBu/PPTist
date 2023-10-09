@@ -41,11 +41,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
-import type { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
-import { getTextStyle, formatText } from './utils'
-import useHideCells from './useHideCells'
-import useSubThemeColor from './useSubThemeColor'
+import { computed, ref, watch } from 'vue';
+import type { PPTElementOutline, TableCell, TableTheme } from '@/types/slides';
+import { getTextStyle, formatText } from './utils';
+import useHideCells from './useHideCells';
+import useSubThemeColor from './useSubThemeColor';
 
 const props = withDefaults(defineProps<{
   data: TableCell[][]
@@ -57,23 +57,23 @@ const props = withDefaults(defineProps<{
   editable?: boolean
 }>(), {
   editable: true,
-})
+});
 
-const colSizeList = ref<number[]>([])
-const totalWidth = computed(() => colSizeList.value.reduce((a, b) => a + b))
+const colSizeList = ref<number[]>([]);
+const totalWidth = computed(() => colSizeList.value.reduce((a, b) => a + b));
 
 watch([
   () => props.colWidths,
   () => props.width,
 ], () => {
-  colSizeList.value = props.colWidths.map(item => item * props.width)
-}, { immediate: true })
+  colSizeList.value = props.colWidths.map(item => item * props.width);
+}, { immediate: true });
 
-const cells = computed(() => props.data)
-const { hideCells } = useHideCells(cells)
+const cells = computed(() => props.data);
+const { hideCells } = useHideCells(cells);
 
-const theme = computed(() => props.theme)
-const { subThemeColor } = useSubThemeColor(theme)
+const theme = computed(() => props.theme);
+const { subThemeColor } = useSubThemeColor(theme);
 </script>
 
 <style lang="scss" scoped>

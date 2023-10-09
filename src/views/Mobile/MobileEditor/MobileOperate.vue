@@ -36,14 +36,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import type { PPTElement, PPTLineElement, PPTChartElement, PPTVideoElement, PPTAudioElement } from '@/types/slides'
-import useCommonOperate from '@/views/Editor/Canvas/hooks/useCommonOperate'
-import type { OperateResizeHandlers } from '@/types/edit'
+import { computed } from 'vue';
+import type { PPTElement, PPTLineElement, PPTChartElement, PPTVideoElement, PPTAudioElement } from '@/types/slides';
+import useCommonOperate from '@/views/Editor/Canvas/hooks/useCommonOperate';
+import type { OperateResizeHandlers } from '@/types/edit';
 
-import BorderLine from '@/views/Editor/Canvas/Operate/BorderLine.vue'
-import ResizeHandler from '@/views/Editor/Canvas/Operate/ResizeHandler.vue'
-import RotateHandler from '@/views/Editor/Canvas/Operate/RotateHandler.vue'
+import BorderLine from '@/views/Editor/Canvas/Operate/BorderLine.vue';
+import ResizeHandler from '@/views/Editor/Canvas/Operate/ResizeHandler.vue';
+import RotateHandler from '@/views/Editor/Canvas/Operate/RotateHandler.vue';
 
 type CanRotatePPTElement = Exclude<PPTElement, PPTChartElement | PPTLineElement | PPTVideoElement | PPTAudioElement>
 
@@ -53,21 +53,21 @@ const props = defineProps<{
   canvasScale: number
   scaleElement: (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void
   rotateElement: (e: MouseEvent, element: CanRotatePPTElement) => void
-}>()
+}>();
 
-const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0)
+const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0);
 
-const scaleWidth = computed(() => props.elementInfo.width * props.canvasScale)
-const scaleHeight = computed(() => props.elementInfo.height * props.canvasScale)
+const scaleWidth = computed(() => props.elementInfo.width * props.canvasScale);
+const scaleHeight = computed(() => props.elementInfo.height * props.canvasScale);
 const {
   borderLines,
   resizeHandlers: _resizeHandlers,
   textElementResizeHandlers,
-} = useCommonOperate(scaleWidth, scaleHeight)
+} = useCommonOperate(scaleWidth, scaleHeight);
 
-const resizeHandlers = props.elementInfo.type === 'text' || props.elementInfo.type === 'table' ? textElementResizeHandlers : _resizeHandlers
+const resizeHandlers = props.elementInfo.type === 'text' || props.elementInfo.type === 'table' ? textElementResizeHandlers : _resizeHandlers;
 
-const cannotRotate = computed(() => ['chart', 'video', 'audio'].includes(props.elementInfo.type))
+const cannotRotate = computed(() => ['chart', 'video', 'audio'].includes(props.elementInfo.type));
 </script>
 
 <style lang="scss" scoped>

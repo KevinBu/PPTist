@@ -3,11 +3,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { PPTChartElement } from '@/types/slides'
+import type { PPTChartElement } from '@/types/slides';
 
-import BaseChartElement from './BaseChartElement.vue'
+import BaseChartElement from './BaseChartElement.vue';
 
 defineProps<{
   elementInfo: PPTChartElement
-}>()
+}>();
 </script>

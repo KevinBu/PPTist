@@ -30,20 +30,20 @@
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
-import type { PPTVideoElement, PPTLatexElement, PPTAudioElement, PPTChartElement } from '@/types/slides'
-import type { OperateResizeHandlers } from '@/types/edit'
-import useCommonOperate from '../hooks/useCommonOperate'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useMainStore } from '@/store';
+import type { PPTVideoElement, PPTLatexElement, PPTAudioElement, PPTChartElement } from '@/types/slides';
+import type { OperateResizeHandlers } from '@/types/edit';
+import useCommonOperate from '../hooks/useCommonOperate';
 
-import RotateHandler from './RotateHandler.vue'
-import ResizeHandler from './ResizeHandler.vue'
-import BorderLine from './BorderLine.vue'
+import RotateHandler from './RotateHandler.vue';
+import ResizeHandler from './ResizeHandler.vue';
+import BorderLine from './BorderLine.vue';
 
 type PPTElement = PPTVideoElement | PPTLatexElement | PPTAudioElement | PPTChartElement
 
@@ -52,13 +52,13 @@ const props = defineProps<{
   handlerVisible: boolean
   rotateElement: (e: MouseEvent, element: PPTElement) => void
   scaleElement: (e: MouseEvent, element: PPTElement, command: OperateResizeHandlers) => void
-}>()
+}>();
 
-const { canvasScale } = storeToRefs(useMainStore())
+const { canvasScale } = storeToRefs(useMainStore());
 
-const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
-const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
-const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value);
+const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value);
+const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight);
 
-const cannotRotate = computed(() => ['chart', 'video', 'audio'].includes(props.elementInfo.type))
+const cannotRotate = computed(() => ['chart', 'video', 'audio'].includes(props.elementInfo.type));
 </script>

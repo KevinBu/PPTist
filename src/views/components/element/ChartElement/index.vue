@@ -44,29 +44,29 @@
 </template>
 
 <script lang="ts" setup>
-import type { PPTChartElement } from '@/types/slides'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import emitter, { EmitterEvents } from '@/utils/emitter'
+import type { PPTChartElement } from '@/types/slides';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
+import emitter, { EmitterEvents } from '@/utils/emitter';
 
-import ElementOutline from '@/views/components/element/ElementOutline.vue'
-import Chart from './Chart.vue'
+import ElementOutline from '@/views/components/element/ElementOutline.vue';
+import Chart from './Chart.vue';
 
 const props = defineProps<{
   elementInfo: PPTChartElement
   selectElement: (e: MouseEvent | TouchEvent, element: PPTChartElement, canMove?: boolean) => void
   contextmenus: () => ContextmenuItem[] | null
-}>()
+}>();
 
 const handleSelectElement = (e: MouseEvent | TouchEvent) => {
-  if (props.elementInfo.lock) return
-  e.stopPropagation()
+  if (props.elementInfo.lock) return;
+  e.stopPropagation();
 
-  props.selectElement(e, props.elementInfo)
-}
+  props.selectElement(e, props.elementInfo);
+};
 
 const openDataEditor = () => {
-  emitter.emit(EmitterEvents.OPEN_CHART_DATA_EDITOR)
-}
+  emitter.emit(EmitterEvents.OPEN_CHART_DATA_EDITOR);
+};
 </script>
 
 <style lang="scss" scoped>

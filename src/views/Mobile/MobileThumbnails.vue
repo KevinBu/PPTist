@@ -26,30 +26,30 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import useLoadSlides from '@/hooks/useLoadSlides'
-import useSlideHandler from '@/hooks/useSlideHandler'
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import useLoadSlides from '@/hooks/useLoadSlides';
+import useSlideHandler from '@/hooks/useSlideHandler';
 
-import Draggable from 'vuedraggable'
-import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+import Draggable from 'vuedraggable';
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue';
 
-const slidesStore = useSlidesStore()
-const { slides, slideIndex } = storeToRefs(slidesStore)
+const slidesStore = useSlidesStore();
+const { slides, slideIndex } = storeToRefs(slidesStore);
 
-const { sortSlides } = useSlideHandler()
+const { sortSlides } = useSlideHandler();
 
-const { slidesLoadLimit } = useLoadSlides()
+const { slidesLoadLimit } = useLoadSlides();
 const changeSlideIndex = (index: number) => {
-  slidesStore.updateSlideIndex(index)
-}
+  slidesStore.updateSlideIndex(index);
+};
 
 // 拖拽调整顺序后进行数据的同步
 const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
-  const { newIndex, oldIndex } = eventData
-  if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return
-  sortSlides(newIndex, oldIndex)
-}
+  const { newIndex, oldIndex } = eventData;
+  if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return;
+  sortSlides(newIndex, oldIndex);
+};
 </script>
 
 <style lang="scss" scoped>

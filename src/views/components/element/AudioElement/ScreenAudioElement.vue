@@ -36,58 +36,58 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import type { PPTAudioElement } from '@/types/slides'
-import { injectKeySlideId, injectKeySlideScale } from '@/types/injectKey'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
+import { computed, inject, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import type { PPTAudioElement } from '@/types/slides';
+import { injectKeySlideId, injectKeySlideScale } from '@/types/injectKey';
+import { VIEWPORT_SIZE } from '@/configs/canvas';
 
-import AudioPlayer from './AudioPlayer.vue'
+import AudioPlayer from './AudioPlayer.vue';
 
 const props = defineProps<{
   elementInfo: PPTAudioElement
-}>()
+}>();
 
-const { viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
+const { viewportRatio, currentSlide } = storeToRefs(useSlidesStore());
 
-const scale = inject(injectKeySlideScale) || ref(1)
-const slideId = inject(injectKeySlideId) || ref('')
+const scale = inject(injectKeySlideScale) || ref(1);
+const slideId = inject(injectKeySlideId) || ref('');
 
-const inCurrentSlide = computed(() => currentSlide.value.id === slideId.value)
+const inCurrentSlide = computed(() => currentSlide.value.id === slideId.value);
 
 const audioIconSize = computed(() => {
-  return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px'
-})
+  return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px';
+});
 const audioPlayerPosition = computed(() => {
-  const canvasWidth = VIEWPORT_SIZE
-  const canvasHeight = VIEWPORT_SIZE * viewportRatio.value
+  const canvasWidth = VIEWPORT_SIZE;
+  const canvasHeight = VIEWPORT_SIZE * viewportRatio.value;
 
-  const audioWidth = 280 / scale.value
-  const audioHeight = 50 / scale.value
+  const audioWidth = 280 / scale.value;
+  const audioHeight = 50 / scale.value;
 
-  const elWidth = props.elementInfo.width
-  const elHeight = props.elementInfo.height
-  const elLeft = props.elementInfo.left
-  const elTop = props.elementInfo.top
+  const elWidth = props.elementInfo.width;
+  const elHeight = props.elementInfo.height;
+  const elLeft = props.elementInfo.left;
+  const elTop = props.elementInfo.top;
 
-  let left = 0
-  let top = elHeight
+  let left = 0;
+  let top = elHeight;
   
-  if (elLeft + audioWidth >= canvasWidth) left = elWidth - audioWidth
-  if (elTop + elHeight + audioHeight >= canvasHeight) top = -audioHeight
+  if (elLeft + audioWidth >= canvasWidth) left = elWidth - audioWidth;
+  if (elTop + elHeight + audioHeight >= canvasHeight) top = -audioHeight;
 
   return {
     left: left + 'px',
     top: top + 'px',
-  }
-})
+  };
+});
 
-const audioPlayerRef = ref<typeof AudioPlayer>()
+const audioPlayerRef = ref<typeof AudioPlayer>();
 const toggle = () => {
-  if (!audioPlayerRef.value) return
-  audioPlayerRef.value.toggle()
-}
+  if (!audioPlayerRef.value) return;
+  audioPlayerRef.value.toggle();
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,6 @@
-import { nodes } from 'prosemirror-schema-basic'
-import type { Node, NodeSpec } from 'prosemirror-model'
-import { listItem as _listItem } from 'prosemirror-schema-list'
+import { nodes } from 'prosemirror-schema-basic';
+import type { Node, NodeSpec } from 'prosemirror-model';
+import { listItem as _listItem } from 'prosemirror-schema-list';
 
 interface Attr {
   [key: string]: number | string
@@ -21,28 +21,28 @@ const orderedList: NodeSpec = {
     { 
       tag: 'ol', 
       getAttrs: dom => {
-        const order = ((dom as HTMLElement).hasAttribute('start') ? (dom as HTMLElement).getAttribute('start') : 1) || 1
-        const attr: Attr = { order: +order }
+        const order = ((dom as HTMLElement).hasAttribute('start') ? (dom as HTMLElement).getAttribute('start') : 1) || 1;
+        const attr: Attr = { order: +order };
 
-        const { listStyleType } = (dom as HTMLElement).style
-        if (listStyleType) attr['listStyleType'] = listStyleType
+        const { listStyleType } = (dom as HTMLElement).style;
+        if (listStyleType) attr['listStyleType'] = listStyleType;
 
-        return attr
+        return attr;
       }
     }
   ],
   toDOM: (node: Node) => {
-    const { order, listStyleType } = node.attrs
-    let style = ''
-    if (listStyleType) style += `list-style-type: ${listStyleType};`
+    const { order, listStyleType } = node.attrs;
+    let style = '';
+    if (listStyleType) style += `list-style-type: ${listStyleType};`;
 
-    const attr: Attr = { style }
-    if (order !== 1) attr['start'] = order
+    const attr: Attr = { style };
+    if (order !== 1) attr['start'] = order;
 
 
-    return ['ol', attr, 0]
+    return ['ol', attr, 0];
   },
-}
+};
 
 const bulletList: NodeSpec = {
   attrs: {
@@ -56,25 +56,25 @@ const bulletList: NodeSpec = {
     {
       tag: 'ul',
       getAttrs: dom => {
-        const { listStyleType } = (dom as HTMLElement).style
-        return listStyleType ? { listStyleType } : {}
+        const { listStyleType } = (dom as HTMLElement).style;
+        return listStyleType ? { listStyleType } : {};
       }
     }
   ],
   toDOM: (node: Node) => {
-    const { listStyleType } = node.attrs
-    let style = ''
-    if (listStyleType) style += `list-style-type: ${listStyleType};`
+    const { listStyleType } = node.attrs;
+    let style = '';
+    if (listStyleType) style += `list-style-type: ${listStyleType};`;
 
-    return ['ul', { style }, 0]
+    return ['ul', { style }, 0];
   },
-}
+};
 
 const listItem: NodeSpec = {
   ..._listItem,
   content: 'paragraph block*',
   group: 'block',
-}
+};
 
 const paragraph: NodeSpec = {
   attrs: {
@@ -94,25 +94,25 @@ const paragraph: NodeSpec = {
     {
       tag: 'p',
       getAttrs: dom => {
-        const { textAlign, textIndent } = (dom as HTMLElement).style
+        const { textAlign, textIndent } = (dom as HTMLElement).style;
 
-        let align = (dom as HTMLElement).getAttribute('align') || textAlign || ''
-        align = /(left|right|center|justify)/.test(align) ? align : ''
+        let align = (dom as HTMLElement).getAttribute('align') || textAlign || '';
+        align = /(left|right|center|justify)/.test(align) ? align : '';
 
-        let textIndentLevel = 0
+        let textIndentLevel = 0;
         if (textIndent) {
           if (/em/.test(textIndent)) {
-            textIndentLevel = parseInt(textIndent)
+            textIndentLevel = parseInt(textIndent);
           }
           else if (/px/.test(textIndent)) {
-            textIndentLevel = Math.floor(parseInt(textIndent) / 20)
-            if (!textIndentLevel) textIndentLevel = 1
+            textIndentLevel = Math.floor(parseInt(textIndent) / 20);
+            if (!textIndentLevel) textIndentLevel = 1;
           }
         }
 
-        const indent = +((dom as HTMLElement).getAttribute('data-indent') || 0)
+        const indent = +((dom as HTMLElement).getAttribute('data-indent') || 0);
       
-        return { align, indent, textIndent: textIndentLevel }
+        return { align, indent, textIndent: textIndentLevel };
       }
     },
     {
@@ -125,23 +125,23 @@ const paragraph: NodeSpec = {
     },
   ],
   toDOM: (node: Node) => {
-    const { align, indent, textIndent } = node.attrs
-    let style = ''
-    if (align && align !== 'left') style += `text-align: ${align};`
-    if (textIndent) style += `text-indent: ${textIndent * 20}px;`
+    const { align, indent, textIndent } = node.attrs;
+    let style = '';
+    if (align && align !== 'left') style += `text-align: ${align};`;
+    if (textIndent) style += `text-indent: ${textIndent * 20}px;`;
 
-    const attr: Attr = { style }
-    if (indent) attr['data-indent'] = indent
+    const attr: Attr = { style };
+    if (indent) attr['data-indent'] = indent;
 
-    return ['p', attr, 0]
+    return ['p', attr, 0];
   },
-}
+};
 
 const {
   doc,
   blockquote,
   text,
-} = nodes
+} = nodes;
 
 export default {
   doc,
@@ -151,4 +151,4 @@ export default {
   'ordered_list': orderedList,
   'bullet_list': bulletList,
   'list_item': listItem,
-}
+};

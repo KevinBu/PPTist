@@ -60,48 +60,48 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import type { PPTLineElement } from '@/types/slides'
-import { getLineElementPath } from '@/utils/element'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import useElementShadow from '@/views/components/element/hooks/useElementShadow'
+import { computed } from 'vue';
+import type { PPTLineElement } from '@/types/slides';
+import { getLineElementPath } from '@/utils/element';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
+import useElementShadow from '@/views/components/element/hooks/useElementShadow';
 
-import LinePointMarker from './LinePointMarker.vue'
+import LinePointMarker from './LinePointMarker.vue';
 
 const props = defineProps<{
   elementInfo: PPTLineElement
   selectElement: (e: MouseEvent | TouchEvent, element: PPTLineElement, canMove?: boolean) => void
   contextmenus: () => ContextmenuItem[] | null
-}>()
+}>();
 
 const handleSelectElement = (e: MouseEvent | TouchEvent) => {
-  if (props.elementInfo.lock) return
-  e.stopPropagation()
+  if (props.elementInfo.lock) return;
+  e.stopPropagation();
 
-  props.selectElement(e, props.elementInfo)
-}
+  props.selectElement(e, props.elementInfo);
+};
 
-const shadow = computed(() => props.elementInfo.shadow)
-const { shadowStyle } = useElementShadow(shadow)
+const shadow = computed(() => props.elementInfo.shadow);
+const { shadowStyle } = useElementShadow(shadow);
 
 const svgWidth = computed(() => {
-  const width = Math.abs(props.elementInfo.start[0] - props.elementInfo.end[0])
-  return width < 24 ? 24 : width
-})
+  const width = Math.abs(props.elementInfo.start[0] - props.elementInfo.end[0]);
+  return width < 24 ? 24 : width;
+});
 const svgHeight = computed(() => {
-  const height = Math.abs(props.elementInfo.start[1] - props.elementInfo.end[1])
-  return height < 24 ? 24 : height
-})
+  const height = Math.abs(props.elementInfo.start[1] - props.elementInfo.end[1]);
+  return height < 24 ? 24 : height;
+});
 
 const lineDashArray = computed(() => {
-  if (props.elementInfo.style !== 'dashed') return '0 0'
-  const size = props.elementInfo.width
-  return size <= 8 ? `${size * 5} ${size * 2.5}` : `${size * 5} ${size * 1.5}`
-})
+  if (props.elementInfo.style !== 'dashed') return '0 0';
+  const size = props.elementInfo.width;
+  return size <= 8 ? `${size * 5} ${size * 2.5}` : `${size * 5} ${size * 1.5}`;
+});
 
 const path = computed(() => {
-  return getLineElementPath(props.elementInfo)
-})
+  return getLineElementPath(props.elementInfo);
+});
 </script>
 
 <style lang="scss" scoped>

@@ -38,27 +38,27 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
-import type { PPTVideoElement } from '@/types/slides'
-import type { ContextmenuItem } from '@/components/Contextmenu/types'
+import { storeToRefs } from 'pinia';
+import { useMainStore } from '@/store';
+import type { PPTVideoElement } from '@/types/slides';
+import type { ContextmenuItem } from '@/components/Contextmenu/types';
 
-import VideoPlayer from './VideoPlayer/index.vue'
+import VideoPlayer from './VideoPlayer/index.vue';
 
 const props = defineProps<{
   elementInfo: PPTVideoElement
   selectElement: (e: MouseEvent | TouchEvent, element: PPTVideoElement, canMove?: boolean) => void
   contextmenus: () => ContextmenuItem[] | null
-}>()
+}>();
 
-const { canvasScale } = storeToRefs(useMainStore())
+const { canvasScale } = storeToRefs(useMainStore());
 
 const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
-  if (props.elementInfo.lock) return
-  e.stopPropagation()
+  if (props.elementInfo.lock) return;
+  e.stopPropagation();
 
-  props.selectElement(e, props.elementInfo, canMove)
-}
+  props.selectElement(e, props.elementInfo, canMove);
+};
 </script>
 
 <style lang="scss" scoped>

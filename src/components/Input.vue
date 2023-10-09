@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 withDefaults(defineProps<{
   value: string
@@ -37,7 +37,7 @@ withDefaults(defineProps<{
 }>(), {
   disabled: false,
   placeholder: '',
-})
+});
 
 const emit = defineEmits<{
   (event: 'update:value', payload: string): void
@@ -46,30 +46,30 @@ const emit = defineEmits<{
   (event: 'blur', payload: Event): void
   (event: 'focus', payload: Event): void
   (event: 'enter', payload: Event): void
-}>()
+}>();
 
-const focused = ref(false)
+const focused = ref(false);
 
 const handleInput = (e: Event) => {
-  emit('update:value', (e.target as HTMLInputElement).value)
-}
+  emit('update:value', (e.target as HTMLInputElement).value);
+};
 const handleBlur = (e: Event) => {
-  focused.value = false
-  emit('blur', e)
-}
+  focused.value = false;
+  emit('blur', e);
+};
 const handleFocus = (e: Event) => {
-  focused.value = true
-  emit('focus', e)
-}
+  focused.value = true;
+  emit('focus', e);
+};
 
-const inputRef = ref<HTMLInputElement>()
+const inputRef = ref<HTMLInputElement>();
 const focus = () => {
-  if (inputRef.value) inputRef.value.focus()
-}
+  if (inputRef.value) inputRef.value.focus();
+};
 
 defineExpose({
   focus,
-})
+});
 </script>
 
 <style lang="scss" scoped>

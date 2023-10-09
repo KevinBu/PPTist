@@ -17,38 +17,38 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue';
 
-import Checkboard from './Checkboard.vue'
-import type { ColorFormats } from 'tinycolor2'
+import Checkboard from './Checkboard.vue';
+import type { ColorFormats } from 'tinycolor2';
 
 const props = defineProps<{
   value: ColorFormats.RGBA
-}>()
+}>();
 
 const emit = defineEmits<{
   (event: 'colorChange', payload: ColorFormats.RGBA): void
-}>()
+}>();
 
-const color = computed(() => props.value)
+const color = computed(() => props.value);
     
 const gradientColor = computed(() => {
-  const rgbaStr = [color.value.r, color.value.g, color.value.b].join(',')
-  return `linear-gradient(to right, rgba(${rgbaStr}, 0) 0%, rgba(${rgbaStr}, 1) 100%)`
-})
+  const rgbaStr = [color.value.r, color.value.g, color.value.b].join(',');
+  return `linear-gradient(to right, rgba(${rgbaStr}, 0) 0%, rgba(${rgbaStr}, 1) 100%)`;
+});
 
-const alphaRef = ref<HTMLElement>()
+const alphaRef = ref<HTMLElement>();
 const handleChange = (e: MouseEvent) => {
-  e.preventDefault()
-  if (!alphaRef.value) return
-  const containerWidth = alphaRef.value.clientWidth
-  const xOffset = alphaRef.value.getBoundingClientRect().left + window.pageXOffset
-  const left = e.pageX - xOffset
-  let a
+  e.preventDefault();
+  if (!alphaRef.value) return;
+  const containerWidth = alphaRef.value.clientWidth;
+  const xOffset = alphaRef.value.getBoundingClientRect().left + window.pageXOffset;
+  const left = e.pageX - xOffset;
+  let a;
 
-  if (left < 0) a = 0
-  else if (left > containerWidth) a = 1
-  else a = Math.round(left * 100 / containerWidth) / 100
+  if (left < 0) a = 0;
+  else if (left > containerWidth) a = 1;
+  else a = Math.round(left * 100 / containerWidth) / 100;
 
   if (color.value.a !== a) {
     emit('colorChange', {
@@ -56,20 +56,20 @@ const handleChange = (e: MouseEvent) => {
       g: color.value.g,
       b: color.value.b,
       a: a,
-    })
+    });
   }
-}
+};
 
 const unbindEventListeners = () => {
-  window.removeEventListener('mousemove', handleChange)
-  window.removeEventListener('mouseup', unbindEventListeners)
-}
+  window.removeEventListener('mousemove', handleChange);
+  window.removeEventListener('mouseup', unbindEventListeners);
+};
 const handleMouseDown = (e: MouseEvent) => {
-  handleChange(e)
-  window.addEventListener('mousemove', handleChange)
-  window.addEventListener('mouseup', unbindEventListeners)
-}
-onUnmounted(unbindEventListeners)
+  handleChange(e);
+  window.addEventListener('mousemove', handleChange);
+  window.addEventListener('mouseup', unbindEventListeners);
+};
+onUnmounted(unbindEventListeners);
 </script>
 
 <style lang="scss" scoped>

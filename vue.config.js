@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const StyleLintPlugin = require('stylelint-webpack-plugin')
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
   publicPath: './',
@@ -82,4 +82,4 @@ module.exports = {
       skipWaiting: true,
     }
   },
-}
+};

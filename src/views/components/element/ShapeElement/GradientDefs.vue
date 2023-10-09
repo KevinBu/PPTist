@@ -27,5 +27,5 @@ withDefaults(defineProps<{
   rotate?: number
 }>(), {
   rotate: 0,
-})
+});
 </script>

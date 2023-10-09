@@ -25,16 +25,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import type { PPTAudioElement } from '@/types/slides'
+import { computed } from 'vue';
+import type { PPTAudioElement } from '@/types/slides';
 
 const props = defineProps<{
   elementInfo: PPTAudioElement
-}>()
+}>();
 
 const audioIconSize = computed(() => {
-  return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px'
-})
+  return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px';
+});
 </script>
 
 <style lang="scss" scoped>

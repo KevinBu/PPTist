@@ -14,7 +14,7 @@ withDefaults(defineProps<{
 }>(), {
   loading: false,
   tip: '',
-})
+});
 </script>
 
 <style lang="scss" scoped>

@@ -35,14 +35,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, provide } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import { injectKeySlideScale } from '@/types/injectKey'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
-import { SLIDE_ANIMATIONS } from '@/configs/animation'
+import { computed, provide } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import { injectKeySlideScale } from '@/types/injectKey';
+import { VIEWPORT_SIZE } from '@/configs/canvas';
+import { SLIDE_ANIMATIONS } from '@/configs/animation';
 
-import ScreenSlide from './ScreenSlide.vue'
+import ScreenSlide from './ScreenSlide.vue';
 
 const props = defineProps<{
   slideWidth: number
@@ -50,27 +50,27 @@ const props = defineProps<{
   animationIndex: number
   turnSlideToId: (id: string) => void
   manualExitFullscreen: () => void
-}>()
+}>();
 
-const { slides, slideIndex } = storeToRefs(useSlidesStore())
+const { slides, slideIndex } = storeToRefs(useSlidesStore());
 
 const slidesWithTurningMode = computed(() => {
   return slides.value.map(slide => {
-    let turningMode = slide.turningMode
-    if (!turningMode) turningMode = 'slideY'
+    let turningMode = slide.turningMode;
+    if (!turningMode) turningMode = 'slideY';
     if (turningMode === 'random') {
-      const turningModeKeys = SLIDE_ANIMATIONS.filter(item => !['random', 'no'].includes(item.value)).map(item => item.value)
-      turningMode = turningModeKeys[Math.floor(Math.random() * turningModeKeys.length)]
+      const turningModeKeys = SLIDE_ANIMATIONS.filter(item => !['random', 'no'].includes(item.value)).map(item => item.value);
+      turningMode = turningModeKeys[Math.floor(Math.random() * turningModeKeys.length)];
     }
     return {
       ...slide,
       turningMode,
-    }
-  })
-})
+    };
+  });
+});
 
-const scale = computed(() => props.slideWidth / VIEWPORT_SIZE)
-provide(injectKeySlideScale, scale)
+const scale = computed(() => props.slideWidth / VIEWPORT_SIZE);
+provide(injectKeySlideScale, scale);
 </script>
 
 <style lang="scss" scoped>

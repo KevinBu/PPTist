@@ -74,47 +74,47 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import useExport from '@/hooks/useExport'
+import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import useExport from '@/hooks/useExport';
 
-import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
-import FullscreenSpin from '@/components/FullscreenSpin.vue'
-import Switch from '@/components/Switch.vue'
-import Slider from '@/components/Slider.vue'
-import Button from '@/components/Button.vue'
-import RadioButton from '@/components/RadioButton.vue'
-import RadioGroup from '@/components/RadioGroup.vue'
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue';
+import FullscreenSpin from '@/components/FullscreenSpin.vue';
+import Switch from '@/components/Switch.vue';
+import Slider from '@/components/Slider.vue';
+import Button from '@/components/Button.vue';
+import RadioButton from '@/components/RadioButton.vue';
+import RadioGroup from '@/components/RadioGroup.vue';
 
 const emit = defineEmits<{
   (event: 'close'): void
-}>()
+}>();
 
-const { slides, currentSlide } = storeToRefs(useSlidesStore())
+const { slides, currentSlide } = storeToRefs(useSlidesStore());
 
-const imageThumbnailsRef = ref<HTMLElement>()
-const rangeType = ref<'all' | 'current' | 'custom'>('all')
-const range = ref<[number, number]>([1, slides.value.length])
-const format = ref<'jpeg' | 'png'>('jpeg')
-const quality = ref(1)
-const ignoreWebfont = ref(true)
+const imageThumbnailsRef = ref<HTMLElement>();
+const rangeType = ref<'all' | 'current' | 'custom'>('all');
+const range = ref<[number, number]>([1, slides.value.length]);
+const format = ref<'jpeg' | 'png'>('jpeg');
+const quality = ref(1);
+const ignoreWebfont = ref(true);
 
 const renderSlides = computed(() => {
-  if (rangeType.value === 'all') return slides.value
-  if (rangeType.value === 'current') return [currentSlide.value]
+  if (rangeType.value === 'all') return slides.value;
+  if (rangeType.value === 'current') return [currentSlide.value];
   return slides.value.filter((item, index) => {
-    const [min, max] = range.value
-    return index >= min - 1 && index <= max - 1
-  })
-})
+    const [min, max] = range.value;
+    return index >= min - 1 && index <= max - 1;
+  });
+});
 
-const { exportImage, exporting } = useExport()
+const { exportImage, exporting } = useExport();
 
 const expImage = () => {
-  if (!imageThumbnailsRef.value) return
-  exportImage(imageThumbnailsRef.value, format.value, quality.value, ignoreWebfont.value)
-}
+  if (!imageThumbnailsRef.value) return;
+  exportImage(imageThumbnailsRef.value, format.value, quality.value, ignoreWebfont.value);
+};
 </script>
 
 <style lang="scss" scoped>

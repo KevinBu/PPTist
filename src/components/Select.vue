@@ -45,8 +45,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import Popover from './Popover.vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import Popover from './Popover.vue';
 
 interface SelectOption {
   label: string
@@ -60,40 +60,40 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
 }>(), {
   disabled: false,
-})
+});
 
 const showLabel = computed(() => {
-  return props.options.find(item => item.value === props.value)?.label || props.value
-})
+  return props.options.find(item => item.value === props.value)?.label || props.value;
+});
 
 const emit = defineEmits<{
   (event: 'update:value', payload: string | number): void
-}>()
+}>();
 
-const popoverVisible = ref(false)
-const selectRef = ref<HTMLElement>()
-const width = ref(0)
+const popoverVisible = ref(false);
+const selectRef = ref<HTMLElement>();
+const width = ref(0);
 
 const updateWidth = () => {
-  if (!selectRef.value) return
-  width.value = selectRef.value.clientWidth
-}
-const resizeObserver = new ResizeObserver(updateWidth)
+  if (!selectRef.value) return;
+  width.value = selectRef.value.clientWidth;
+};
+const resizeObserver = new ResizeObserver(updateWidth);
 onMounted(() => {
-  if (!selectRef.value) return
-  resizeObserver.observe(selectRef.value)
-})
+  if (!selectRef.value) return;
+  resizeObserver.observe(selectRef.value);
+});
 onUnmounted(() => {
-  if (!selectRef.value) return
-  resizeObserver.unobserve(selectRef.value)
-})
+  if (!selectRef.value) return;
+  resizeObserver.unobserve(selectRef.value);
+});
 
 const handleSelect = (option: SelectOption) => {
-  if (option.disabled) return
+  if (option.disabled) return;
 
-  emit('update:value', option.value)
-  popoverVisible.value = false
-}
+  emit('update:value', option.value);
+  popoverVisible.value = false;
+};
 </script>
 
 <style lang="scss" scoped>

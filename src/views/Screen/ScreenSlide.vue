@@ -21,15 +21,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, provide } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
-import type { Slide } from '@/types/slides'
-import { injectKeySlideId } from '@/types/injectKey'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
-import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
+import { computed, provide } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSlidesStore } from '@/store';
+import type { Slide } from '@/types/slides';
+import { injectKeySlideId } from '@/types/injectKey';
+import { VIEWPORT_SIZE } from '@/configs/canvas';
+import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle';
 
-import ScreenElement from './ScreenElement.vue'
+import ScreenElement from './ScreenElement.vue';
 
 const props = defineProps<{
   slide: Slide
@@ -37,15 +37,15 @@ const props = defineProps<{
   animationIndex: number
   turnSlideToId: (id: string) => void
   manualExitFullscreen: () => void
-}>()
+}>();
 
-const { viewportRatio } = storeToRefs(useSlidesStore())
+const { viewportRatio } = storeToRefs(useSlidesStore());
 
-const background = computed(() => props.slide.background)
-const { backgroundStyle } = useSlideBackgroundStyle(background)
+const background = computed(() => props.slide.background);
+const { backgroundStyle } = useSlideBackgroundStyle(background);
 
-const slideId = computed(() => props.slide.id)
-provide(injectKeySlideId, slideId)
+const slideId = computed(() => props.slide.id);
+provide(injectKeySlideId, slideId);
 </script>
 
 <style lang="scss" scoped>

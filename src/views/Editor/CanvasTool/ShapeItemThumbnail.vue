@@ -27,11 +27,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { ShapePoolItem } from '@/configs/shapes'
+import type { ShapePoolItem } from '@/configs/shapes';
 
 defineProps<{
   shape: ShapePoolItem
-}>()
+}>();
 </script>
 
 <style lang="scss" scoped>
